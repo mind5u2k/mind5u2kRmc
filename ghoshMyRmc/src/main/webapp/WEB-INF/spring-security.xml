@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+
+	<beans:bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<http pattern="/resources/**" security="none" />
+
+	<http>
+		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/forgotPassword" access="permitAll" />
+		<intercept-url pattern="/sendPassword" access="permitAll" />
+		<intercept-url pattern="/admin/**" access="hasAuthority('Admin')" />
+		<intercept-url pattern="/approver/**" access="hasAuthority('Approver')" />
+		<intercept-url pattern="/assessor/**" access="hasAuthority('Assessor')" />
+		<intercept-url pattern="/reviewer/**" access="hasAuthority('Reviewer')" />
+		<intercept-url pattern="/sme/**" access="hasAuthority('SME')" />
+
+		<intercept-url pattern="/**"
+			access="hasAnyAuthority('Admin','Approver','Assessor','Reviewer','SME')" />
+
+		<access-denied-handler error-page="/access-denied" />
+		<form-login login-page="/login" default-target-url="/home"
+			always-use-default-target="true" />
+	</http>
+
+	<beans:bean id="userDetailsService"
+		class="net.gh.ghoshMyRmc.UserDetailServices.UserDetailServiceImpl" />
+
+	<authentication-manager>
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder ref="passwordEncoder">
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+
+
+	<!-- <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider"> 
+		<beans:property name="userDetailsService" ref="userDetailsService"></beans:property> 
+		</beans:bean> <beans:bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager"> 
+		<beans:property name="providers"> <beans:ref local="daoAuthenticationProvider" 
+		/> </beans:property> </beans:bean> <authentication-manager> <authentication-provider 
+		user-service-ref="userDetailsService"> <password-encoder ref="passwordEncoder" 
+		/> </authentication-provider> </authentication-manager> -->
+
+	<!-- <authentication-manager> <authentication-provider> <password-encoder 
+		ref="passwordEncoder" /> <jdbc-user-service data-source-ref="dataSource" 
+		users-by-username-query="select email,password,enabled from User where email=?" 
+		authorities-by-username-query="select email,role from User where email=?" 
+		/> <user-service> <user name="admin@myrmc.com" password="admin@123" authorities="ADMIN" 
+		/> <user name="approver@myrmc.com" password="admin@123" authorities="APPROVER" 
+		/> </user-service> </authentication-provider> </authentication-manager> -->
+
+</beans:beans>

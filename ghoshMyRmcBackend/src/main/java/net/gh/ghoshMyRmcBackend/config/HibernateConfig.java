@@ -14,7 +14,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan(basePackages = { "net.gh.ghoshShoppingBackend.dto" })
+@ComponentScan(basePackages = { "net.gh.ghoshMyRmcBackend.dto" })
 @EnableTransactionManagement
 public class HibernateConfig {
 
@@ -39,7 +39,7 @@ public class HibernateConfig {
 		LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(
 				dataSource);
 		builder.addProperties(getHibernateProperties());
-		builder.scanPackages("net.gh.ghoshShoppingBackend.dto");
+		builder.scanPackages("net.gh.ghoshMyRmcBackend.dto");
 		return builder.buildSessionFactory();
 	}
 
