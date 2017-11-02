@@ -12,7 +12,7 @@
 					style="font-size: .9rem;" cellspacing="0">
 					<thead>
 						<tr>
-							<th>ID</th>
+							<th style="width: 20px;">ID</th>
 							<th>Name</th>
 							<th>State</th>
 						</tr>

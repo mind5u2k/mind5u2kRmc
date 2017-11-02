@@ -7,12 +7,10 @@
 					<div class="card-body-icon">
 						<i class="fa fa-fw fa-database"></i>
 					</div>
-					<div class="mr-5">Total Accounts : ${total}</div>
+					<div class="mr-5">Total</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
+					class="float-left">No Of Accounts : ${total}</span>
 				</a>
 			</div>
 		</div>
@@ -22,12 +20,11 @@
 					<div class="card-body-icon">
 						<i class="fa fa-fw fa-exclamation-triangle"></i>
 					</div>
-					<div class="mr-5">Submission Pending : ${completed}</div>
+					<div class="mr-5">Submission Pending</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
+					class="float-left">Submission Pending : ${completed}</span> <span
+					class="float-right"> </span>
 				</a>
 			</div>
 		</div>
@@ -40,9 +37,8 @@
 					<div class="mr-5">Submitted : ${submitted}</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
+					class="float-left">Submitted : ${submitted}</span> <span
+					class="float-right"> </span>
 				</a>
 			</div>
 		</div>
@@ -55,9 +51,8 @@
 					<div class="mr-5">Incomplete : ${incomplete}</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
+					class="float-left">Incomplete : ${incomplete}</span> <span
+					class="float-right"> </span>
 				</a>
 			</div>
 		</div>
@@ -76,7 +71,8 @@
 					<th rowspan="2">Assessor</th>
 					<th rowspan="2">Assessment</th>
 					<th colspan="4" style="text-align: center;">Risk</th>
-					<th rowspan="2" colspan="2" style="text-align: center;">Status</th>
+					<th rowspan="2" style="text-align: center;">Status</th>
+					<th rowspan="2" style="text-align: center;">Trail</th>
 				</tr>
 				<tr>
 					<th>Department</th>
@@ -161,14 +157,16 @@
 							<td>${assessment.riskValue}</td>
 						</c:if>
 						<c:if test="${assessment.assessmentStatus=='Incomplete'}">
-							<td class="btn-danger">${assessment.assessmentStatus}</td>
-							<td></td>
+
+							<td class="btn-danger disabled">${assessment.assessmentStatus}</td>
+							<td class="">-</td>
 						</c:if>
 						<c:if test="${assessment.assessmentStatus=='Complete'}">
 							<td class="btn-warning">${assessment.assessmentStatus}</td>
-							<td></td>
+							<td class="">-</td>
 						</c:if>
 						<c:if test="${assessment.assessmentStatus=='Submitted'}">
+
 							<td class="btn-success" style="white-space: nowrap;">${assessment.assessmentStatus}
 							</td>
 							<td class="btn-success"><a class="btn btn-success"

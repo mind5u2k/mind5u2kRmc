@@ -21,12 +21,11 @@
 					style="font-size: .9rem;" cellspacing="0">
 					<thead>
 						<tr>
-							<th>ID</th>
+							<th style="width: 20px;">ID</th>
 							<th>Name</th>
 							<th>Email</th>
 							<th>Role</th>
 							<th>State</th>
-							<th>Edit</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,7 +37,6 @@
 								<td>${user.email}</td>
 								<td>${user.role}</td>
 								<td>${user.state}</td>
-								<td>edit</td>
 							</tr>
 						</c:forEach>
 					</tbody>

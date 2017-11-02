@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <c:set var="contextRoot" value="${pageContext.request.contextPath}"></c:set>
-<sf:form modelAttribute="control" id="controlForm"
+<sf:form modelAttribute="control" id="editControlForm"
 	action="${contextRoot}/admin/updateControl" method="POST">
 	<div class="modal-body">
 		<div class="form-group row">
@@ -81,3 +81,46 @@
 		<sf:hidden path="id" />
 	</div>
 </sf:form>
+
+<script>
+	$(function() {
+		var $editControlForm = $("#editControlForm");
+		if ($editControlForm.length) {
+			$editControlForm.validate({
+				rules : {
+					control : {
+						required : true
+					},
+					answers : {
+						required : true
+					},
+					helpData : {
+						required : true
+					},
+					shortText : {
+						required : true
+					}
+				},
+				messages : {
+					control : {
+						required : "!! Please add the Control !!"
+					},
+					answers : {
+						required : "!! Please fill the answer sets !!"
+					},
+					helpData : {
+						required : "!! Help Data is Required !!"
+					},
+					shortText : {
+						required : "!! Short Text is Required !!"
+					}
+				},
+				errorElement : 'em',
+				errorPlacement : function(error, element) {
+					error.addClass("help-block");
+					error.insertAfter(element);
+				}
+			});
+		}
+	});
+</script>

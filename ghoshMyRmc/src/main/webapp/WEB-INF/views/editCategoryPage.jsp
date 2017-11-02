@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <c:set var="contextRoot" value="${pageContext.request.contextPath}"></c:set>
-<sf:form modelAttribute="category" id="categoryForm"
+<sf:form modelAttribute="category" id="editCategoryForm"
 	action="${contextRoot}/admin/updateCategory" method="POST">
 
 	<div class="form-group row">
@@ -33,3 +33,30 @@
 		<sf:hidden path="id" />
 	</div>
 </sf:form>
+<script>
+	$(function() {
+		var $editCategoryForm = $("#editCategoryForm");
+		if ($editCategoryForm.length) {
+			$editCategoryForm
+					.validate({
+						rules : {
+							name : {
+								required : true,
+								minlength : 2
+							}
+						},
+						messages : {
+							name : {
+								required : "Please add the Category Name !!",
+								minlength : "Category Name should not be less than 2 character !!"
+							}
+						},
+						errorElement : 'em',
+						errorPlacement : function(error, element) {
+							error.addClass("help-block");
+							error.insertAfter(element);
+						}
+					});
+		}
+	});
+</script>

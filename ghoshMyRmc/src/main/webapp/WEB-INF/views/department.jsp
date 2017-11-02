@@ -22,18 +22,21 @@
 					style="font-size: .9rem;" cellspacing="0">
 					<thead>
 						<tr>
-							<th>ID</th>
+							<th style="width: 20px;">ID</th>
 							<th>Name</th>
-							<th>Edit</th>
+							<th style="width: 26px;">Edit</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${departments}" var="department">
+						<c:forEach items="${departments}" var="dep">
 							<c:set var="i" value="${i+1}" scope="page" />
 							<tr>
 								<td>${i}.</td>
-								<td>${department.name}</td>
-								<td>edit</td>
+								<td>${dep.name}</td>
+								<td style="text-align: center;"><a class="btn btn-warning"
+									onclick="editDepartment(${dep.id});"
+									style="padding: 0px 6px; cursor: pointer;"><i
+										class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -76,6 +79,35 @@
 				</div>
 			</sf:form>
 		</div>
+	</div>
+</div>
+<div class="modal fade" id="editDepartmentModel" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header"
+				style="background: #b1afaf; padding: 8px 15px;">
+				<h5 class="modal-title" id="exampleModalLabel">Edit Department</h5>
+				<button class="close" type="button" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body editDepartmentModelBody"></div>
+		</div>
 
 	</div>
 </div>
+
+<script>
+	function editDepartment(departmentId) { 
+		$('.editDepartmentModelBody').load('${contextRoot}/admin/editDepartment?depId=' + departmentId,
+				function() {
+
+					$('#editDepartmentModel').modal({
+						show : true
+					});
+				});
+		$('#dataTable1').DataTable();
+	}
+</script>

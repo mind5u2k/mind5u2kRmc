@@ -3,8 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<%@page import="net.gh.ghoshMyRmcBackend.dto.Assessment"%>
-<%@page import="net.gh.ghoshMyRmcBackend.dao.AssessmentDao"%>
+<%@page import="net.gh.ghoshShoppingBackend.dto.Assessment"%>
+<%@page import="net.gh.ghoshShoppingBackend.dao.AssessmentDao"%>
 
 <html>
 <spring:url var="css" value="/resources/css"></spring:url>

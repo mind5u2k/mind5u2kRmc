@@ -91,56 +91,6 @@ public class AdminController {
 
 	// ------------------Admin home ----------------------
 
-	/*-@RequestMapping(value = "/setPassword")
-	public String passwordLock() {
-		User user = userDao.getUserByEmailId(globalController.getUserModel()
-				.getEmail());
-
-		if (!user.isEnabled()) {
-			return "redirect:/admin/changePassword";
-		}
-
-		return "redirect:/admin/adminhome";
-	}
-
-	@RequestMapping(value = { "/changePassword" })
-	public ModelAndView changePassword() {
-		User user = userDao.getUserByEmailId(globalController.getUserModel()
-				.getEmail());
-		ModelAndView mv = new ModelAndView("ChangePassword");
-		mv.addObject("title", "Update Password");
-		mv.addObject("userRole", "admin");
-		mv.addObject("user", user);
-		return mv;
-
-	}
-
-	@RequestMapping(value = { "/updatePassword" }, method = RequestMethod.POST)
-	public String updatePassword(
-			@RequestParam(name = "password", required = false) String password,
-			@RequestParam(name = "cpassword", required = false) String cpassword,
-			HttpServletRequest request, HttpServletResponse response) {
-
-		System.out
-				.println("hello there ! i am here in update password and password is ["
-						+ password + "]");
-
-		User user = userDao.getUserByEmailId(globalController.getUserModel()
-				.getEmail());
-
-		user.setPassword(passwordEncoder.encode(password));
-		user.setEnabled(true);
-
-		userDao.updateUser(user);
-
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
-		}
-		return "redirect:/login?updatedPassword";
-	}*/
-
 	@RequestMapping(value = "/adminhome")
 	public ModelAndView home() {
 
@@ -660,6 +610,9 @@ public class AdminController {
 		}
 
 		Control newControl = new Control();
+		newControl.setAnswers(Util.ANS_YES + "/" + Util.ANS_NO + "/"
+				+ Util.ANS_NA);
+		newControl.setScreen(Util.NA);
 		mv.addObject("control", newControl);
 
 		return mv;
@@ -779,6 +732,8 @@ public class AdminController {
 			} else if (operation.equals("departmentAvailable")) {
 				mv.addObject("msg",
 						"Department with same name is already available");
+			} else if (operation.equals("departmentUpdated")) {
+				mv.addObject("msg", "Department has been Updated Successfully");
 			}
 		}
 		return mv;
@@ -799,6 +754,23 @@ public class AdminController {
 		return "redirect:/admin/department?operation=departmentAdded";
 	}
 
+	@RequestMapping(value = "/editDepartment")
+	public ModelAndView editDepartmentSubmission(
+			@RequestParam(name = "depId", required = false) Long depId) {
+		ModelAndView mv = new ModelAndView("editDepartmentPage");
+		Department department = accountDao.getDepartment(depId);
+		mv.addObject("department1", department);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateDepartment", method = RequestMethod.POST)
+	public String updateDepartment(
+			@Valid @ModelAttribute("department1") Department department1,
+			BindingResult results, Model model, HttpServletRequest request) {
+		accountDao.updateDepartment(department1);
+		return "redirect:/admin/department?operation=departmentUpdated";
+	}
+
 	// --------------------------Location -------------------
 
 	@RequestMapping(value = "/location")
@@ -815,6 +787,8 @@ public class AdminController {
 			} else if (operation.equals("locationAvailable")) {
 				mv.addObject("msg",
 						"Location with same name is already available");
+			} else if (operation.equals("locationUpdated")) {
+				mv.addObject("msg", "Location has been Updated Successfully");
 			}
 		}
 		return mv;
@@ -835,6 +809,23 @@ public class AdminController {
 		return "redirect:/admin/location?operation=locationAdded";
 	}
 
+	@RequestMapping(value = "/editLocation")
+	public ModelAndView editLocation(
+			@RequestParam(name = "locationId", required = false) Long locationId) {
+		ModelAndView mv = new ModelAndView("editLocationPage");
+		Location location = accountDao.getLocation(locationId);
+		mv.addObject("location", location);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateLocation", method = RequestMethod.POST)
+	public String updateLocation(
+			@Valid @ModelAttribute("location") Location location,
+			BindingResult results, Model model, HttpServletRequest request) {
+		accountDao.updateLocation(location);
+		return "redirect:/admin/location?operation=locationUpdated";
+	}
+
 	// --------------------------LOB -------------------
 
 	@RequestMapping(value = { "/LOB" })
@@ -850,6 +841,8 @@ public class AdminController {
 				mv.addObject("msg", "New LOB has been Added Successfully");
 			} else if (operation.equals("lobAvailable")) {
 				mv.addObject("msg", "LOB with same name is already available");
+			} else if (operation.equals("lobUpdated")) {
+				mv.addObject("msg", "LOB has been successfully Updated");
 			}
 		}
 		return mv;
@@ -868,6 +861,22 @@ public class AdminController {
 		return "redirect:/admin/LOB?operation=lobAdded";
 	}
 
+	@RequestMapping(value = "/editLob")
+	public ModelAndView editLob(
+			@RequestParam(name = "lobId", required = false) Long lobId) {
+		ModelAndView mv = new ModelAndView("editLobPage");
+		LOB lob = accountDao.getLOB(lobId);
+		mv.addObject("lob", lob);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateLob", method = RequestMethod.POST)
+	public String updateLob(@Valid @ModelAttribute("lob") LOB lob,
+			BindingResult results, Model model, HttpServletRequest request) {
+		accountDao.updateLOB(lob);
+		return "redirect:/admin/LOB?operation=lobUpdated";
+	}
+
 	// --------------------------Country -------------------
 
 	@RequestMapping(value = "/country")
@@ -884,6 +893,8 @@ public class AdminController {
 			} else if (operation.equals("countryAvailable")) {
 				mv.addObject("msg",
 						"Country with same name is already available");
+			} else if (operation.equals("countryUpdated")) {
+				mv.addObject("msg", "Country has been Successfully Updated");
 			}
 		}
 		return mv;
@@ -905,6 +916,23 @@ public class AdminController {
 		return "redirect:/admin/country?operation=countryAdded";
 	}
 
+	@RequestMapping(value = "/editCountry")
+	public ModelAndView editCountry(
+			@RequestParam(name = "countryId", required = false) Long countryId) {
+		ModelAndView mv = new ModelAndView("editCountryPage");
+		Country country = accountDao.getCountry(countryId);
+		mv.addObject("country", country);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateCountry", method = RequestMethod.POST)
+	public String updateCountry(
+			@Valid @ModelAttribute("country") Country country,
+			BindingResult results, Model model, HttpServletRequest request) {
+		accountDao.updateCountry(country);
+		return "redirect:/admin/country?operation=countryUpdated";
+	}
+
 	// --------------------------Account -------------------
 
 	@RequestMapping(value = { "/account" })
@@ -914,12 +942,16 @@ public class AdminController {
 		mv.addObject("title", "Accounts");
 		mv.addObject("userClickAccount", true);
 		mv.addObject("accounts", accountDao.accountList());
-		mv.addObject("account", new Account());
+		Account account = new Account();
+		account.setInitialRating(Util.RATING_NA);
+		mv.addObject("account", account);
 		if (operation != null) {
 			if (operation.equals("accountAdded")) {
 				mv.addObject("msg", "New Account has been Added Successfully");
 			} else if (operation.equals("accountAvailable")) {
 				mv.addObject("msg", "Account is already available");
+			} else if (operation.equals("accountUpdated")) {
+				mv.addObject("msg", "Account has been Updated Successfully");
 			}
 		}
 		return mv;
@@ -938,6 +970,23 @@ public class AdminController {
 
 		accountDao.addAccount(account);
 		return "redirect:/admin/account?operation=accountAdded";
+	}
+
+	@RequestMapping(value = "/editAccount")
+	public ModelAndView editAccount(
+			@RequestParam(name = "accountId", required = false) Long accountId) {
+		ModelAndView mv = new ModelAndView("editAccountPage");
+		Account account = accountDao.getAccount(accountId);
+		mv.addObject("account", account);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
+	public String updateAccount(
+			@Valid @ModelAttribute("account") Account account,
+			BindingResult results, Model model, HttpServletRequest request) {
+		accountDao.updateAccount(account);
+		return "redirect:/admin/account?operation=accountUpdated";
 	}
 
 	// ----------------------- Activate Assessment ---------------------

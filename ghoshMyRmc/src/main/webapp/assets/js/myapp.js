@@ -55,6 +55,11 @@ $(function() {
 		break;
 	}
 
+	var $dataTable1 = $("#dataTable1");
+	if ($dataTable1.length) {
+		$dataTable1.DataTable();
+	}
+
 	var $controlDatatable = $("#controlDataTable");
 	if ($controlDatatable.length) {
 

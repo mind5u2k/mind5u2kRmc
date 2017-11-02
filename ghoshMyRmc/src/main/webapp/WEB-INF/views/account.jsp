@@ -21,7 +21,7 @@
 					style="font-size: .9rem;" cellspacing="0">
 					<thead>
 						<tr>
-							<th>ID</th>
+							<th style="width: 20px;">ID</th>
 							<th>Department</th>
 							<th>Location</th>
 							<th>LOB</th>
@@ -29,7 +29,7 @@
 							<th>Sector</th>
 							<th>Phase</th>
 							<th>Initial Rating</th>
-							<th>Edit</th>
+							<th style="width: 26px;">Edit</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -44,7 +44,10 @@
 								<td>${account.sector}</td>
 								<td>${account.phase}</td>
 								<td>${account.initialRating}</td>
-								<td>edit</td>
+								<td style="text-align: center;"><a class="btn btn-warning"
+									onclick="editAccount(${account.id});"
+									style="padding: 0px 6px; cursor: pointer;"><i
+										class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -132,3 +135,33 @@
 
 	</div>
 </div>
+<div class="modal fade" id="editAccountModel" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: 800px;">
+		<div class="modal-content">
+			<div class="modal-header"
+				style="background: #b1afaf; padding: 8px 15px;">
+				<h5 class="modal-title" id="exampleModalLabel">Edit Country</h5>
+				<button class="close" type="button" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body editAccountModelBody"></div>
+		</div>
+
+	</div>
+</div>
+
+<script>
+	function editAccount(accountId) { 
+		$('.editAccountModelBody').load('${contextRoot}/admin/editAccount?accountId=' + accountId,
+				function() {
+
+					$('#editAccountModel').modal({
+						show : true
+					});
+				});
+		$('#dataTable1').DataTable();
+	}
+</script>

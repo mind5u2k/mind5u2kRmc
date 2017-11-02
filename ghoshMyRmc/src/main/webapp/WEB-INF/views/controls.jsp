@@ -31,7 +31,7 @@ tr.shown td.details-control {
 					<thead>
 						<tr>
 							<th></th>
-							<th style="white-space: nowrap;">ID</th>
+							<th style="width: 20px;">ID</th>
 							<th>Category</th>
 							<th>Controls</th>
 							<th>Answers</th>
