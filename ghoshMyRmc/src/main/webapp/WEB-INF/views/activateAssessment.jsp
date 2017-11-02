@@ -44,7 +44,7 @@
 								<td>${assessment.account.initialRating}</td>
 								<td>${assessment.account.state}</td>
 								<td><a
-									href="${contextRoot}/admin/editAssessment?accId=${assessment.account.id}"
+									href="${contextRoot}/admin/editAssessments?accId=${assessment.account.id}"
 									class="btn btn-dark" style="padding: 0px 6px; cursor: pointer;"><i
 										class="fa fa-angle-double-right" aria-hidden="true"></i><i
 										class="fa fa-angle-double-right" aria-hidden="true"></i></a></td>

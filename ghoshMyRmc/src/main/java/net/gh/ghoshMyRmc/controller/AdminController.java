@@ -1000,6 +1000,233 @@ public class AdminController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/editAssessments")
+	public ModelAndView editAssessments(
+			@RequestParam(name = "accId", required = false) long accId,
+			@RequestParam(name = "operation", required = false) String operation) {
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("title", "Activate Assessment");
+		System.out.println("selected account id is [" + accId + "]");
+		Account account = accountDao.getAccount(accId);
+		Assessment assessment = null;
+		if (operation != null) {
+			if (operation.equals("approverUpdated")) {
+				mv.addObject("msg", "Approver has been updated successfully");
+			} else if (operation.equals("assessorUpdated")) {
+				mv.addObject("msg", "Assessor has been updated successfully");
+			} else if (operation.equals("categoryAvailable")) {
+				mv.addObject("msg", "Category is already available");
+			} else if (operation.equals("categoryAdded")) {
+				mv.addObject("msg", "Category has been Added Successfully");
+			} else if (operation.equals("smeNotAdded")) {
+				mv.addObject("msg",
+						"SME already available for selected Assessment Category");
+			} else if (operation.equals("smeAdded")) {
+				mv.addObject("msg", "SME has been Added Successfully");
+			} else if (operation.equals("categoryUpdated")) {
+				mv.addObject("msg",
+						"Assessment Category has been Updated Successfully");
+			}
+		}
+		List<AssessmentCategories> assessmentCategories = new ArrayList<AssessmentCategories>();
+		if (account.getState().equals(Util.NOT_ASSIGNED_ACCOUNT)) {
+			account.setState(Util.OPEN_ACCOUNT);
+			accountDao.updateAccount(account);
+			assessment = new Assessment();
+			assessment.setAccount(account);
+			assessment.setAssessmentStatus(Util.INCOMPLETE_ASSESSMENT);
+			assessmentDao.addAssessment(assessment);
+		} else if (account.getState().equals(Util.OPEN_ACCOUNT)) {
+			assessment = assessmentDao.getAssessmentByAccount(account);
+			assessmentCategories = assessmentDao
+					.assessmentCategoriesByAssessment(assessment);
+		} else if (account.getState().equals(Util.ACTIVATED_ACCOUNT)) {
+			assessment = assessmentDao.getAssessmentByAccount(account);
+			assessmentCategories = assessmentDao
+					.assessmentCategoriesByAssessment(assessment);
+		}
+
+		List<AssessmentCategorySMEMapping> assessmentCategorySMEMappings = new ArrayList<AssessmentCategorySMEMapping>();
+		if (assessmentCategories != null) {
+			for (AssessmentCategories asc : assessmentCategories) {
+				assessmentCategorySMEMappings.addAll(assessmentDao
+						.getAssessmentCategorySmeMappingByAssCat(asc));
+			}
+		}
+
+		mv.addObject("userClickEditCreateActivateAssessment", true);
+		mv.addObject("assessment", assessment);
+		mv.addObject("assessmentCategories", assessmentCategories);
+		mv.addObject("assessmentCategorySMEMappings",
+				assessmentCategorySMEMappings);
+		return mv;
+	}
+
+	@RequestMapping(value = "/editApprover")
+	public ModelAndView editApprover(
+			@RequestParam(name = "assessmentId", required = false) Long assessmentId) {
+		ModelAndView mv = new ModelAndView("editApproverPage");
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+		mv.addObject("assessment", assessment);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateApprover", method = RequestMethod.POST)
+	public String updateApprover(
+			@Valid @ModelAttribute("assessment") Assessment assessment,
+			BindingResult results, Model model, HttpServletRequest request) {
+		Assessment assessment2 = assessmentDao.getAssessmentById(assessment
+				.getId());
+		assessment2.setApprover(userDao.getUser(assessment.getApprover()
+				.getId()));
+		assessmentDao.updateAssessment(assessment2);
+		return "redirect:/admin/editAssessments?operation=approverUpdated&accId="
+				+ assessment2.getAccount().getId();
+	}
+
+	@RequestMapping(value = "/editAssessor")
+	public ModelAndView editAssessor(
+			@RequestParam(name = "assessmentId", required = false) Long assessmentId) {
+		ModelAndView mv = new ModelAndView("editAssessorPage");
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+		mv.addObject("assessment", assessment);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateAssessor", method = RequestMethod.POST)
+	public String updateAssessor(
+			@Valid @ModelAttribute("assessment") Assessment assessment,
+			BindingResult results, Model model, HttpServletRequest request) {
+		Assessment assessment2 = assessmentDao.getAssessmentById(assessment
+				.getId());
+		assessment2.setAssessor(userDao.getUser(assessment.getAssessor()
+				.getId()));
+		assessmentDao.updateAssessment(assessment2);
+		return "redirect:/admin/editAssessments?operation=assessorUpdated&accId="
+				+ assessment2.getAccount().getId();
+	}
+
+	@RequestMapping(value = "/addNewCategory")
+	public ModelAndView addNewCategory(
+			@RequestParam(name = "assessmentId", required = false) Long assessmentId) {
+		ModelAndView mv = new ModelAndView("addNewCategory");
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+		AssessmentCategories asc = new AssessmentCategories();
+		asc.setAssessment(assessment);
+		asc.setStatus(Util.INCOMPLETE_CATEGORY);
+		mv.addObject("assessmentCategory", asc);
+		return mv;
+	}
+
+	@RequestMapping(value = "/addNewAssessmentCategory", method = RequestMethod.POST)
+	public String handleAssessmentCategorySubmission(
+			@Valid @ModelAttribute("assessmentCategory") AssessmentCategories assessmentCategory,
+			BindingResult results, Model model, HttpServletRequest request) {
+
+		AssessmentCategories existingAssessmentCategories = assessmentDao
+				.getExistingAssessmentCategory(assessmentDao
+						.getAssessmentById(assessmentCategory.getAssessment()
+								.getId()), assessmentCategory
+						.getAssignedCategories());
+
+		System.out.println("existence of assessment category is ["
+				+ existingAssessmentCategories + "]");
+
+		if (existingAssessmentCategories != null) {
+			return "redirect:/admin/editAssessments?operation=categoryAvailable&accId="
+					+ assessmentCategory.getAssessment().getId();
+		}
+
+		assessmentCategory.setStatus(Util.INCOMPLETE_CATEGORY);
+		System.out.println("addedd category is  ["
+				+ assessmentCategory.getReviwer().getId() + "] and name is ["
+				+ assessmentCategory.getReviwer().getName() + "]");
+		if (assessmentCategory.getReviwer().getId() == 0) {
+			assessmentCategory.setReviwer(null);
+		}
+		assessmentDao.addAssessmentCategory(assessmentCategory);
+		return "redirect:/admin/editAssessments?operation=categoryAdded&accId="
+				+ assessmentCategory.getAssessment().getId();
+	}
+
+	@RequestMapping(value = "/addNewSme")
+	public ModelAndView addNewSme(
+			@RequestParam(name = "assessmentCatId", required = false) Long assessmentCatId) {
+		ModelAndView mv = new ModelAndView("addNewSme");
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assessmentCatId);
+		AssessmentCategorySMEMapping ascCatSmeMapping = new AssessmentCategorySMEMapping();
+		ascCatSmeMapping.setAssessmentCategories(assessmentCategory);
+		mv.addObject("ascCatSmeMapping", ascCatSmeMapping);
+		return mv;
+	}
+
+	@RequestMapping(value = "/addAssCatSme", method = RequestMethod.POST)
+	public String addAssCatSme(
+			@Valid @ModelAttribute("ascCatSmeMapping") AssessmentCategorySMEMapping ascCatSmeMapping,
+			BindingResult results, Model model, HttpServletRequest request) {
+
+		User sme = userDao.getUser(ascCatSmeMapping.getSME().getId());
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(ascCatSmeMapping
+						.getAssessmentCategories().getId());
+		List<AssessmentCategorySMEMapping> assessmentCategorySMEMappings = assessmentDao
+				.getAssessmentCategorySmeMappingByAssCatandSme(
+						assessmentCategory, sme);
+
+		System.out.println("gffhgfhfg[" + assessmentCategorySMEMappings + "]");
+
+		if (assessmentCategorySMEMappings != null) {
+			if (assessmentCategorySMEMappings.size() != 0) {
+				return "redirect:/admin/editAssessments?operation=smeNotAdded&accId="
+						+ assessmentCategory.getAssessment().getAccount()
+								.getId();
+			}
+		}
+		AssessmentCategorySMEMapping assessmentCategorySMEMapping = new AssessmentCategorySMEMapping();
+		assessmentCategorySMEMapping.setSME(sme);
+		assessmentCategorySMEMapping
+				.setAssessmentCategories(assessmentCategory);
+		assessmentDao.addAssessmentCatSmeMapping(assessmentCategorySMEMapping);
+
+		return "redirect:/admin/editAssessments?operation=smeAdded&accId="
+				+ assessmentCategory.getAssessment().getAccount().getId();
+	}
+
+	@RequestMapping(value = "/editAssessmentCategory")
+	public ModelAndView editAssessmentCategory(
+			@RequestParam(name = "assessmentCatId", required = false) Long assessmentCatId) {
+		ModelAndView mv = new ModelAndView("editAssessmentCategoryPage");
+
+		List<String> assCatStatus = new ArrayList<String>();
+		assCatStatus.add(Util.INCOMPLETE_CATEGORY);
+		AssessmentCategories asc = assessmentDao
+				.getAssessmentCategoryById(assessmentCatId);
+		mv.addObject("assessmentCategory", asc);
+		mv.addObject("assCatStatus", assCatStatus);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updateAssessmentCategory", method = RequestMethod.POST)
+	public String updateAssessmentCategory(
+			@Valid @ModelAttribute("assessmentCategory") AssessmentCategories assessmentCategory,
+			BindingResult results, Model model, HttpServletRequest request) {
+
+		AssessmentCategories assessmentCategory1 = assessmentDao
+				.getAssessmentCategoryById(assessmentCategory.getId());
+		if (assessmentCategory.getReviwer().getId() == 0) {
+			assessmentCategory1.setReviwer(null);
+		} else {
+			assessmentCategory1.setReviwer(userDao.getUser(assessmentCategory
+					.getReviwer().getId()));
+		}
+		assessmentCategory1.setStatus(assessmentCategory.getStatus());
+
+		assessmentDao.updateAssessmentCategory(assessmentCategory1);
+		return "redirect:/admin/editAssessments?operation=categoryUpdated&accId="
+				+ assessmentCategory1.getAssessment().getId();
+	}
+
 	@RequestMapping(value = "/editAssessment")
 	public ModelAndView editAssessment(
 			@RequestParam(name = "accId", required = false) long accId) {
@@ -1017,6 +1244,7 @@ public class AdminController {
 			assessmentDao.addAssessment(assessment);
 			mv.addObject("userClickNewActivateAssessment", true);
 			mv.addObject("assessment", assessment);
+
 		} else if (account.getState().equals(Util.OPEN_ACCOUNT)) {
 			Assessment assessment = assessmentDao
 					.getAssessmentByAccount(account);
@@ -1091,62 +1319,6 @@ public class AdminController {
 		mv.addObject("assCatSmeMapping", assessmentCategorySMEMapping);
 		mv.addObject("allSmes", allSmes);
 		return mv;
-	}
-
-	@RequestMapping(value = "/addAssCatSme", method = RequestMethod.POST)
-	public String addAssCatSme(
-			@Valid @ModelAttribute("assCatSmeMapping") AssessmentCategorySMEMapping assCatSmeMapping,
-			BindingResult results, Model model, HttpServletRequest request) {
-
-		User sme = userDao.getUser(assCatSmeMapping.getSME().getId());
-		AssessmentCategories assessmentCategory = assessmentDao
-				.getAssessmentCategoryById(assCatSmeMapping
-						.getAssessmentCategories().getId());
-		List<AssessmentCategorySMEMapping> assessmentCategorySMEMappings = assessmentDao
-				.getAssessmentCategorySmeMappingByAssCatandSme(
-						assessmentCategory, sme);
-
-		System.out.println("gffhgfhfg[" + assessmentCategorySMEMappings + "]");
-
-		if (assessmentCategorySMEMappings != null) {
-			if (assessmentCategorySMEMappings.size() != 0) {
-				return "redirect:/admin/addSme?operation=smeNotAdded&assCatId="
-						+ assessmentCategory.getId();
-			}
-		}
-		AssessmentCategorySMEMapping assessmentCategorySMEMapping = new AssessmentCategorySMEMapping();
-		assessmentCategorySMEMapping.setSME(sme);
-		assessmentCategorySMEMapping
-				.setAssessmentCategories(assessmentCategory);
-		assessmentDao.addAssessmentCatSmeMapping(assessmentCategorySMEMapping);
-
-		return "redirect:/admin/addSme?operation=smeAdded&assCatId="
-				+ assessmentCategory.getId();
-	}
-
-	@RequestMapping(value = "/addNewAssessmentCategory", method = RequestMethod.POST)
-	public String handleAssessmentCategorySubmission(
-			@Valid @ModelAttribute("assessmentCategory") AssessmentCategories assessmentCategory,
-			BindingResult results, Model model, HttpServletRequest request) {
-
-		AssessmentCategories existingAssessmentCategories = assessmentDao
-				.getExistingAssessmentCategory(assessmentDao
-						.getAssessmentById(assessmentCategory.getAssessment()
-								.getId()), assessmentCategory
-						.getAssignedCategories());
-
-		System.out.println("existence of assessment category is ["
-				+ existingAssessmentCategories + "]");
-
-		if (existingAssessmentCategories != null) {
-			return "redirect:/admin/addedAssessmentCategory?operation=categoryAvailable&accId="
-					+ assessmentCategory.getAssessment().getId();
-		}
-
-		assessmentCategory.setStatus(Util.INCOMPLETE_CATEGORY);
-		assessmentDao.addAssessmentCategory(assessmentCategory);
-		return "redirect:/admin/addedAssessmentCategory?operation=categoryAdded&accId="
-				+ assessmentCategory.getAssessment().getId();
 	}
 
 	@RequestMapping(value = "/addedAssessmentCategory")
@@ -1331,7 +1503,13 @@ public class AdminController {
 
 	@ModelAttribute("reviewers")
 	List<User> getAllReviewers() {
-		return userDao.userListsByRole(Util.REVIEWER);
+		List<User> reviewers = userDao.userListsByRole(Util.REVIEWER);
+		if (reviewers != null) {
+			User user = new User();
+			user.setName("Select Reviewer");
+			user.setId(0);
+			reviewers.add(user);
+		}
+		return reviewers;
 	}
-
 }

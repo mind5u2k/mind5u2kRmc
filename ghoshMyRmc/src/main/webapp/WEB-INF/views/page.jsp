@@ -78,6 +78,9 @@
 		<c:if test="${userClickActivateAssessment==true}">
 			<%@include file="./activateAssessment.jsp"%>
 		</c:if>
+		<c:if test="${userClickEditCreateActivateAssessment==true}">
+			<%@include file="./editAssessmentPage.jsp"%>
+		</c:if>
 		<c:if test="${userClickNewActivateAssessment==true}">
 			<%@include file="./addApproverAndAssessor.jsp"%>
 		</c:if>

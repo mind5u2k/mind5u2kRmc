@@ -178,6 +178,7 @@ input {
 								itemValue="id" />
 						</div>
 					</div>
+					
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
