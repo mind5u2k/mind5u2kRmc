@@ -90,6 +90,12 @@
 		<c:if test="${userClickAddSmeForAssessment==true}">
 			<%@include file="./addSmeforAssessmentCategory.jsp"%>
 		</c:if>
+		<c:if test="${userClickAccSpecificControls==true}">
+			<%@include file="./accountSpecificControls.jsp"%>
+		</c:if>
+		<c:if test="${userClickeditAccSpecControl==true}">
+			<%@include file="./editAccSpecControl.jsp"%>
+		</c:if>
 	</div>
 	<%@include file="./adminShared/footer.jsp"%>
 

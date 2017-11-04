@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import net.gh.ghoshMyRmc.mailService.MailService;
+import net.gh.ghoshMyRmc.model.AccSpecControlModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
 import net.gh.ghoshMyRmc.riskAnalysis.DownloadExcel;
 import net.gh.ghoshMyRmc.riskAnalysis.RiskCalculation;
@@ -1368,7 +1369,168 @@ public class AdminController {
 		return mv;
 	}
 
+	// ------------------- Account Specific Controls ---------------------------
+	@RequestMapping(value = "/accountSpecificControls")
+	public ModelAndView accountSpecificControls(
+			@RequestParam(name = "operation", required = false) String operation) {
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("title", "Account Specific Controls");
+		mv.addObject("userClickAccSpecificControls", true);
+		mv.addObject("assessments",
+				getActivatedAccount(assessmentDao.assessmentList()));
+		return mv;
+	}
+
+	@RequestMapping(value = "/editAccSpecControl")
+	public ModelAndView editAccSpecControl(
+			@RequestParam(name = "catId", required = false) Long catId,
+			@RequestParam(name = "assessmentId", required = false) Long assessmentId,
+			@RequestParam(name = "operation", required = false) String operation) {
+
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("title", "Account Specific Controls");
+		mv.addObject("userClickeditAccSpecControl", true);
+
+		System.out.println("assessment id is [" + assessmentId + "]");
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+		List<AssessmentCategories> assessmentCategories = assessmentDao
+				.assessmentCategoriesByAssessment(assessment);
+		AssessmentCategories assessmentCategory = null;
+		if (catId != null) {
+			assessmentCategory = assessmentDao.getAssessmentCategoryById(catId);
+		} else {
+			if (assessmentCategories != null) {
+				if (assessmentCategories.size() >= 0) {
+					assessmentCategory = assessmentCategories.get(0);
+				}
+			}
+		}
+
+		if (operation != null) {
+			if (operation.equals("accSpecControlAdded")) {
+				mv.addObject("msg",
+						"Control has been Successfully Added to this Assessment");
+			} else if (operation.equals("accSpecControlremoved")) {
+				mv.addObject("msg",
+						"Account Specific control has been successfully Removed");
+			} else if (operation.equals("accSpecControlNotRemoved")) {
+				mv.addObject(
+						"erroMsg",
+						"Selected Control could not be removed as the Respnose has already been submitted for this Control");
+			}
+		}
+
+		if (assessmentCategory != null) {
+			List<Control> allControlsforSelectedCat = controlDao
+					.controlListsByCategory(assessmentCategory
+							.getAssignedCategories());
+			List<AccountSpecificControl> accountSpecificControls = controlDao
+					.accSpecControlByCategory(assessmentCategory);
+			List<AccSpecControlModel> controlModel = new ArrayList<AccSpecControlModel>();
+
+			for (Control control : allControlsforSelectedCat) {
+				boolean status = false;
+				for (AccountSpecificControl accControl : accountSpecificControls) {
+					if (control.getId() == accControl.getControl().getId()) {
+						AccSpecControlModel m = new AccSpecControlModel();
+						m.setControl(control);
+						m.setStatus(true);
+						status = true;
+						controlModel.add(m);
+						break;
+					}
+				}
+				if (!status) {
+					AccSpecControlModel m = new AccSpecControlModel();
+					m.setControl(control);
+					m.setStatus(false);
+					controlModel.add(m);
+				}
+			}
+			mv.addObject("assessmentCategory", assessmentCategory);
+			mv.addObject("allControlsforSelectedCat", controlModel);
+		} else {
+
+			List<Control> allControlsforSelectedCat = new ArrayList<Control>();
+			List<AccountSpecificControl> accountSpecificControls = new ArrayList<AccountSpecificControl>();
+			List<AccSpecControlModel> controlModel = new ArrayList<AccSpecControlModel>();
+			mv.addObject("assessmentCategory", assessmentCategory);
+			mv.addObject("allControlsforSelectedCat", controlModel);
+		}
+
+		// ---------Preparing Answers for selected Assessment ---------
+		mv.addObject("assessmentCategories", assessmentCategories);
+		return mv;
+	}
+
+	@RequestMapping(value = "/addControl")
+	public String handleAddAccSpecControlSubmission(
+			@ModelAttribute("id") long id,
+			@ModelAttribute("assCatId") long assCatId) {
+
+		Control control = controlDao.getControl(id);
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assCatId);
+
+		AccountSpecificControl accountSpecificControl = new AccountSpecificControl();
+		accountSpecificControl.setAssessmentCategories(assessmentCategory);
+		accountSpecificControl.setControl(control);
+
+		controlDao.addAccSpecControl(accountSpecificControl);
+
+		assessmentCategory.setStatus("I");
+		assessmentDao.updateAssessmentCategory(assessmentCategory);
+
+		Assessment assessment = assessmentCategory.getAssessment();
+		assessment.setAssessmentStatus(Util.INCOMPLETE_ASSESSMENT);
+		assessmentDao.updateAssessment(assessment);
+
+		return "redirect:/admin/editAccSpecControl?operation=accSpecControlAdded&catId="
+				+ assessmentCategory.getId()
+				+ "&assessmentId="
+				+ assessmentCategory.getAssessment().getId();
+	}
+
+	@RequestMapping(value = "/removeControl")
+	public String handleRemoveSpecControlubmission(
+			@ModelAttribute("id") long id,
+			@ModelAttribute("assCatId") long assCatId) {
+
+		Control control = controlDao.getControl(id);
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assCatId);
+		AccountSpecificControl accountSpecificControlforAssessmentCat = controlDao
+				.accSpecificControlByCtrl(control, assessmentCategory);
+		Answer answer = controlDao
+				.getAnswerByAccSpecControl(accountSpecificControlforAssessmentCat);
+
+		if (answer == null) {
+			controlDao
+					.deleteAccSpecControl(accountSpecificControlforAssessmentCat);
+			return "redirect:/admin/editAccSpecControl?operation=accSpecControlremoved&catId="
+					+ assessmentCategory.getId()
+					+ "&assessmentId="
+					+ assessmentCategory.getAssessment().getId();
+		} else {
+			return "redirect:/admin/editAccSpecControl?operation=accSpecControlNotRemoved&catId="
+					+ assessmentCategory.getId()
+					+ "&assessmentId="
+					+ assessmentCategory.getAssessment().getId();
+		}
+	}
+
 	// ------------------------ Model Attributes -----------------------------
+
+	private List<Assessment> getActivatedAccount(List<Assessment> assessment) {
+		List<Assessment> activeAssessment = new ArrayList<Assessment>();
+		for (Assessment as : assessment) {
+			if (as.getAccount().getState().equals(Util.ACTIVATED_ACCOUNT)
+					&& !as.getAccount().getPhase().equals(Util.SUNSET_PHASE)) {
+				activeAssessment.add(as);
+			}
+		}
+		return activeAssessment;
+	}
 
 	private List<Assessment> getAllAssessments() {
 		List<Assessment> assessments = new ArrayList<Assessment>();

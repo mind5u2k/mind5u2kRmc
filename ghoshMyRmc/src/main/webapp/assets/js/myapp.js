@@ -51,6 +51,11 @@ $(function() {
 		$("#processMgmt").addClass("show");
 		$("#activateAssessment").addClass("active");
 		break;
+	case 'Account Specific Controls':
+		$("#processManagementLink").removeClass("collapsed");
+		$("#processMgmt").addClass("show");
+		$("#accountSpecificQuestion").addClass("active");
+		break;
 	default:
 		break;
 	}

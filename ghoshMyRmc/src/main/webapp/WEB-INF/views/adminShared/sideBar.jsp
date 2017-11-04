@@ -63,8 +63,9 @@
 					<li id="activateAssessment"><a
 						href="${contextRoot}/admin/activateAssessment">Activate
 							Assessment</a></li>
-					<li id="accountSpecificQuestion"><a href="cards.html">Account
-							Specific Question</a></li>
+					<li id="accountSpecificQuestion"><a
+						href="${contextRoot}/admin/accountSpecificControls">Account
+							Specific Controls</a></li>
 					<li id="accountTransfer"><a href="cards.html">Account
 							Transfer</a></li>
 					<li id="accountDeletion"><a href="cards.html">Account
