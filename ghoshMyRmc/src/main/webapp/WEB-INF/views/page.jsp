@@ -96,6 +96,9 @@
 		<c:if test="${userClickeditAccSpecControl==true}">
 			<%@include file="./editAccSpecControl.jsp"%>
 		</c:if>
+		<c:if test="${userClickAccountTransfer==true}">
+			<%@include file="./accountTransfer.jsp"%>
+		</c:if>
 	</div>
 	<%@include file="./adminShared/footer.jsp"%>
 

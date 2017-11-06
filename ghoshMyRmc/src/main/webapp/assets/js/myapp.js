@@ -56,6 +56,11 @@ $(function() {
 		$("#processMgmt").addClass("show");
 		$("#accountSpecificQuestion").addClass("active");
 		break;
+	case 'Account Transfer':
+		$("#processManagementLink").removeClass("collapsed");
+		$("#processMgmt").addClass("show");
+		$("#accountTransfer").addClass("active");
+		break;
 	default:
 		break;
 	}

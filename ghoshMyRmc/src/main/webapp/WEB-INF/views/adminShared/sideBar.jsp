@@ -66,8 +66,8 @@
 					<li id="accountSpecificQuestion"><a
 						href="${contextRoot}/admin/accountSpecificControls">Account
 							Specific Controls</a></li>
-					<li id="accountTransfer"><a href="cards.html">Account
-							Transfer</a></li>
+					<li id="accountTransfer"><a
+						href="${contextRoot}/admin/accountTransfer">Account Transfer</a></li>
 					<li id="accountDeletion"><a href="cards.html">Account
 							Deletion</a></li>
 				</ul></li>

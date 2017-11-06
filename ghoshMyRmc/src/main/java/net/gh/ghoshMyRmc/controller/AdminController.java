@@ -12,6 +12,7 @@ import javax.validation.Valid;
 
 import net.gh.ghoshMyRmc.mailService.MailService;
 import net.gh.ghoshMyRmc.model.AccSpecControlModel;
+import net.gh.ghoshMyRmc.model.AccountTransferModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
 import net.gh.ghoshMyRmc.riskAnalysis.DownloadExcel;
 import net.gh.ghoshMyRmc.riskAnalysis.RiskCalculation;
@@ -1517,6 +1518,37 @@ public class AdminController {
 					+ "&assessmentId="
 					+ assessmentCategory.getAssessment().getId();
 		}
+	}
+
+	// ----------------------- Account Transfer ------------------------------
+	@RequestMapping(value = "/accountTransfer")
+	public ModelAndView accountTransfer(
+			@RequestParam(name = "operation", required = false) String operation,
+			@RequestParam(name = "assessmentFromId", required = false) Long assessmentFromId,
+			@RequestParam(name = "accountToId", required = false) Long accountToId) {
+		ModelAndView mv = new ModelAndView("page");
+
+		List<Assessment> assessments = assessmentDao.assessmentList();
+		List<Account> accounts = accountDao.notAssignedAccountList();
+
+		mv.addObject("assessments", assessments);
+		mv.addObject("accounts", accounts);
+
+		AccountTransferModel accountTransferModel = new AccountTransferModel();
+		if (assessmentFromId != null) {
+			Assessment assessment = assessmentDao
+					.getAssessmentById(assessmentFromId);
+			accountTransferModel.setAccountFrom(assessment.getAccount());
+		}
+		if (accountToId != null) {
+			Account account = accountDao.getAccount(accountToId);
+			accountTransferModel.setAccountTo(account);
+		}
+
+		mv.addObject("accountTransferModel", accountTransferModel);
+		mv.addObject("title", "Account Transfer");
+		mv.addObject("userClickAccountTransfer", true);
+		return mv;
 	}
 
 	// ------------------------ Model Attributes -----------------------------
