@@ -10,10 +10,10 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-database"></i>
 						</div>
-						<div class="mr-5">Total Accounts : ${total}</div>
+						<div class="mr-5">All</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
-						<span class="float-left">View Details</span> <span
+						<span class="float-left">No Of Accounts : ${total}</span> <span
 						class="float-right"> <i class="fa fa-angle-right"></i>
 					</span>
 					</a>
@@ -25,10 +25,10 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-exclamation-triangle"></i>
 						</div>
-						<div class="mr-5">Submission Pending : ${completed}</div>
+						<div class="mr-5">Submission Pending</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
-						<span class="float-left">View Details</span> <span
+						<span class="float-left">No Of Accounts : ${completed}</span> <span
 						class="float-right"> <i class="fa fa-angle-right"></i>
 					</span>
 					</a>
@@ -40,10 +40,10 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-thumbs-o-up"></i>
 						</div>
-						<div class="mr-5">Submitted : ${submitted}</div>
+						<div class="mr-5">Submitted</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
-						<span class="float-left">View Details</span> <span
+						<span class="float-left">No Of Accounts : ${submitted}</span> <span
 						class="float-right"> <i class="fa fa-angle-right"></i>
 					</span>
 					</a>
@@ -55,10 +55,10 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-thumbs-o-down"></i>
 						</div>
-						<div class="mr-5">Incomplete : ${incomplete}</div>
+						<div class="mr-5">Incomplete</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
-						<span class="float-left">View Details</span> <span
+						<span class="float-left">No Of Accounts : ${incomplete}</span> <span
 						class="float-right"> <i class="fa fa-angle-right"></i>
 					</span>
 					</a>

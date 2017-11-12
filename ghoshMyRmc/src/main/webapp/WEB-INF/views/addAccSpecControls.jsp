@@ -94,20 +94,20 @@
 									<td>${controlModel.control.rating}</td>
 									<td>${controlModel.control.flag}</td>
 									<td>${controlModel.control.risk}</td>
-									<td style="text-align: center;"><c:if
-											test="${controlModel.status==true}">
-											<button class="btn btn-success"
-												style="padding: 0px 6px; cursor: pointer;"
-												onclick="window.location.href='${contextRoot}/approver/removeControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
-												<i class="fa fa-times" aria-hidden="true"></i> Remove
-											</button>
-										</c:if> <c:if test="${controlModel.status==false}">
-											<button class="btn btn-primary"
-												style="padding: 0px 6px; cursor: pointer;"
-												onclick="window.location.href='${contextRoot}/approver/addControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
-												<i class="fa fa-plus" aria-hidden="true"></i> Add
-											</button>
-										</c:if></td>
+									<c:if test="${controlModel.status==true}">
+										<td style="text-align: center; cursor: pointer;"
+											class="btn-success"
+											onclick="window.location.href='${contextRoot}/approver/removeControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
+											<i class="fa fa-times" aria-hidden="true"></i> Remove
+										</td>
+									</c:if>
+									<c:if test="${controlModel.status==false}">
+										<td style="text-align: center; cursor: pointer;"
+											class="btn-primary"
+											onclick="window.location.href='${contextRoot}/approver/addControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
+											<i class="fa fa-plus" aria-hidden="true"></i> Add
+										</td>
+									</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>

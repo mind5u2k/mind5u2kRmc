@@ -146,8 +146,8 @@
 							onclick="window.location.href='${contextRoot}/${userRole}/assessmentPage?assessmentId=${answer.control.assessmentCategories.assessment.id}&catId=${answer.control.assessmentCategories.id}'"
 							style="margin-right: 12px;">Cancel</button>
 						<input class="btn btn-primary" type="submit"
-							onsubmit="return checkAnswer();" style="margin-right: 12px;"
-							value="Save Response" />
+							onclick="return checkAnswer();" style="margin-right: 12px;"
+							value="Save Response">
 						<sf:hidden path="id" />
 						<sf:hidden path="control.id" />
 					</div>
@@ -179,12 +179,24 @@
 	<script src="${js}/myapp.js"></script>
 	<script>
 		function checkAnswer() {
-			alert($("#answer").val());
-			if ($("#answer").val() == "No" && $("#comment").val() == "") {
-				alert("hahahaha");
-				return false;
+			if ($("#answer").val() == "No" || $("#answer").val() == "NA") {
+				if ($("#comment").val() == "") {
+					var $comEr = $("#comment-error");
+					if (!$comEr.length) {
+						$("#comment")
+								.after(
+										'<em id="comment-error" class="error help-block">!! Please add Comment !!</em>');
+					}
+					return false;
+				}
 			}
 		}
+
+		$(function() {
+			$('#comment').on('focus', function() {
+				$("#comment-error").remove();
+			});
+		});
 	</script>
 </body>
 

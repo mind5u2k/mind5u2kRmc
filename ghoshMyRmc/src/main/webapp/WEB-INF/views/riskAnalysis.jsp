@@ -3,8 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<%@page import="net.gh.ghoshShoppingBackend.dto.Assessment"%>
-<%@page import="net.gh.ghoshShoppingBackend.dao.AssessmentDao"%>
+<%@page import="net.gh.ghoshMyRmcBackend.dto.Assessment"%>
+<%@page import="net.gh.ghoshMyRmcBackend.dao.AssessmentDao"%>
 
 <html>
 <spring:url var="css" value="/resources/css"></spring:url>
@@ -83,7 +83,7 @@
 		<div class="row">
 			<div class="col-xl-7" style="padding: 2px;">
 				<div class="table-responsive">
-					<table class="table table-bordered" id="dataTable1" width="100%"
+					<table class="table table-bordered" id="" width="100%"
 						style="font-size: .9rem; border: 1px solid #6e7277;"
 						cellspacing="0">
 						<tr>
@@ -110,7 +110,7 @@
 			</div>
 			<div class="col-xl-2" style="padding: 2px;">
 				<div class="table-responsive">
-					<table class="table table-bordered" id="dataTable1" width="100%"
+					<table class="table table-bordered" id=" " width="100%"
 						style="font-size: .9rem; border: 1px solid #6e7277;">
 						<tr>
 							<th colspan="2" style="text-align: center;">Total - Risk
@@ -131,7 +131,7 @@
 			</div>
 			<div class="col-xl-2" style="padding: 2px;">
 				<div class="table-responsive">
-					<table class="table table-bordered" id="dataTable1" width="100%"
+					<table class="table table-bordered" id=" " width="100%"
 						style="font-size: .9rem; border: 1px solid #6e7277;">
 						<tr>
 							<th colspan="2" style="text-align: center;">Risk Rating</th>
@@ -151,7 +151,7 @@
 			</div>
 			<div class="col-xl-1" style="padding: 2px;">
 				<div class="table-responsive">
-					<table class="table table-bordered" id="dataTable1" width="100%"
+					<table class="table table-bordered" id="" width="100%"
 						style="font-size: .9rem; border: 1px solid #6e7277;">
 
 						<tr>

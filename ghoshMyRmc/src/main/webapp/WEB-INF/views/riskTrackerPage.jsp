@@ -47,6 +47,11 @@ a.sss {
 	margin-top: 4px;
 	border-top: 1px solid #c1c0c0;
 }
+
+table.cTable td {
+	border: 1px solid #a79d9d;
+	padding: 2px 6px;
+}
 </style>
 </head>
 
@@ -68,8 +73,8 @@ a.sss {
 		<%@include file="./adminShared/header.jsp"%>
 	</c:if>
 	<div class="container-fluid" style="padding: 18px;">
-		<div class="row">
-			<div class="col-xl-8">
+		<div class="row" style="text-align: center;">
+			<div class="col-xl-2">
 				<div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle"
 						style="width: 135px;" data-toggle="dropdown" aria-haspopup="true"
@@ -84,7 +89,7 @@ a.sss {
 						</c:forEach>
 					</div>
 				</div>
-				<div class="btn-group">
+				<%-- <div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 						style="width: 199px;">All Controls [${totalAnswer}]
@@ -102,9 +107,32 @@ a.sss {
 							[${changeRequiredforNC}]</a><a class="dropdown-item">More info
 							Requested for Non NC [${changeRequiredforNonNC}]</a>
 					</div>
-				</div>
+				</div> --%>
 			</div>
-			<div class="col-xl-4" style="text-align: right;"></div>
+			<div class="col-xl-10">
+				<table class="cTable" style="font-size: 13px; background: #f1f0f0;">
+					<tr style="background: #d4d4d4;">
+						<td>All Controls</td>
+						<td>Total Risks</td>
+						<td>Review Pending for NC</td>
+						<td>Review Pending for Non NC</td>
+						<td>Review Complete for NC</td>
+						<td>Review Complete for Non NC</td>
+						<td>More info Requested for NC</td>
+						<td>More info Requested for Non NC</td>
+					</tr>
+					<tr>
+						<td>${totalAnswer}</td>
+						<td>${totalRisks}</td>
+						<td>${reviewPendingforNC}</td>
+						<td>${reviewPendingforNonNC}</td>
+						<td>${reviewCompleteforNC}</td>
+						<td>${reviewCompleteforNonNC}</td>
+						<td>${changeRequiredforNC}</td>
+						<td>${changeRequiredforNonNC}</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		<div class="dropdown-divider"></div>
 		<div class="row">

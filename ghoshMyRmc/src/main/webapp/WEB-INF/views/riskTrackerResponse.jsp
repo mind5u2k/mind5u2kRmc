@@ -144,7 +144,8 @@
 							onclick="window.location.href='${contextRoot}/${userRole}/riskTracker?assessmentId=${answer.control.assessmentCategories.assessment.id}&catId=${answer.control.assessmentCategories.id}'"
 							style="margin-right: 12px;">Cancel</button>
 						<input class="btn btn-primary" type="submit"
-							style="margin-right: 12px;" value="Save Response" />
+							onclick="return checkAnswer();" style="margin-right: 12px;"
+							value="Save Response" />
 						<sf:hidden path="id" />
 					</div>
 				</div>
@@ -183,6 +184,25 @@
 				}
 			});
 
+		});
+		function checkAnswer() {
+			if ($("#answer").val() == "No" || $("#answer").val() == "NA") {
+				if ($("#comment").val() == "") {
+					var $comEr = $("#comment-error");
+					if (!$comEr.length) {
+						$("#comment")
+								.after(
+										'<em id="comment-error" class="error help-block">!! Please add Comment !!</em>');
+					}
+					return false;
+				}
+			}
+		}
+
+		$(function() {
+			$('#comment').on('focus', function() {
+				$("#comment-error").remove();
+			});
 		});
 	</script>
 </body>
