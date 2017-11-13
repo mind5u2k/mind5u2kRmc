@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import net.gh.ghoshMyRmc.model.AccSpecControlModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
 import net.gh.ghoshMyRmc.model.AssessmentModel;
+import net.gh.ghoshMyRmc.pdfGeneration.PdfSections;
 import net.gh.ghoshMyRmc.riskAnalysis.DownloadExcel;
 import net.gh.ghoshMyRmc.riskAnalysis.RiskCalculation;
 import net.gh.ghoshMyRmcBackend.Util;
@@ -75,6 +76,9 @@ public class ApproverController {
 
 	@Autowired
 	private DownloadExcel downloadExcel;
+
+	@Autowired
+	private PdfSections pdfSections;
 
 	// ------------------Approver Home ----------------------
 	@RequestMapping(value = "/approverHome")
@@ -564,6 +568,22 @@ public class ApproverController {
 
 		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
 		try {
+			downloadExcel.getAssessmentExcel(request, response, assessment);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@RequestMapping("/downloadPdf/{assessmentId}")
+	public String downloadPdf(@PathVariable("assessmentId") Long assessmentId,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+		try {
+			pdfSections.generatePdf(request, response, assessmentId);
 			downloadExcel.getAssessmentExcel(request, response, assessment);
 
 		} catch (Exception e) {

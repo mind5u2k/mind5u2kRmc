@@ -158,7 +158,8 @@
 							<th style="text-align: center;">Export</th>
 						</tr>
 						<tr>
-							<td style="text-align: center;">PDF</td>
+							<td style="text-align: center;"><a target="_blank"
+								href="downloadPdf/${assessment.id}">PDF</a></td>
 						</tr>
 						<tr>
 							<td style="text-align: center;"><a target="_blank"
