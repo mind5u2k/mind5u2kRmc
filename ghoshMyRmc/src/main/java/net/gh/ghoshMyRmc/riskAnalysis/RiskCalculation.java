@@ -107,6 +107,12 @@ public class RiskCalculation {
 			AssessmentCategories assessmentCategory) {
 		int riskVal = 0;
 
+		System.out.println("Assessment category is [" + assessmentCategory
+				+ "]");
+		System.out.println("control dao is [" + controlDao + "]");
+		System.out.println("control dao is ["
+				+ controlDao.allAnswerbyAssessmentCategory(assessmentCategory)
+				+ "]");
 		List<Answer> answers = controlDao
 				.allAnswerbyAssessmentCategory(assessmentCategory);
 		for (Answer answer : answers) {

@@ -89,6 +89,9 @@ public class PdfSections {
 	@Autowired
 	AssessmentDao assessmentDao;
 
+	@Autowired
+	RiskCalculation riskCalculation;
+
 	public static final String DEST = "C:/Users/IBM_ADMIN/Desktop/chapter_title.pdf";
 	public static final String IMAGE = "/medinTact/src/sa/resources/Activated1.png";
 
@@ -592,7 +595,8 @@ public class PdfSections {
 		}
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		int i = 0;
-		RiskCalculation riskCalculation = new RiskCalculation();
+		System.out.println("categories are [" + categories + "]");
+		System.out.println("categories size is [" + categories.size() + "]");
 		for (AssessmentCategories assessmentCategory : categories) {
 			int risk = riskCalculation
 					.getRiskValueforAssessmentCategory(assessmentCategory);
@@ -902,6 +906,8 @@ public class PdfSections {
 		cell.setColspan(2);
 		cell.setFixedHeight(25f);
 		table.addCell(cell);
+		System.out.println("assessment is [" + assessment + "]");
+		System.out.println("assessment id is [" + assessment.getId() + "]");
 		JFreeChart barChart = ChartFactory.createBarChart("", "Category",
 				"Risk", createDataset(assessment), PlotOrientation.VERTICAL,
 				false, true, true);
@@ -1322,8 +1328,13 @@ public class PdfSections {
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
 				table1.addCell(cell);
-				cell = new PdfPCell(new Phrase(ans.getMitigationDate()
-						.toString(), font));
+				if (ans.getMitigationDate() != null) {
+					cell = new PdfPCell(new Phrase(ans.getMitigationDate()
+							.toString(), font));
+				} else {
+					cell = new PdfPCell(new Phrase("", font));
+				}
+
 				if (i % 2 == 0) {
 					cell.setBackgroundColor(new BaseColor(245, 243, 243));
 				} else {

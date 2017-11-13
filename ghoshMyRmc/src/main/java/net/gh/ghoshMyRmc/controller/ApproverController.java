@@ -583,6 +583,7 @@ public class ApproverController {
 
 		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
 		try {
+			System.out.println("assessment id is  [" + assessmentId + "]");
 			pdfSections.generatePdf(request, response, assessmentId);
 			downloadExcel.getAssessmentExcel(request, response, assessment);
 
