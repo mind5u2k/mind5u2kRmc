@@ -1,866 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 
-<div class="container-fluid">
-	<!-- Breadcrumbs-->
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-		<li class="breadcrumb-item active">My Dashboard</li>
-	</ol>
-	<!-- Icon Cards-->
-	<div class="row">
-		<div class="col-xl-3 col-sm-6 mb-3">
-			<div class="card text-white bg-primary o-hidden h-100">
-				<div class="card-body">
-					<div class="card-body-icon">
-						<i class="fa fa-fw fa-comments"></i>
+		<title> SmartAdmin </title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+			
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<!-- Basic Styles -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+
+		<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production-plugins.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
+
+		<!-- SmartAdmin RTL Support -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-rtl.min.css"> 
+
+		<!-- We recommend you use "your_style.css" to override SmartAdmin
+		     specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+		<link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
+
+		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/demo.min.css">
+
+		<!-- FAVICONS -->
+		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+
+		<!-- GOOGLE FONT -->
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+
+		<!-- Specifying a Webpage Icon for Web Clip 
+			 Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+		<link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="img/splash/touch-icon-ipad.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="img/splash/touch-icon-iphone-retina.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="img/splash/touch-icon-ipad-retina.png">
+		
+		<!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<!-- Startup image for web apps -->
+		<link rel="apple-touch-startup-image" href="img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+		<link rel="apple-touch-startup-image" href="img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+		<link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+
+	</head>
+	
+	<!--
+
+	TABLE OF CONTENTS.
+	
+	Use search to find needed section.
+	
+	===================================================================
+	
+	|  01. #CSS Links                |  all CSS links and file paths  |
+	|  02. #FAVICONS                 |  Favicon links and file paths  |
+	|  03. #GOOGLE FONT              |  Google font link              |
+	|  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
+	|  05. #BODY                     |  body tag                      |
+	|  06. #HEADER                   |  header tag                    |
+	|  07. #PROJECTS                 |  project lists                 |
+	|  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
+	|  09. #MOBILE                   |  mobile view dropdown          |
+	|  10. #SEARCH                   |  search field                  |
+	|  11. #NAVIGATION               |  left panel & navigation       |
+	|  12. #RIGHT PANEL              |  right panel userlist          |
+	|  13. #MAIN PANEL               |  main panel                    |
+	|  14. #MAIN CONTENT             |  content holder                |
+	|  15. #PAGE FOOTER              |  page footer                   |
+	|  16. #SHORTCUT AREA            |  dropdown shortcuts area       |
+	|  17. #PLUGINS                  |  all scripts and plugins       |
+	
+	===================================================================
+	
+	-->
+	
+	<!-- #BODY -->
+	<!-- Possible Classes
+
+		* 'smart-style-{SKIN#}'
+		* 'smart-rtl'         - Switch theme mode to RTL
+		* 'menu-on-top'       - Switch to top navigation (no DOM change required)
+		* 'no-menu'			  - Hides the menu completely
+		* 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
+		* 'fixed-header'      - Fixes the header
+		* 'fixed-navigation'  - Fixes the main menu
+		* 'fixed-ribbon'      - Fixes breadcrumb
+		* 'fixed-page-footer' - Fixes footer
+		* 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
+	-->
+	<body class="">
+
+		<!-- HEADER -->
+		<header id="header">
+			<div id="logo-group">
+
+				<!-- PLACE YOUR LOGO HERE -->
+				<span id="logo"> <img src="img/logo.png" alt="SmartAdmin"> </span>
+				<!-- END LOGO PLACEHOLDER -->
+
+				<!-- Note: The activity badge color changes when clicked and resets the number to 0
+				Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+				<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 21 </b> </span>
+
+				<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
+				<div class="ajax-dropdown">
+
+					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
+					<div class="btn-group btn-group-justified" data-toggle="buttons">
+						<label class="btn btn-default">
+							<input type="radio" name="activity" id="ajax/notify/mail.html">
+							Msgs (14) </label>
+						<label class="btn btn-default">
+							<input type="radio" name="activity" id="ajax/notify/notifications.html">
+							notify (3) </label>
+						<label class="btn btn-default">
+							<input type="radio" name="activity" id="ajax/notify/tasks.html">
+							Tasks (4) </label>
 					</div>
-					<div class="mr-5">26 New Messages!</div>
-				</div>
-				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
-				</a>
-			</div>
-		</div>
-		<div class="col-xl-3 col-sm-6 mb-3">
-			<div class="card text-white bg-warning o-hidden h-100">
-				<div class="card-body">
-					<div class="card-body-icon">
-						<i class="fa fa-fw fa-list"></i>
+
+					<!-- notification content -->
+					<div class="ajax-notifications custom-scroll">
+
+						<div class="alert alert-transparent">
+							<h4>Click a button to show messages here</h4>
+							This blank page message helps protect your privacy, or you can show the first message here automatically.
+						</div>
+
+						<i class="fa fa-lock fa-4x fa-border"></i>
+
 					</div>
-					<div class="mr-5">11 New Tasks!</div>
+					<!-- end notification content -->
+
+					<!-- footer: refresh area -->
+					<span> Last updated on: 12/12/2013 9:43AM
+						<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
+							<i class="fa fa-refresh"></i>
+						</button> </span>
+					<!-- end footer -->
+
 				</div>
-				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
-				</a>
+				<!-- END AJAX-DROPDOWN -->
 			</div>
-		</div>
-		<div class="col-xl-3 col-sm-6 mb-3">
-			<div class="card text-white bg-success o-hidden h-100">
-				<div class="card-body">
-					<div class="card-body-icon">
-						<i class="fa fa-fw fa-shopping-cart"></i>
+
+			<!-- projects dropdown -->
+			<div class="project-context hidden-xs">
+
+				<span class="label">Projects:</span>
+				<span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
+
+				<!-- Suggestion: populate this list with fetch and push technique -->
+				<ul class="dropdown-menu">
+					<li>
+						<a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">Notes on pipeline upgradee</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">Assesment Report for merchant account</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
+					</li>
+				</ul>
+				<!-- end dropdown-menu-->
+
+			</div>
+			<!-- end projects dropdown -->
+
+			<!-- pulled right: nav area -->
+			<div class="pull-right">
+				
+				<!-- collapse menu button -->
+				<div id="hide-menu" class="btn-header pull-right">
+					<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+				</div>
+				<!-- end collapse menu -->
+				
+				<!-- #MOBILE -->
+				<!-- Top menu profile link : this shows only when top menu is active -->
+				<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+					<li class="">
+						<a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown"> 
+							<img src="img/avatars/sunny.png" alt="John Doe" class="online" />  
+						</a>
+						<ul class="dropdown-menu pull-right">
+							<li>
+								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <u>P</u>rofile</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				<!-- logout button -->
+				<div id="logout" class="btn-header transparent pull-right">
+					<span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+				</div>
+				<!-- end logout button -->
+
+				<!-- search mobile button (this is hidden till mobile view port) -->
+				<div id="search-mobile" class="btn-header transparent pull-right">
+					<span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+				</div>
+				<!-- end search mobile button -->
+
+				<!-- input: search field -->
+				<form action="search.html" class="header-search pull-right">
+					<input id="search-fld"  type="text" name="param" placeholder="Find reports and more" data-autocomplete='[
+					"ActionScript",
+					"AppleScript",
+					"Asp",
+					"BASIC",
+					"C",
+					"C++",
+					"Clojure",
+					"COBOL",
+					"ColdFusion",
+					"Erlang",
+					"Fortran",
+					"Groovy",
+					"Haskell",
+					"Java",
+					"JavaScript",
+					"Lisp",
+					"Perl",
+					"PHP",
+					"Python",
+					"Ruby",
+					"Scala",
+					"Scheme"]'>
+					<button type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+					<a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
+				</form>
+				<!-- end input: search field -->
+
+				<!-- fullscreen button -->
+				<div id="fullscreen" class="btn-header transparent pull-right">
+					<span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+				</div>
+				<!-- end fullscreen button -->
+				
+				<!-- #Voice Command: Start Speech -->
+				<div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
+					<div> 
+						<a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a> 
+						<div class="popover bottom"><div class="arrow"></div>
+							<div class="popover-content">
+								<h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
+								<h4 class="vc-title-error text-center">
+									<i class="fa fa-microphone-slash"></i> Voice command failed
+									<br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
+									<br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
+								</h4>
+								<a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a> 
+								<a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a> 
+							</div>
+						</div>
 					</div>
-					<div class="mr-5">123 New Orders!</div>
 				</div>
-				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
-				</span>
-				</a>
+				<!-- end voice command -->
+
+				<!-- multiple lang dropdown : find all flags in the flags page -->
+				<ul class="header-dropdown-list hidden-xs">
+					<li>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="img/blank.gif" class="flag flag-us" alt="United States"> <span> English (US) </span> <i class="fa fa-angle-down"></i> </a>
+						<ul class="dropdown-menu pull-right">
+							<li class="active">
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-us" alt="United States"> English (US)</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-fr" alt="France"> Français</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-es" alt="Spanish"> Español</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-de" alt="German"> Deutsch</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-jp" alt="Japan"> 日本語</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-cn" alt="China"> 中文</a>
+							</li>	
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-it" alt="Italy"> Italiano</a>
+							</li>	
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-pt" alt="Portugal"> Portugal</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-ru" alt="Russia"> Русский язык</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-kr" alt="Korea"> 한국어</a>
+							</li>						
+							
+						</ul>
+					</li>
+				</ul>
+				<!-- end multiple lang -->
+
 			</div>
-		</div>
-		<div class="col-xl-3 col-sm-6 mb-3">
-			<div class="card text-white bg-danger o-hidden h-100">
-				<div class="card-body">
-					<div class="card-body-icon">
-						<i class="fa fa-fw fa-support"></i>
-					</div>
-					<div class="mr-5">13 New Tickets!</div>
-				</div>
-				<a class="card-footer text-white clearfix small z-1" href="#"> <span
-					class="float-left">View Details</span> <span class="float-right">
-						<i class="fa fa-angle-right"></i>
+			<!-- end pulled right: nav area -->
+
+		</header>
+		<!-- END HEADER -->
+
+		<!-- Left panel : Navigation area -->
+		<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+		<aside id="left-panel">
+
+			<!-- User info -->
+			<div class="login-info">
+				<span> <!-- User image size is adjusted inside CSS, it should stay as it --> 
+					
+					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+						<img src="img/avatars/sunny.png" alt="me" class="online" /> 
+						<span>
+							john.doe 
+						</span>
+						<i class="fa fa-angle-down"></i>
+					</a> 
+					
 				</span>
-				</a>
 			</div>
-		</div>
-	</div>
-	<!-- Area Chart Example-->
-	<div class="card mb-3">
-		<div class="card-header">
-			<i class="fa fa-area-chart"></i> Area Chart Example
-		</div>
-		<div class="card-body">
-			<canvas id="myAreaChart" width="100%" height="30"></canvas>
-		</div>
-		<div class="card-footer small text-muted">Updated yesterday at
-			11:59 PM</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-8">
-			<!-- Example Bar Chart Card-->
-			<div class="card mb-3">
-				<div class="card-header">
-					<i class="fa fa-bar-chart"></i> Bar Chart Example
-				</div>
-				<div class="card-body">
+			<!-- end user info -->
+
+			<!-- NAVIGATION : This navigation is also responsive-->
+			<nav>
+				<ul>
+					<li>
+						<a href="index.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+					</li>
+					<li>
+						<a href="inbox.html"><i class="fa fa-lg fa-fw fa-inbox"></i> <span class="menu-item-parent">Inbox</span><span class="badge pull-right inbox-badge">14</span></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">Graphs</span></a>
+						<ul>
+							<li>
+								<a href="flot.html">Flot Chart</a>
+							</li>
+							<li>
+								<a href="morris.html">Morris Charts</a>
+							</li>
+							<li>
+								<a href="inline-charts.html">Inline Charts</a>
+							</li>
+							<li>
+								<a href="dygraphs.html">Dygraphs</a>
+							</li>
+							<li>
+								<a href="chartjs.html">Chart.js <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Tables</span></a>
+						<ul>
+							<li>
+								<a href="table.html">Normal Tables</a>
+							</li>
+							<li>
+								<a href="datatables.html">Data Tables <span class="badge inbox-badge bg-color-greenLight">v1.10</span></a>
+							</li>
+							<li>
+								<a href="jqgrid.html">Jquery Grid</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i> <span class="menu-item-parent">Forms</span></a>
+						<ul>
+							<li>
+								<a href="form-elements.html">Smart Form Elements</a>
+							</li>
+							<li>
+								<a href="form-templates.html">Smart Form Layouts</a>
+							</li>
+							<li>
+								<a href="validation.html">Smart Form Validation</a>
+							</li>
+							<li>
+								<a href="bootstrap-forms.html">Bootstrap Form Elements</a>
+							</li>
+							<li>
+								<a href="bootstrap-validator.html">Bootstrap Form Validation</a>
+							</li>
+							<li>
+								<a href="plugins.html">Form Plugins</a>
+							</li>
+							<li>
+								<a href="wizard.html">Wizards</a>
+							</li>
+							<li>
+								<a href="other-editors.html">Bootstrap Editors</a>
+							</li>
+							<li>
+								<a href="dropzone.html">Dropzone </a>
+							</li>
+							<li>
+								<a href="image-editor.html">Image Cropping <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i> <span class="menu-item-parent">UI Elements</span></a>
+						<ul>
+							<li>
+								<a href="general-elements.html">General Elements</a>
+							</li>
+							<li>
+								<a href="buttons.html">Buttons</a>
+							</li>
+							<li>
+								<a href="#">Icons</a>
+								<ul>
+									<li>
+										<a href="fa.html"><i class="fa fa-plane"></i> Font Awesome</a>
+									</li>	
+									<li>
+										<a href="glyph.html"><i class="glyphicon glyphicon-plane"></i> Glyph Icons</a>
+									</li>	
+									<li>
+										<a href="flags.html"><i class="fa fa-flag"></i> Flags</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="grid.html">Grid</a>
+							</li>
+							<li>
+								<a href="treeview.html">Tree View</a>
+							</li>
+							<li>
+								<a href="nestable-list.html">Nestable Lists</a>
+							</li>
+							<li>
+								<a href="jqui.html">JQuery UI</a>
+							</li>
+							<li>
+								<a href="typography.html">Typography</a>
+							</li>
+							<li>
+								<a href="#">Six Level Menu</a>
+								<ul>
+									<li>
+										<a href="#"><i class="fa fa-fw fa-folder-open"></i> Item #2</a>
+										<ul>
+											<li>
+												<a href="#"><i class="fa fa-fw fa-folder-open"></i> Sub #2.1 </a>
+												<ul>
+													<li>
+														<a href="#"><i class="fa fa-fw fa-file-text"></i> Item #2.1.1</a>
+													</li>
+													<li>
+														<a href="#"><i class="fa fa-fw fa-plus"></i> Expand</a>
+														<ul>
+															<li>
+																<a href="#"><i class="fa fa-fw fa-file-text"></i> File</a>
+															</li>
+															<li>
+																<a href="#"><i class="fa fa-fw fa-trash-o"></i> Delete</a></li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="#"><i class="fa fa-fw fa-folder-open"></i> Item #3</a>
+		
+										<ul>
+											<li>
+												<a href="#"><i class="fa fa-fw fa-folder-open"></i> 3ed Level </a>
+												<ul>
+													<li>
+														<a href="#"><i class="fa fa-fw fa-file-text"></i> File</a>
+													</li>
+													<li>
+														<a href="#"><i class="fa fa-fw fa-file-text"></i> File</a>
+													</li>
+												</ul>
+											</li>
+										</ul>
+		
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				
+					<li>
+						<a href="calendar.html"><i class="fa fa-lg fa-fw fa-calendar"><em>3</em></i> <span class="menu-item-parent">Calendar</span></a>
+					</li>
+					<li>
+						<a href="widgets.html"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Widgets</span></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-lg fa-fw fa-puzzle-piece"></i> <span class="menu-item-parent">App Views</span></a>
+						<ul>
+							<li>
+								<a href="projects.html"><i class="fa fa-file-text-o"></i> Projects</a>
+							</li>
+							<li>
+								<a href="blog.html"><i class="fa fa-paragraph"></i> Blog</a>
+							</li>
+							<li>
+								<a href="gallery.html"><i class="fa fa-picture-o"></i> Gallery</a>
+							</li>
+
+							<li>
+								<a href="#"><i class="fa fa-comments"></i> Forum Layout</a>
+								<ul>
+									<li><a href="forum.html">General View</a></li>
+									<li><a href="forum-topic.html">Topic View</a></li>
+									<li><a href="forum-post.html">Post View</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="profile.html"><i class="fa fa-group"></i> Profile</a>
+							</li>
+							<li>
+								<a href="timeline.html"><i class="fa fa-clock-o"></i> Timeline</a>
+							</li>
+						</ul>		
+					</li>
+					<li>
+						<a href="gmap-xml.html"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">GMap Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a>
+					</li>
+					<li class="active">
+						<a href="#"><i class="fa fa-lg fa-fw fa-windows"></i> <span class="menu-item-parent">Miscellaneous</span></a>
+						<ul>
+							<li>
+								<a href="http://bootstraphunter.com/smartadmin-landing/" target="_blank">Landing Page <i class="fa fa-external-link"></i></a>
+							</li>
+							<li>
+								<a href="pricing-table.html">Pricing Tables</a>
+							</li>
+							<li>
+								<a href="invoice.html">Invoice</a>
+							</li>
+							<li>
+								<a href="login.html" target="_top">Login</a>
+							</li>
+							<li>
+								<a href="register.html" target="_top">Register</a>
+							</li>
+							<li>
+								<a href="lock.html" target="_top">Locked Screen</a>
+							</li>
+							<li>
+								<a href="error404.html">Error 404</a>
+							</li>
+							<li>
+								<a href="error500.html">Error 500</a>
+							</li>
+							<li>
+								<a href="blank_.html">Blank Page</a>
+							</li>
+							<li>
+								<a href="email-template.html">Email Template</a>
+							</li>
+							<li>
+								<a href="search.html">Search Page</a>
+							</li>
+							<li class="active">
+								<a href="ckeditor.html">CK Editor</a>
+							</li>
+						</ul>
+					</li>
+					<li class="top-menu-invisible">
+						<a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">SmartAdmin Intel</span></a>
+						<ul>
+							<li>
+								<a href="difver.html"><i class="fa fa-stack-overflow"></i> Different Versions</a>
+							</li>
+							<li>
+								<a href="applayout.html"><i class="fa fa-cube"></i> App Settings</a>
+							</li>
+							<li>
+								<a href="http://bootstraphunter.com/smartadmin/BUGTRACK/track_/documentation/index.html" target="_blank"><i class="fa fa-book"></i> Documentation</a>
+							</li>
+							<li>
+								<a href="http://bootstraphunter.com/smartadmin/BUGTRACK/track_/" target="_blank"><i class="fa fa-bug"></i> Bug Tracker</a>
+							</li>
+						</ul>
+					</li>
+					<li class="chat-users top-menu-invisible">
+						<a href="#"><i class="fa fa-lg fa-fw fa-comment-o"><em class="bg-color-pink flash animated">!</em></i> <span class="menu-item-parent">Smart Chat API <sup>beta</sup></span></a>
+						<ul>
+							<li>
+								<!-- DISPLAY USERS -->
+								<div class="display-users">
+
+									<input class="form-control chat-user-filter" placeholder="Filter" type="text">
+									
+								  	<a href="#" class="usr" 
+									  	data-chat-id="cha1" 
+									  	data-chat-fname="Sadi" 
+									  	data-chat-lname="Orlaf" 
+									  	data-chat-status="busy" 
+									  	data-chat-alertmsg="Sadi Orlaf is in a meeting. Please do not disturb!" 
+									  	data-chat-alertshow="true" 
+									  	data-rel="popover-hover" 
+									  	data-placement="right" 
+									  	data-html="true" 
+									  	data-content="
+											<div class='usr-card'>
+												<img src='img/avatars/5.png' alt='Sadi Orlaf'>
+												<div class='usr-card-content'>
+													<h3>Sadi Orlaf</h3>
+													<p>Marketing Executive</p>
+												</div>
+											</div>
+										"> 
+									  	<i></i>Sadi Orlaf
+								  	</a>
+								  
+									<a href="#" class="usr" 
+										data-chat-id="cha2" 
+									  	data-chat-fname="Jessica" 
+									  	data-chat-lname="Dolof" 
+									  	data-chat-status="online" 
+									  	data-chat-alertmsg="" 
+									  	data-chat-alertshow="false" 
+									  	data-rel="popover-hover" 
+									  	data-placement="right" 
+									  	data-html="true" 
+									  	data-content="
+											<div class='usr-card'>
+												<img src='img/avatars/1.png' alt='Jessica Dolof'>
+												<div class='usr-card-content'>
+													<h3>Jessica Dolof</h3>
+													<p>Sales Administrator</p>
+												</div>
+											</div>
+										"> 
+									  	<i></i>Jessica Dolof
+									</a>
+								  
+									<a href="#" class="usr" 
+									  	data-chat-id="cha3" 
+									  	data-chat-fname="Zekarburg" 
+									  	data-chat-lname="Almandalie" 
+									  	data-chat-status="online" 
+									  	data-rel="popover-hover" 
+									  	data-placement="right" 
+									  	data-html="true" 
+									  	data-content="
+											<div class='usr-card'>
+												<img src='img/avatars/3.png' alt='Zekarburg Almandalie'>
+												<div class='usr-card-content'>
+													<h3>Zekarburg Almandalie</h3>
+													<p>Sales Admin</p>
+												</div>
+											</div>
+										"> 
+									  	<i></i>Zekarburg Almandalie
+									</a>
+								 
+									<a href="#" class="usr" 
+									  	data-chat-id="cha4" 
+									  	data-chat-fname="Barley" 
+									  	data-chat-lname="Krazurkth" 
+									  	data-chat-status="away" 
+									  	data-rel="popover-hover" 
+									  	data-placement="right" 
+									  	data-html="true" 
+									  	data-content="
+											<div class='usr-card'>
+												<img src='img/avatars/4.png' alt='Barley Krazurkth'>
+												<div class='usr-card-content'>
+													<h3>Barley Krazurkth</h3>
+													<p>Sales Director</p>
+												</div>
+											</div>
+										"> 
+									  	<i></i>Barley Krazurkth
+									</a>
+								  
+									<a href="#" class="usr offline" 
+									  	data-chat-id="cha5" 
+									  	data-chat-fname="Farhana" 
+									  	data-chat-lname="Amrin" 
+									  	data-chat-status="incognito" 
+									  	data-rel="popover-hover" 
+									  	data-placement="right" 
+									  	data-html="true" 
+									  	data-content="
+											<div class='usr-card'>
+												<img src='img/avatars/female.png' alt='Farhana Amrin'>
+												<div class='usr-card-content'>
+													<h3>Farhana Amrin</h3>
+													<p>Support Admin <small><i class='fa fa-music'></i> Playing Beethoven Classics</small></p>
+												</div>
+											</div>
+										"> 
+									  	<i></i>Farhana Amrin (offline)
+									</a>
+								  
+									<a href="#" class="usr offline" 
+										data-chat-id="cha6" 
+									  	data-chat-fname="Lezley" 
+									  	data-chat-lname="Jacob" 
+									  	data-chat-status="incognito" 
+									  	data-rel="popover-hover" 
+									  	data-placement="right" 
+									  	data-html="true" 
+									  	data-content="
+											<div class='usr-card'>
+												<img src='img/avatars/male.png' alt='Lezley Jacob'>
+												<div class='usr-card-content'>
+													<h3>Lezley Jacob</h3>
+													<p>Sales Director</p>
+												</div>
+											</div>
+										"> 
+									  	<i></i>Lezley Jacob (offline)
+									</a>
+									
+									<a href="ajax/chat.html" class="btn btn-xs btn-default btn-block sa-chat-learnmore-btn">About the API</a>
+
+								</div>
+								<!-- END DISPLAY USERS -->
+							</li>
+						</ul>	
+					</li>
+					
+				</ul>
+			</nav>
+			<span class="minifyme" data-action="minifyMenu"> 
+				<i class="fa fa-arrow-circle-left hit"></i> 
+			</span>
+
+		</aside>
+		<!-- END NAVIGATION -->
+
+		<!-- MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<span class="ribbon-button-alignment"> 
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true">
+						<i class="fa fa-refresh"></i>
+					</span> 
+				</span>
+				
+				
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Home</li><li>Miscellaneous</li><li>CK Editor</li>
+				</ol>
+				<!-- end breadcrumb -->
+
+				<!-- You can also add more buttons to the
+				ribbon for further usability
+
+				Example below:
+
+				<span class="ribbon-button-alignment pull-right">
+				<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
+				<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
+				<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
+				</span> -->
+
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- MAIN CONTENT -->
+			<div id="content">
+
+
+				<!-- widget grid -->
+				<section id="widget-grid" class="">
+				
+					<!-- row -->
 					<div class="row">
-						<div class="col-sm-8 my-auto">
-							<canvas id="myBarChart" width="100" height="50"></canvas>
-						</div>
-						<div class="col-sm-4 text-center my-auto">
-							<div class="h4 mb-0 text-primary">$34,693</div>
-							<div class="small text-muted">YTD Revenue</div>
-							<hr>
-							<div class="h4 mb-0 text-warning">$18,474</div>
-							<div class="small text-muted">YTD Expenses</div>
-							<hr>
-							<div class="h4 mb-0 text-success">$16,219</div>
-							<div class="small text-muted">YTD Margin</div>
-						</div>
-					</div>
-				</div>
-				<div class="card-footer small text-muted">Updated yesterday at
-					11:59 PM</div>
-			</div>
-			<!-- Card Columns Example Social Feed-->
-			<div class="mb-0 mt-4">
-				<i class="fa fa-newspaper-o"></i> News Feed
-			</div>
-			<hr class="mt-2">
-			<div class="card-columns">
-				<!-- Example Social Card-->
-				<div class="card mb-3">
-					<a href="#"> <img class="card-img-top img-fluid w-100"
-						src="https://unsplash.it/700/450?image=610" alt="">
-					</a>
-					<div class="card-body">
-						<h6 class="card-title mb-1">
-							<a href="#">David Miller</a>
-						</h6>
-						<p class="card-text small">
-							These waves are looking pretty good today! <a href="#">#surfsup</a>
-						</p>
-					</div>
-					<hr class="my-0">
-					<div class="card-body py-2 small">
-						<a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-thumbs-up"></i>Like
-						</a> <a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-comment"></i>Comment
-						</a> <a class="d-inline-block" href="#"> <i
-							class="fa fa-fw fa-share"></i>Share
-						</a>
-					</div>
-					<hr class="my-0">
-					<div class="card-body small bg-faded">
-						<div class="media">
-							<img class="d-flex mr-3" src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<h6 class="mt-0 mb-1">
-									<a href="#">John Smith</a>
-								</h6>
-								Very nice! I wish I was there! That looks amazing!
-								<ul class="list-inline mb-0">
-									<li class="list-inline-item"><a href="#">Like</a></li>
-									<li class="list-inline-item">�</li>
-									<li class="list-inline-item"><a href="#">Reply</a></li>
-								</ul>
-								<div class="media mt-3">
-									<a class="d-flex pr-3" href="#"> <img
-										src="http://placehold.it/45x45" alt="">
-									</a>
-									<div class="media-body">
-										<h6 class="mt-0 mb-1">
-											<a href="#">David Miller</a>
-										</h6>
-										Next time for sure!
-										<ul class="list-inline mb-0">
-											<li class="list-inline-item"><a href="#">Like</a></li>
-											<li class="list-inline-item">�</li>
-											<li class="list-inline-item"><a href="#">Reply</a></li>
-										</ul>
+						
+						<!-- NEW WIDGET START -->
+						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				
+							<div class="alert alert-danger alert-block">
+								<a class="close" data-dismiss="alert" href="#">×</a>
+								<h4 class="alert-heading">CKEditor Warning!</h4>
+								If you plan to use CKEditor in your project for this theme, please be sure to read full documentation of its use on their website. It is important to note that CKEditor may conflict with other editors and textareas. You must destroy the CKeditor instance before pulling it into another object.
+				
+							</div>
+							
+							<!-- Widget ID (each widget will need unique ID)-->
+							<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+								<!-- widget options:
+									usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+									
+									data-widget-colorbutton="false"	
+									data-widget-editbutton="false"
+									data-widget-togglebutton="false"
+									data-widget-deletebutton="false"
+									data-widget-fullscreenbutton="false"
+									data-widget-custombutton="false"
+									data-widget-collapsed="true" 
+									data-widget-sortable="false"
+									
+								-->
+								<header>
+									<span class="widget-icon"> <i class="fa fa-pencil"></i> </span>
+									<h2>CK Editor (Full version) </h2>				
+									
+								</header>
+				
+								<!-- widget div-->
+								<div>
+									
+									<!-- widget edit box -->
+									<div class="jarviswidget-editbox">
+										<!-- This area used as dropdown edit box -->
+										
 									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="card-footer small text-muted">Posted 32 mins ago</div>
-				</div>
-				<!-- Example Social Card-->
-				<div class="card mb-3">
-					<a href="#"> <img class="card-img-top img-fluid w-100"
-						src="https://unsplash.it/700/450?image=180" alt="">
-					</a>
-					<div class="card-body">
-						<h6 class="card-title mb-1">
-							<a href="#">John Smith</a>
-						</h6>
-						<p class="card-text small">
-							Another day at the office... <a href="#">#workinghardorhardlyworking</a>
-						</p>
-					</div>
-					<hr class="my-0">
-					<div class="card-body py-2 small">
-						<a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-thumbs-up"></i>Like
-						</a> <a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-comment"></i>Comment
-						</a> <a class="d-inline-block" href="#"> <i
-							class="fa fa-fw fa-share"></i>Share
-						</a>
-					</div>
-					<hr class="my-0">
-					<div class="card-body small bg-faded">
-						<div class="media">
-							<img class="d-flex mr-3" src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<h6 class="mt-0 mb-1">
-									<a href="#">Jessy Lucas</a>
-								</h6>
-								Where did you get that camera?! I want one!
-								<ul class="list-inline mb-0">
-									<li class="list-inline-item"><a href="#">Like</a></li>
-									<li class="list-inline-item">�</li>
-									<li class="list-inline-item"><a href="#">Reply</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="card-footer small text-muted">Posted 46 mins ago</div>
-				</div>
-				<!-- Example Social Card-->
-				<div class="card mb-3">
-					<a href="#"> <img class="card-img-top img-fluid w-100"
-						src="https://unsplash.it/700/450?image=281" alt="">
-					</a>
-					<div class="card-body">
-						<h6 class="card-title mb-1">
-							<a href="#">Jeffery Wellings</a>
-						</h6>
-						<p class="card-text small">
-							Nice shot from the skate park! <a href="#">#kickflip</a> <a
-								href="#">#holdmybeer</a> <a href="#">#igotthis</a>
-						</p>
-					</div>
-					<hr class="my-0">
-					<div class="card-body py-2 small">
-						<a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-thumbs-up"></i>Like
-						</a> <a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-comment"></i>Comment
-						</a> <a class="d-inline-block" href="#"> <i
-							class="fa fa-fw fa-share"></i>Share
-						</a>
-					</div>
-					<div class="card-footer small text-muted">Posted 1 hr ago</div>
-				</div>
-				<!-- Example Social Card-->
-				<div class="card mb-3">
-					<a href="#"> <img class="card-img-top img-fluid w-100"
-						src="https://unsplash.it/700/450?image=185" alt="">
-					</a>
-					<div class="card-body">
-						<h6 class="card-title mb-1">
-							<a href="#">David Miller</a>
-						</h6>
-						<p class="card-text small">
-							It's hot, and I might be lost... <a href="#">#desert</a> <a
-								href="#">#water</a> <a href="#">#anyonehavesomewater</a> <a
-								href="#">#noreally</a> <a href="#">#thirsty</a> <a href="#">#dehydration</a>
-						</p>
-					</div>
-					<hr class="my-0">
-					<div class="card-body py-2 small">
-						<a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-thumbs-up"></i>Like
-						</a> <a class="mr-3 d-inline-block" href="#"> <i
-							class="fa fa-fw fa-comment"></i>Comment
-						</a> <a class="d-inline-block" href="#"> <i
-							class="fa fa-fw fa-share"></i>Share
-						</a>
-					</div>
-					<hr class="my-0">
-					<div class="card-body small bg-faded">
-						<div class="media">
-							<img class="d-flex mr-3" src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<h6 class="mt-0 mb-1">
-									<a href="#">John Smith</a>
-								</h6>
-								The oasis is a mile that way, or is that just a mirage?
-								<ul class="list-inline mb-0">
-									<li class="list-inline-item"><a href="#">Like</a></li>
-									<li class="list-inline-item">�</li>
-									<li class="list-inline-item"><a href="#">Reply</a></li>
-								</ul>
-								<div class="media mt-3">
-									<a class="d-flex pr-3" href="#"> <img
-										src="http://placehold.it/45x45" alt="">
-									</a>
-									<div class="media-body">
-										<h6 class="mt-0 mb-1">
-											<a href="#">David Miller</a>
-										</h6>
-										<img class="img-fluid w-100 mb-1"
-											src="https://unsplash.it/700/450?image=789" alt="">I'm
-										saved, I found a cactus. How do I open this thing?
-										<ul class="list-inline mb-0">
-											<li class="list-inline-item"><a href="#">Like</a></li>
-											<li class="list-inline-item">�</li>
-											<li class="list-inline-item"><a href="#">Reply</a></li>
-										</ul>
+									<!-- end widget edit box -->
+									
+									<!-- widget content -->
+									<div class="widget-body no-padding">
+										
+											<textarea name="ckeditor">
+												&lt;h1&gt;&lt;img alt="Saturn V carrying Apollo 11" class="right" src="img/demo/sample.jpg"/&gt; Apollo 11&lt;/h1&gt; &lt;p&gt;&lt;b&gt;Apollo 11&lt;/b&gt; was the spaceflight that landed the first humans, Americans &lt;a href="http://en.wikipedia.org/wiki/Neil_Armstrong" title="Neil Armstrong"&gt;Neil Armstrong&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/Buzz_Aldrin" title="Buzz Aldrin"&gt;Buzz Aldrin&lt;/a&gt;, on the Moon on July 20, 1969, at 20:18 UTC. Armstrong became the first to step onto the lunar surface 6 hours later on July 21 at 02:56 UTC.&lt;/p&gt; &lt;p&gt;Armstrong spent about &lt;strike&gt;three and a half&lt;/strike&gt; two and a half hours outside the spacecraft, Aldrin slightly less; and together they collected 47.5 pounds (21.5&amp;nbsp;kg) of lunar material for return to Earth. A third member of the mission, &lt;a href="http://en.wikipedia.org/wiki/Michael_Collins_(astronaut)" title="Michael Collins (astronaut)"&gt;Michael Collins&lt;/a&gt;, piloted the &lt;a href="http://en.wikipedia.org/wiki/Apollo_Command/Service_Module" title="Apollo Command/Service Module"&gt;command&lt;/a&gt; spacecraft alone in lunar orbit until Armstrong and Aldrin returned to it for the trip back to Earth.&lt;/p&gt; &lt;h2&gt;Broadcasting and &lt;em&gt;quotes&lt;/em&gt; &lt;a id="quotes" name="quotes"&gt;&lt;/a&gt;&lt;/h2&gt; &lt;p&gt;Broadcast on live TV to a world-wide audience, Armstrong stepped onto the lunar surface and described the event as:&lt;/p&gt; &lt;blockquote&gt;&lt;p&gt;One small step for [a] man, one giant leap for mankind.&lt;/p&gt;&lt;/blockquote&gt; &lt;p&gt;Apollo 11 effectively ended the &lt;a href="http://en.wikipedia.org/wiki/Space_Race" title="Space Race"&gt;Space Race&lt;/a&gt; and fulfilled a national goal proposed in 1961 by the late U.S. President &lt;a href="http://en.wikipedia.org/wiki/John_F._Kennedy" title="John F. Kennedy"&gt;John F. Kennedy&lt;/a&gt; in a speech before the United States Congress:&lt;/p&gt; &lt;blockquote&gt;&lt;p&gt;[...] before this decade is out, of landing a man on the Moon and returning him safely to the Earth.&lt;/p&gt;&lt;/blockquote&gt; &lt;h2&gt;Technical details &lt;a id="tech-details" name="tech-details"&gt;&lt;/a&gt;&lt;/h2&gt; &lt;table align="right" border="1" bordercolor="#ccc" cellpadding="5" cellspacing="0" style="border-collapse:collapse;margin:10px 0 10px 15px;"&gt; &lt;caption&gt;&lt;strong&gt;Mission crew&lt;/strong&gt;&lt;/caption&gt; &lt;thead&gt; &lt;tr&gt; &lt;th scope="col"&gt;Position&lt;/th&gt; &lt;th scope="col"&gt;Astronaut&lt;/th&gt; &lt;/tr&gt; &lt;/thead&gt; &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;Commander&lt;/td&gt; &lt;td&gt;Neil A. Armstrong&lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt;Command Module Pilot&lt;/td&gt; &lt;td&gt;Michael Collins&lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt;Lunar Module Pilot&lt;/td&gt; &lt;td&gt;Edwin &amp;quot;Buzz&amp;quot; E. Aldrin, Jr.&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; &lt;p&gt;Launched by a &lt;strong&gt;Saturn V&lt;/strong&gt; rocket from &lt;a href="http://en.wikipedia.org/wiki/Kennedy_Space_Center" title="Kennedy Space Center"&gt;Kennedy Space Center&lt;/a&gt; in Merritt Island, Florida on July 16, Apollo 11 was the fifth manned mission of &lt;a href="http://en.wikipedia.org/wiki/NASA" title="NASA"&gt;NASA&lt;/a&gt;&amp;#39;s Apollo program. The Apollo spacecraft had three parts:&lt;/p&gt; &lt;ol&gt; &lt;li&gt;&lt;strong&gt;Command Module&lt;/strong&gt; with a cabin for the three astronauts which was the only part which landed back on Earth&lt;/li&gt; &lt;li&gt;&lt;strong&gt;Service Module&lt;/strong&gt; which supported the Command Module with propulsion, electrical power, oxygen and water&lt;/li&gt; &lt;li&gt;&lt;strong&gt;Lunar Module&lt;/strong&gt; for landing on the Moon.&lt;/li&gt; &lt;/ol&gt; &lt;p&gt;After being sent to the Moon by the Saturn V&amp;#39;s upper stage, the astronauts separated the spacecraft from it and travelled for three days until they entered into lunar orbit. Armstrong and Aldrin then moved into the Lunar Module and landed in the &lt;a href="http://en.wikipedia.org/wiki/Mare_Tranquillitatis" title="Mare Tranquillitatis"&gt;Sea of Tranquility&lt;/a&gt;. They stayed a total of about 21 and a half hours on the lunar surface. After lifting off in the upper part of the Lunar Module and rejoining Collins in the Command Module, they returned to Earth and landed in the &lt;a href="http://en.wikipedia.org/wiki/Pacific_Ocean" title="Pacific Ocean"&gt;Pacific Ocean&lt;/a&gt; on July 24.&lt;/p&gt; &lt;hr/&gt; &lt;p style="text-align: right;"&gt;&lt;small&gt;Source: &lt;a href="http://en.wikipedia.org/wiki/Apollo_11"&gt;Wikipedia.org&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+				                			</textarea>						
+										
 									</div>
+									<!-- end widget content -->
+									
 								</div>
+								<!-- end widget div -->
+								
 							</div>
-						</div>
+							<!-- end widget -->
+				
+						</article>
+						<!-- WIDGET END -->
+						
 					</div>
-					<div class="card-footer small text-muted">Posted yesterday</div>
-				</div>
-			</div>
-			<!-- /Card Columns-->
-		</div>
-		<div class="col-lg-4">
-			<!-- Example Pie Chart Card-->
-			<div class="card mb-3">
-				<div class="card-header">
-					<i class="fa fa-pie-chart"></i> Pie Chart Example
-				</div>
-				<div class="card-body">
-					<canvas id="myPieChart" width="100%" height="100"></canvas>
-				</div>
-				<div class="card-footer small text-muted">Updated yesterday at
-					11:59 PM</div>
-			</div>
-			<!-- Example Notifications Card-->
-			<div class="card mb-3">
-				<div class="card-header">
-					<i class="fa fa-bell-o"></i> Feed Example
-				</div>
-				<div class="list-group list-group-flush small">
-					<a class="list-group-item list-group-item-action" href="#">
-						<div class="media">
-							<img class="d-flex mr-3 rounded-circle"
-								src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<strong>David Miller</strong>posted a new article to <strong>David
-									Miller Website</strong>.
-								<div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
-							</div>
-						</div>
-					</a> <a class="list-group-item list-group-item-action" href="#">
-						<div class="media">
-							<img class="d-flex mr-3 rounded-circle"
-								src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<strong>Samantha King</strong>sent you a new message!
-								<div class="text-muted smaller">Today at 4:37 PM - 1hr ago</div>
-							</div>
-						</div>
-					</a> <a class="list-group-item list-group-item-action" href="#">
-						<div class="media">
-							<img class="d-flex mr-3 rounded-circle"
-								src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<strong>Jeffery Wellings</strong>added a new photo to the album
-								<strong>Beach</strong>.
-								<div class="text-muted smaller">Today at 4:31 PM - 1hr ago</div>
-							</div>
-						</div>
-					</a> <a class="list-group-item list-group-item-action" href="#">
-						<div class="media">
-							<img class="d-flex mr-3 rounded-circle"
-								src="http://placehold.it/45x45" alt="">
-							<div class="media-body">
-								<i class="fa fa-code-fork"></i> <strong>Monica Dennis</strong>forked
-								the <strong>startbootstrap-sb-admin</strong>repository on <strong>GitHub</strong>.
-								<div class="text-muted smaller">Today at 3:54 PM - 2hrs
-									ago</div>
-							</div>
-						</div>
-					</a> <a class="list-group-item list-group-item-action" href="#">View
-						all activity...</a>
-				</div>
-				<div class="card-footer small text-muted">Updated yesterday at
-					11:59 PM</div>
-			</div>
-		</div>
-	</div>
-	<!-- Example DataTables Card-->
-	<div class="card mb-3">
-		<div class="card-header">
-			<i class="fa fa-table"></i> Data Table Example
-		</div>
-		<div class="card-body">
-			<div class="table-responsive">
-				<table class="table table-bordered" id="dataTable" width="100%"
-					cellspacing="0">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Position</th>
-							<th>Office</th>
-							<th>Age</th>
-							<th>Start date</th>
-							<th>Salary</th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr>
-							<th>Name</th>
-							<th>Position</th>
-							<th>Office</th>
-							<th>Age</th>
-							<th>Start date</th>
-							<th>Salary</th>
-						</tr>
-					</tfoot>
-					<tbody>
-						<tr>
-							<td>Tiger Nixon</td>
-							<td>System Architect</td>
-							<td>Edinburgh</td>
-							<td>61</td>
-							<td>2011/04/25</td>
-							<td>$320,800</td>
-						</tr>
-						<tr>
-							<td>Garrett Winters</td>
-							<td>Accountant</td>
-							<td>Tokyo</td>
-							<td>63</td>
-							<td>2011/07/25</td>
-							<td>$170,750</td>
-						</tr>
-						<tr>
-							<td>Ashton Cox</td>
-							<td>Junior Technical Author</td>
-							<td>San Francisco</td>
-							<td>66</td>
-							<td>2009/01/12</td>
-							<td>$86,000</td>
-						</tr>
-						<tr>
-							<td>Cedric Kelly</td>
-							<td>Senior Javascript Developer</td>
-							<td>Edinburgh</td>
-							<td>22</td>
-							<td>2012/03/29</td>
-							<td>$433,060</td>
-						</tr>
-						<tr>
-							<td>Airi Satou</td>
-							<td>Accountant</td>
-							<td>Tokyo</td>
-							<td>33</td>
-							<td>2008/11/28</td>
-							<td>$162,700</td>
-						</tr>
-						<tr>
-							<td>Brielle Williamson</td>
-							<td>Integration Specialist</td>
-							<td>New York</td>
-							<td>61</td>
-							<td>2012/12/02</td>
-							<td>$372,000</td>
-						</tr>
-						<tr>
-							<td>Herrod Chandler</td>
-							<td>Sales Assistant</td>
-							<td>San Francisco</td>
-							<td>59</td>
-							<td>2012/08/06</td>
-							<td>$137,500</td>
-						</tr>
-						<tr>
-							<td>Rhona Davidson</td>
-							<td>Integration Specialist</td>
-							<td>Tokyo</td>
-							<td>55</td>
-							<td>2010/10/14</td>
-							<td>$327,900</td>
-						</tr>
-						<tr>
-							<td>Colleen Hurst</td>
-							<td>Javascript Developer</td>
-							<td>San Francisco</td>
-							<td>39</td>
-							<td>2009/09/15</td>
-							<td>$205,500</td>
-						</tr>
-						<tr>
-							<td>Sonya Frost</td>
-							<td>Software Engineer</td>
-							<td>Edinburgh</td>
-							<td>23</td>
-							<td>2008/12/13</td>
-							<td>$103,600</td>
-						</tr>
-						<tr>
-							<td>Jena Gaines</td>
-							<td>Office Manager</td>
-							<td>London</td>
-							<td>30</td>
-							<td>2008/12/19</td>
-							<td>$90,560</td>
-						</tr>
-						<tr>
-							<td>Quinn Flynn</td>
-							<td>Support Lead</td>
-							<td>Edinburgh</td>
-							<td>22</td>
-							<td>2013/03/03</td>
-							<td>$342,000</td>
-						</tr>
-						<tr>
-							<td>Charde Marshall</td>
-							<td>Regional Director</td>
-							<td>San Francisco</td>
-							<td>36</td>
-							<td>2008/10/16</td>
-							<td>$470,600</td>
-						</tr>
-						<tr>
-							<td>Haley Kennedy</td>
-							<td>Senior Marketing Designer</td>
-							<td>London</td>
-							<td>43</td>
-							<td>2012/12/18</td>
-							<td>$313,500</td>
-						</tr>
-						<tr>
-							<td>Tatyana Fitzpatrick</td>
-							<td>Regional Director</td>
-							<td>London</td>
-							<td>19</td>
-							<td>2010/03/17</td>
-							<td>$385,750</td>
-						</tr>
-						<tr>
-							<td>Michael Silva</td>
-							<td>Marketing Designer</td>
-							<td>London</td>
-							<td>66</td>
-							<td>2012/11/27</td>
-							<td>$198,500</td>
-						</tr>
-						<tr>
-							<td>Paul Byrd</td>
-							<td>Chief Financial Officer (CFO)</td>
-							<td>New York</td>
-							<td>64</td>
-							<td>2010/06/09</td>
-							<td>$725,000</td>
-						</tr>
-						<tr>
-							<td>Gloria Little</td>
-							<td>Systems Administrator</td>
-							<td>New York</td>
-							<td>59</td>
-							<td>2009/04/10</td>
-							<td>$237,500</td>
-						</tr>
-						<tr>
-							<td>Bradley Greer</td>
-							<td>Software Engineer</td>
-							<td>London</td>
-							<td>41</td>
-							<td>2012/10/13</td>
-							<td>$132,000</td>
-						</tr>
-						<tr>
-							<td>Dai Rios</td>
-							<td>Personnel Lead</td>
-							<td>Edinburgh</td>
-							<td>35</td>
-							<td>2012/09/26</td>
-							<td>$217,500</td>
-						</tr>
-						<tr>
-							<td>Jenette Caldwell</td>
-							<td>Development Lead</td>
-							<td>New York</td>
-							<td>30</td>
-							<td>2011/09/03</td>
-							<td>$345,000</td>
-						</tr>
-						<tr>
-							<td>Yuri Berry</td>
-							<td>Chief Marketing Officer (CMO)</td>
-							<td>New York</td>
-							<td>40</td>
-							<td>2009/06/25</td>
-							<td>$675,000</td>
-						</tr>
-						<tr>
-							<td>Caesar Vance</td>
-							<td>Pre-Sales Support</td>
-							<td>New York</td>
-							<td>21</td>
-							<td>2011/12/12</td>
-							<td>$106,450</td>
-						</tr>
-						<tr>
-							<td>Doris Wilder</td>
-							<td>Sales Assistant</td>
-							<td>Sidney</td>
-							<td>23</td>
-							<td>2010/09/20</td>
-							<td>$85,600</td>
-						</tr>
-						<tr>
-							<td>Angelica Ramos</td>
-							<td>Chief Executive Officer (CEO)</td>
-							<td>London</td>
-							<td>47</td>
-							<td>2009/10/09</td>
-							<td>$1,200,000</td>
-						</tr>
-						<tr>
-							<td>Gavin Joyce</td>
-							<td>Developer</td>
-							<td>Edinburgh</td>
-							<td>42</td>
-							<td>2010/12/22</td>
-							<td>$92,575</td>
-						</tr>
-						<tr>
-							<td>Jennifer Chang</td>
-							<td>Regional Director</td>
-							<td>Singapore</td>
-							<td>28</td>
-							<td>2010/11/14</td>
-							<td>$357,650</td>
-						</tr>
-						<tr>
-							<td>Brenden Wagner</td>
-							<td>Software Engineer</td>
-							<td>San Francisco</td>
-							<td>28</td>
-							<td>2011/06/07</td>
-							<td>$206,850</td>
-						</tr>
-						<tr>
-							<td>Fiona Green</td>
-							<td>Chief Operating Officer (COO)</td>
-							<td>San Francisco</td>
-							<td>48</td>
-							<td>2010/03/11</td>
-							<td>$850,000</td>
-						</tr>
-						<tr>
-							<td>Shou Itou</td>
-							<td>Regional Marketing</td>
-							<td>Tokyo</td>
-							<td>20</td>
-							<td>2011/08/14</td>
-							<td>$163,000</td>
-						</tr>
-						<tr>
-							<td>Michelle House</td>
-							<td>Integration Specialist</td>
-							<td>Sidney</td>
-							<td>37</td>
-							<td>2011/06/02</td>
-							<td>$95,400</td>
-						</tr>
-						<tr>
-							<td>Suki Burks</td>
-							<td>Developer</td>
-							<td>London</td>
-							<td>53</td>
-							<td>2009/10/22</td>
-							<td>$114,500</td>
-						</tr>
-						<tr>
-							<td>Prescott Bartlett</td>
-							<td>Technical Author</td>
-							<td>London</td>
-							<td>27</td>
-							<td>2011/05/07</td>
-							<td>$145,000</td>
-						</tr>
-						<tr>
-							<td>Gavin Cortez</td>
-							<td>Team Leader</td>
-							<td>San Francisco</td>
-							<td>22</td>
-							<td>2008/10/26</td>
-							<td>$235,500</td>
-						</tr>
-						<tr>
-							<td>Martena Mccray</td>
-							<td>Post-Sales support</td>
-							<td>Edinburgh</td>
-							<td>46</td>
-							<td>2011/03/09</td>
-							<td>$324,050</td>
-						</tr>
-						<tr>
-							<td>Unity Butler</td>
-							<td>Marketing Designer</td>
-							<td>San Francisco</td>
-							<td>47</td>
-							<td>2009/12/09</td>
-							<td>$85,675</td>
-						</tr>
-						<tr>
-							<td>Howard Hatfield</td>
-							<td>Office Manager</td>
-							<td>San Francisco</td>
-							<td>51</td>
-							<td>2008/12/16</td>
-							<td>$164,500</td>
-						</tr>
-						<tr>
-							<td>Hope Fuentes</td>
-							<td>Secretary</td>
-							<td>San Francisco</td>
-							<td>41</td>
-							<td>2010/02/12</td>
-							<td>$109,850</td>
-						</tr>
-						<tr>
-							<td>Vivian Harrell</td>
-							<td>Financial Controller</td>
-							<td>San Francisco</td>
-							<td>62</td>
-							<td>2009/02/14</td>
-							<td>$452,500</td>
-						</tr>
-						<tr>
-							<td>Timothy Mooney</td>
-							<td>Office Manager</td>
-							<td>London</td>
-							<td>37</td>
-							<td>2008/12/11</td>
-							<td>$136,200</td>
-						</tr>
-						<tr>
-							<td>Jackson Bradshaw</td>
-							<td>Director</td>
-							<td>New York</td>
-							<td>65</td>
-							<td>2008/09/26</td>
-							<td>$645,750</td>
-						</tr>
-						<tr>
-							<td>Olivia Liang</td>
-							<td>Support Engineer</td>
-							<td>Singapore</td>
-							<td>64</td>
-							<td>2011/02/03</td>
-							<td>$234,500</td>
-						</tr>
-						<tr>
-							<td>Bruno Nash</td>
-							<td>Software Engineer</td>
-							<td>London</td>
-							<td>38</td>
-							<td>2011/05/03</td>
-							<td>$163,500</td>
-						</tr>
-						<tr>
-							<td>Sakura Yamamoto</td>
-							<td>Support Engineer</td>
-							<td>Tokyo</td>
-							<td>37</td>
-							<td>2009/08/19</td>
-							<td>$139,575</td>
-						</tr>
-						<tr>
-							<td>Thor Walton</td>
-							<td>Developer</td>
-							<td>New York</td>
-							<td>61</td>
-							<td>2013/08/11</td>
-							<td>$98,540</td>
-						</tr>
-						<tr>
-							<td>Finn Camacho</td>
-							<td>Support Engineer</td>
-							<td>San Francisco</td>
-							<td>47</td>
-							<td>2009/07/07</td>
-							<td>$87,500</td>
-						</tr>
-						<tr>
-							<td>Serge Baldwin</td>
-							<td>Data Coordinator</td>
-							<td>Singapore</td>
-							<td>64</td>
-							<td>2012/04/09</td>
-							<td>$138,575</td>
-						</tr>
-						<tr>
-							<td>Zenaida Frank</td>
-							<td>Software Engineer</td>
-							<td>New York</td>
-							<td>63</td>
-							<td>2010/01/04</td>
-							<td>$125,250</td>
-						</tr>
-						<tr>
-							<td>Zorita Serrano</td>
-							<td>Software Engineer</td>
-							<td>San Francisco</td>
-							<td>56</td>
-							<td>2012/06/01</td>
-							<td>$115,000</td>
-						</tr>
-						<tr>
-							<td>Jennifer Acosta</td>
-							<td>Junior Javascript Developer</td>
-							<td>Edinburgh</td>
-							<td>43</td>
-							<td>2013/02/01</td>
-							<td>$75,650</td>
-						</tr>
-						<tr>
-							<td>Cara Stevens</td>
-							<td>Sales Assistant</td>
-							<td>New York</td>
-							<td>46</td>
-							<td>2011/12/06</td>
-							<td>$145,600</td>
-						</tr>
-						<tr>
-							<td>Hermione Butler</td>
-							<td>Regional Director</td>
-							<td>London</td>
-							<td>47</td>
-							<td>2011/03/21</td>
-							<td>$356,250</td>
-						</tr>
-						<tr>
-							<td>Lael Greer</td>
-							<td>Systems Administrator</td>
-							<td>London</td>
-							<td>21</td>
-							<td>2009/02/27</td>
-							<td>$103,500</td>
-						</tr>
-						<tr>
-							<td>Jonas Alexander</td>
-							<td>Developer</td>
-							<td>San Francisco</td>
-							<td>30</td>
-							<td>2010/07/14</td>
-							<td>$86,500</td>
-						</tr>
-						<tr>
-							<td>Shad Decker</td>
-							<td>Regional Director</td>
-							<td>Edinburgh</td>
-							<td>51</td>
-							<td>2008/11/13</td>
-							<td>$183,000</td>
-						</tr>
-						<tr>
-							<td>Michael Bruce</td>
-							<td>Javascript Developer</td>
-							<td>Singapore</td>
-							<td>29</td>
-							<td>2011/06/27</td>
-							<td>$183,000</td>
-						</tr>
-						<tr>
-							<td>Donna Snider</td>
-							<td>Customer Support</td>
-							<td>New York</td>
-							<td>27</td>
-							<td>2011/01/25</td>
-							<td>$112,000</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="card-footer small text-muted">Updated yesterday at
-			11:59 PM</div>
-	</div>
-</div> 
+				
+					<!-- end row -->
+				
+				</section>
+				<!-- end widget grid -->
 
+			</div>
+			<!-- END MAIN CONTENT -->
+
+		</div>
+		<!-- END MAIN PANEL -->
+
+		<!-- PAGE FOOTER -->
+		<div class="page-footer">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<span class="txt-color-white">SmartAdmin 1.5 <span class="hidden-xs"> - Web Application Framework</span> © 2014-2015</span>
+				</div>
+
+				<div class="col-xs-6 col-sm-6 text-right hidden-xs">
+					<div class="txt-color-white inline-block">
+						<i class="txt-color-blueLight hidden-mobile">Last account activity <i class="fa fa-clock-o"></i> <strong>52 mins ago &nbsp;</strong> </i>
+						<div class="btn-group dropup">
+							<button class="btn btn-xs dropdown-toggle bg-color-blue txt-color-white" data-toggle="dropdown">
+								<i class="fa fa-link"></i> <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu pull-right text-left">
+								<li>
+									<div class="padding-5">
+										<p class="txt-color-darken font-sm no-margin">Download Progress</p>
+										<div class="progress progress-micro no-margin">
+											<div class="progress-bar progress-bar-success" style="width: 50%;"></div>
+										</div>
+									</div>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<div class="padding-5">
+										<p class="txt-color-darken font-sm no-margin">Server Load</p>
+										<div class="progress progress-micro no-margin">
+											<div class="progress-bar progress-bar-success" style="width: 20%;"></div>
+										</div>
+									</div>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<div class="padding-5">
+										<p class="txt-color-darken font-sm no-margin">Memory Load <span class="text-danger">*critical*</span></p>
+										<div class="progress progress-micro no-margin">
+											<div class="progress-bar progress-bar-danger" style="width: 70%;"></div>
+										</div>
+									</div>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<div class="padding-5">
+										<button class="btn btn-block btn-default">refresh</button>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END PAGE FOOTER -->
+
+		<!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+		Note: These tiles are completely responsive,
+		you can add as many as you like
+		-->
+		<div id="shortcut">
+			<ul>
+				<li>
+					<a href="inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+				</li>
+				<li>
+					<a href="calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+				</li>
+				<li>
+					<a href="gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+				</li>
+				<li>
+					<a href="invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a>
+				</li>
+				<li>
+					<a href="gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+				</li>
+				<li>
+					<a href="profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+				</li>
+			</ul>
+		</div>
+		<!-- END SHORTCUT AREA -->
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>
+
+		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+			if (!window.jQuery) {
+				document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
+			}
+		</script>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		<script>
+			if (!window.jQuery.ui) {
+				document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+			}
+		</script>
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script src="js/app.config.js"></script>
+
+		<!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+		<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
+
+		<!-- BOOTSTRAP JS -->
+		<script src="js/bootstrap/bootstrap.min.js"></script>
+
+		<!-- CUSTOM NOTIFICATION -->
+		<script src="js/notification/SmartNotification.min.js"></script>
+
+		<!-- JARVIS WIDGETS -->
+		<script src="js/smartwidgets/jarvis.widget.min.js"></script>
+
+		<!-- EASY PIE CHARTS -->
+		<script src="js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+
+		<!-- SPARKLINES -->
+		<script src="js/plugin/sparkline/jquery.sparkline.min.js"></script>
+
+		<!-- JQUERY VALIDATE -->
+		<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
+
+		<!-- JQUERY MASKED INPUT -->
+		<script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+
+		<!-- JQUERY SELECT2 INPUT -->
+		<script src="js/plugin/select2/select2.min.js"></script>
+
+		<!-- JQUERY UI + Bootstrap Slider -->
+		<script src="js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+
+		<!-- browser msie issue fix -->
+		<script src="js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+
+		<!-- FastClick: For mobile devices -->
+		<script src="js/plugin/fastclick/fastclick.min.js"></script>
+
+		<!--[if IE 8]>
+
+		<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+
+		<![endif]-->
+
+		<!-- Demo purpose only -->
+		<script src="js/demo.min.js"></script>
+
+		<!-- MAIN APP JS FILE -->
+		<script src="js/app.min.js"></script>
+
+		<!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
+		<!-- Voice command : plugin -->
+		<script src="js/speech/voicecommand.min.js"></script>
+
+		<!-- SmartChat UI : plugin -->
+		<script src="js/smart-chat-ui/smart.chat.ui.min.js"></script>
+		<script src="js/smart-chat-ui/smart.chat.manager.min.js"></script>
+
+		<!-- PAGE RELATED PLUGIN(S) -->
+		<script src="js/plugin/ckeditor/ckeditor.js"></script>
+
+		
+
+		<script type="text/javascript">
+		
+		// DO NOT REMOVE : GLOBAL FUNCTIONS!
+		
+		$(document).ready(function() {
+			
+			CKEDITOR.replace( 'ckeditor', { height: '380px', startupFocus : true} );
+		
+		})
+
+		</script>
+
+		<!-- Your GOOGLE ANALYTICS CODE Below -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+				_gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+				_gaq.push(['_trackPageview']);
+			
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+
+	</body>
+
+</html>

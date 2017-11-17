@@ -111,26 +111,71 @@ table.cTable td {
 			</div>
 			<div class="col-xl-10">
 				<table class="cTable"
-					style="font-size: 13px; background: #f1f0f0; border: 2px solid #8c8888; box-shadow: 3px 3px 2px #ccc;">
+					style="font-size: 13px; background: #f1f0f0; border: 1px solid #343a40; box-shadow: 3px 3px 2px #898f96;">
 					<tr style="background: #d4d4d4;">
-						<td>All Controls</td>
-						<td>Total Risks</td>
-						<td>Review Pending for NC</td>
-						<td>Review Pending for Non NC</td>
-						<td>Review Complete for NC</td>
-						<td>Review Complete for Non NC</td>
-						<td>More info Requested for NC</td>
-						<td>More info Requested for Non NC</td>
+						<td
+							style="background: #007bff; color: #fff; border: 1px solid #343a40;">All
+							Controls</td>
+						<td
+							style="background: #dc3545; color: #fff; border: 1px solid #343a40;">Total
+							Risks</td>
+						<td
+							style="background: #dc3545; color: #fff; border: 1px solid #343a40;">Review
+							Pending for NC</td>
+						<td
+							style="background: #28a745; color: #fff; border: 1px solid #343a40;">Review
+							Pending for Non NC</td>
+						<td
+							style="background: #dc3545; color: #fff; border: 1px solid #343a40;">Review
+							Complete for NC</td>
+						<td
+							style="background: #28a745; color: #fff; border: 1px solid #343a40;">Review
+							Complete for Non NC</td>
+						<td
+							style="background: #dc3545; color: #fff; border: 1px solid #343a40;">More
+							info Requested for NC</td>
+						<td
+							style="background: #28a745; color: #fff; border: 1px solid #343a40;">More
+							info Requested for Non NC</td>
 					</tr>
 					<tr style="background: #fff;">
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${totalAnswer}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${totalRisks}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewPendingforNC}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewPendingforNonNC}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewCompleteforNC}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewCompleteforNonNC}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${changeRequiredforNC}</td>
-						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${changeRequiredforNonNC}</td>
+						<td
+							style="color: #007bff; cursor: pointer; border: 1px solid #343a40;">${totalAnswer}</td>
+						<td
+							style="color: #dc3545; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+							</div>${totalRisks}</td>
+						<td
+							style="color: #dc3545; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+							</div>${reviewPendingforNC}</td>
+						<td
+							style="color: #28a745; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+							</div>${reviewPendingforNonNC}</td>
+						<td
+							style="color: #dc3545; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+							</div>${reviewCompleteforNC}</td>
+						<td
+							style="color: #28a745; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+							</div>${reviewCompleteforNonNC}</td>
+						<td
+							style="color: #dc3545; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+							</div>${changeRequiredforNC}</td>
+						<td
+							style="color: #28a745; cursor: pointer; border: 1px solid #343a40;"><div
+								style="float: right;">
+								<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+							</div>${changeRequiredforNonNC}</td>
 					</tr>
 				</table>
 			</div>

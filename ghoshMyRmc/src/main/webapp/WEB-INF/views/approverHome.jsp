@@ -4,6 +4,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url var="css" value="/resources/css"></spring:url>
+<spring:url var="ckeditor" value="/resources/ckeditor"></spring:url>
 <spring:url var="js" value="/resources/js"></spring:url>
 <spring:url var="images" value="/resources/images"></spring:url>
 <spring:url var="vendor" value="/resources/vendor"></spring:url>
@@ -40,6 +41,7 @@
 <link href="${css}/sb-admin.css" rel="stylesheet">
 <script src="${vendor}/jquery/jquery.min.js"></script>
 <script src="${jqueryUi}/jquery-ui.js"></script>
+
 </head>
 
 <body class="fixed-nav sticky-footer" id="page-top">
@@ -78,7 +80,7 @@
 	<!-- Custom scripts for this page-->
 	<script src="${js}/sb-admin-datatables.min.js"></script>
 	<%-- 	<script src="${js}/sb-admin-charts.min.js"></script> --%>
-
+	<script src="${ckeditor}/ckeditor.js"></script>
 	<script src="${js}/myapp.js"></script>
 </body>
 

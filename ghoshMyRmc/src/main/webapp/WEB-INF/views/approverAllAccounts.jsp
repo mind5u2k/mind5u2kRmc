@@ -10,12 +10,11 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-database"></i>
 						</div>
-						<div class="mr-5">All</div>
+						<div class="mr-5" style="padding-left: 12px;">All Accounts</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">No Of Accounts : ${total}</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -25,12 +24,12 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-exclamation-triangle"></i>
 						</div>
-						<div class="mr-5">Submission Pending</div>
+						<div class="mr-5" style="padding-left: 12px;">Submission
+							Pending</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">No Of Accounts : ${completed}</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -40,12 +39,11 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-thumbs-o-up"></i>
 						</div>
-						<div class="mr-5">Submitted</div>
+						<div class="mr-5" style="padding-left: 12px;">Submitted</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">No Of Accounts : ${submitted}</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -55,12 +53,11 @@
 						<div class="card-body-icon">
 							<i class="fa fa-fw fa-thumbs-o-down"></i>
 						</div>
-						<div class="mr-5">Incomplete</div>
+						<div class="mr-5" style="padding-left: 12px;">Incomplete</div>
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">No Of Accounts : ${incomplete}</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -215,9 +212,16 @@
 							</c:if>
 
 
-							<td><a class="btn btn-warning"
-								style="padding: 0px 6px; cursor: pointer;"><i
-									class="fa fa-envelope-o" aria-hidden="true"></i></a></td>
+							<td><c:if test="${assessment.assessmentStatus=='Submitted'}">
+									<a class="btn btn-warning"
+										onclick="runEffect(${assessment.id});"
+										style="padding: 0px 6px; cursor: pointer;"><i
+										class="fa fa-envelope-o" aria-hidden="true"></i></a>
+								</c:if> <c:if test="${assessment.assessmentStatus!='Submitted'}">
+									<a class="btn btn-warning disabled"
+										style="padding: 0px 6px; cursor: pointer;"><i
+										class="fa fa-envelope-o" aria-hidden="true"></i></a>
+								</c:if></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -274,7 +278,12 @@
 	</div>
 </div>
 
+<div class="toggler" id="msgPanel"
+	style="position: fixed; right: 0; bottom: 0; z-index: 1100;">
+	<div id="effect" class="effect"></div>
+</div>
 <script>
+
 	$(function() {
 		$('.completeAssessment').click(function() {
 			var compAssess = 0;
@@ -292,17 +301,46 @@
 			} else {
 				$("input[type='submit']").attr("disabled", "disabled");
 			}
-		});
+		}); 
+		$( "#effect" ).hide();
+		
 	});
+	
+	function runEffect(assessmentId) { 
+		$.when(loadPage(assessmentId)).then(slideEffect());	   
+	  };
+	  
+	  function loadPage(assessmentId){
+		  $("#effect").load(
+					'${contextRoot}/approver/sendApproverMail?assessmentId=' + assessmentId);
+		  
+	  }
+	  
+	  function slideEffect(){
+		  var selectedEffect = 'slide';
+			var options = {
+				direction : "right"
+			};
+			$("#effect").show('slide', options, 500);
+	  }
 	
 	 function showHistory(assessmentId){
 		 $("#assessmentHistoryModelBody").load(
 					'${contextRoot}/approver/assessmentHistory?assessmentId=' + assessmentId,
-					function() {
-						
+					function() {						
 						$('#assessmentHistoryModel').modal({
 							show : true
 						});
 					}); 
-	 }
+	 };
+	 
+	 function hideEffect() { 
+	      var selectedEffect = 'slide'; 
+	      var options = {
+	    		  direction: "right"		    		  
+	      }; 
+	      $( "#effect" ).hide( selectedEffect, options, 500 );
+	 };
+	 
+	
 </script>

@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.Valid;
 
+import net.gh.ghoshMyRmc.mailService.MailService;
 import net.gh.ghoshMyRmc.model.AccSpecControlModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
 import net.gh.ghoshMyRmc.model.AssessmentModel;
+import net.gh.ghoshMyRmc.model.MailModel;
 import net.gh.ghoshMyRmc.pdfGeneration.PdfSections;
 import net.gh.ghoshMyRmc.riskAnalysis.DownloadExcel;
 import net.gh.ghoshMyRmc.riskAnalysis.RiskCalculation;
@@ -32,6 +34,7 @@ import net.gh.ghoshMyRmcBackend.dto.AnswerCopy;
 import net.gh.ghoshMyRmcBackend.dto.AnswerTrail;
 import net.gh.ghoshMyRmcBackend.dto.Assessment;
 import net.gh.ghoshMyRmcBackend.dto.AssessmentCategories;
+import net.gh.ghoshMyRmcBackend.dto.AssessmentCategorySMEMapping;
 import net.gh.ghoshMyRmcBackend.dto.AssessmentTrail;
 import net.gh.ghoshMyRmcBackend.dto.Control;
 import net.gh.ghoshMyRmcBackend.dto.User;
@@ -79,6 +82,9 @@ public class ApproverController {
 
 	@Autowired
 	private PdfSections pdfSections;
+
+	@Autowired
+	private MailService mailService;
 
 	// ------------------Approver Home ----------------------
 	@RequestMapping(value = "/approverHome")
@@ -647,6 +653,76 @@ public class ApproverController {
 		mv.addObject("assessmentTrails", assessmentTrails);
 
 		return mv;
+	}
+
+	@RequestMapping(value = "/sendApproverMail")
+	public ModelAndView sendApproverMail(
+			@Valid @ModelAttribute("assessmentId") Long assessmentId,
+			BindingResult results, Model model, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("sendApproverMail");
+		mv.addObject("title", "asd");
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+
+		List<String> users = new ArrayList<String>();
+		users.add(assessment.getAssessor().getEmail());
+		List<AssessmentCategories> assessmentCategories = assessmentDao
+				.assessmentCategoriesByAssessment(assessment);
+		if (assessmentCategories != null) {
+			for (AssessmentCategories ascCat : assessmentCategories) {
+				if (ascCat.getReviwer() != null) {
+					if (!users.contains(ascCat.getReviwer().getEmail())) {
+						users.add(ascCat.getReviwer().getEmail());
+					}
+				}
+				List<AssessmentCategorySMEMapping> assessmentCategorySMEMappings = assessmentDao
+						.getAssessmentCategorySmeMappingByAssCat(ascCat);
+				if (assessmentCategorySMEMappings != null) {
+					for (AssessmentCategorySMEMapping ascCatSm : assessmentCategorySMEMappings) {
+						if (!users.contains(ascCatSm.getSME().getEmail())) {
+							users.add(ascCatSm.getSME().getEmail());
+						}
+					}
+				}
+			}
+		}
+
+		String user = "";
+		for (String u : users) {
+			if (user.equals("")) {
+				user = u;
+			} else {
+				user = user + "," + u;
+			}
+		}
+
+		MailModel mailModel = new MailModel();
+		mailModel.setTo(user);
+		mailModel.setCc(assessment.getApprover().getEmail());
+		mailModel.setSubject("MyRMC : Change/Update Notification for "
+				+ assessment.getAccount().getDepartment().getName() + " - "
+				+ assessment.getAccount().getLocation().getName());
+		mailModel.setMessage("Client/Department : "
+				+ assessment.getAccount().getDepartment().getName()
+				+ "<br>Location : "
+				+ assessment.getAccount().getLocation().getName()
+				+ "<br>LOB : " + assessment.getAccount().getLob().getName());
+		mv.addObject("mailModel", mailModel);
+		return mv;
+	}
+
+	@RequestMapping(value = "/sendApproverMail", method = RequestMethod.POST)
+	public String sendApproverMail(
+			@Valid @ModelAttribute("mailModel") MailModel mailModel,
+			BindingResult results, Model model, HttpServletRequest request) {
+
+		System.out.println(mailModel.getTo());
+		System.out.println(mailModel.getMessage());
+		System.out.println(mailModel.getSubject());
+		System.out.println(mailModel.getCc());
+
+		mailService.sendApproverNotificationMail(mailModel);
+
+		return "redirect:/approver/approverHome?operation=MailSent";
 	}
 
 	@RequestMapping(value = "/submitAssessment", method = RequestMethod.POST)
