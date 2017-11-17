@@ -110,7 +110,8 @@ table.cTable td {
 				</div> --%>
 			</div>
 			<div class="col-xl-10">
-				<table class="cTable" style="font-size: 13px; background: #f1f0f0;">
+				<table class="cTable"
+					style="font-size: 13px; background: #f1f0f0; border: 2px solid #8c8888; box-shadow: 3px 3px 2px #ccc;">
 					<tr style="background: #d4d4d4;">
 						<td>All Controls</td>
 						<td>Total Risks</td>
@@ -121,15 +122,15 @@ table.cTable td {
 						<td>More info Requested for NC</td>
 						<td>More info Requested for Non NC</td>
 					</tr>
-					<tr>
-						<td>${totalAnswer}</td>
-						<td>${totalRisks}</td>
-						<td>${reviewPendingforNC}</td>
-						<td>${reviewPendingforNonNC}</td>
-						<td>${reviewCompleteforNC}</td>
-						<td>${reviewCompleteforNonNC}</td>
-						<td>${changeRequiredforNC}</td>
-						<td>${changeRequiredforNonNC}</td>
+					<tr style="background: #fff;">
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${totalAnswer}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${totalRisks}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewPendingforNC}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewPendingforNonNC}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewCompleteforNC}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${reviewCompleteforNonNC}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${changeRequiredforNC}</td>
+						<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i>${changeRequiredforNonNC}</td>
 					</tr>
 				</table>
 			</div>

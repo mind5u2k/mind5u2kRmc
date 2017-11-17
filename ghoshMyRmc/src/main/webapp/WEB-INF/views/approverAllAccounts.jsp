@@ -241,7 +241,7 @@
 		<div class="col-xl-5">
 			<h6>Comment:</h6>
 			<sf:textarea cssClass="form-control" path="declaration"
-				id="declaration" />
+				Style="width: 99%;" id="declaration" />
 		</div>
 		<div class="col-xl-1"></div>
 		<div class="col-xl-12" style="padding-top: 42px;">

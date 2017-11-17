@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.gh.ghoshMyRmc.mailService.MailService;
 import net.gh.ghoshMyRmc.model.UserModel;
 import net.gh.ghoshMyRmcBackend.Util;
 import net.gh.ghoshMyRmcBackend.dao.CategoryDao;
@@ -40,6 +41,9 @@ public class PageController {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private MailService mailService;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -87,6 +91,37 @@ public class PageController {
 		}
 
 		return error;
+	}
+
+	@RequestMapping(value = "/forgotPassword")
+	public ModelAndView forgotPassword() {
+		ModelAndView mv = new ModelAndView("forgotPassword");
+		return mv;
+	}
+
+	@RequestMapping(value = "/sendPassword", method = RequestMethod.GET)
+	public ModelAndView sendPassword(
+			@RequestParam(name = "mailId", required = false) String mailId) {
+
+		ModelAndView mv = new ModelAndView("forgotPassword");
+		User user = userDao.getUserByEmailId(mailId);
+		System.out.println("user is [" + user + "]");
+
+		if (user != null) {
+			String originalPassword = Util.getSaltString();
+
+			user.setPassword(passwordEncoder.encode(originalPassword));
+			user.setEnabled(false);
+			userDao.updateUser(user);
+
+			mailService.sendNewGeneratedPassword(user, originalPassword);
+			mv.addObject("msg",
+					"New Password has been sent to your Registered Mail Id");
+		} else {
+			mv.addObject("errorMsg", "!! Mail Id is not Registered !!");
+		}
+
+		return mv;
 	}
 
 	@RequestMapping(value = "/perform-logout")

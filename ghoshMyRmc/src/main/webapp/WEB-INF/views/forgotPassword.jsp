@@ -48,14 +48,14 @@
 			Compliance)</a>
 	</nav>
 	<div class="container" style="margin-top: 80px; margin-bottom: 80px;">
-		<c:if test="${not empty msg}">
+		<c:if test="${not empty errorMsg}">
 			<div class="card card-login mx-auto mt-5">
-				<div class="alert alert-danger" style="margin: 0;">${msg}</div>
+				<div class="alert alert-danger" style="margin: 0;">${errorMsg}</div>
 			</div>
 		</c:if>
-		<c:if test="${not empty logout}">
+		<c:if test="${not empty msg}">
 			<div class="card card-login mx-auto mt-5">
-				<div class="alert alert-success" style="margin: 0;">${logout}</div>
+				<div class="alert alert-success" style="margin: 0;">${msg}</div>
 			</div>
 		</c:if>
 		<div class="card card-login mx-auto mt-5"
@@ -73,7 +73,7 @@
 					<div style="display: inline-block; float: right;">
 						<a class="btn btn-secondary" href="${contextRoot}/perform-logout">Cancel</a>
 						<input type="submit" class="btn btn-primary  "
-							value="Send Password" />
+							value="Send New Password" />
 					</div>
 				</sf:form>
 			</div>
@@ -108,9 +108,32 @@
 	<script src="${js}/sb-admin.min.js"></script>
 	<!-- Custom scripts for this page-->
 	<script src="${js}/sb-admin-datatables.min.js"></script>
+
+	<script>
+		var $userForm = $("#userForm");
+		if ($userForm.length) {
+			$userForm.validate({
+				rules : {
+					mailId : {
+						required : true
+					}
+				},
+				messages : {
+					mailId : {
+						required : "Please Enter your Registered Mail Id !!",
+					}
+				},
+				errorElement : 'em',
+				errorPlacement : function(error, element) {
+					error.addClass("help-block");
+					error.insertAfter(element);
+				}
+			});
+		}
+	</script>
+
 	<%-- 	<script src="${js}/sb-admin-charts.min.js"></script> --%>
 
-	<script src="${js}/myapp.js"></script>
 </body>
 
 </html>

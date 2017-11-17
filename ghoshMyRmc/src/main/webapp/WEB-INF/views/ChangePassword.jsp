@@ -82,6 +82,22 @@
 				</sf:form>
 			</div>
 		</div>
+		<div>
+			<table style="margin: 28px auto; font-size: 15px; color: #9a0303;">
+				<tr>
+					<td>minimum length: 8</td>
+				</tr>
+				<tr>
+					<td>at least one lower-case character</td>
+				</tr>
+				<tr>
+					<td>at least one digit</td>
+				</tr>
+				<tr>
+					<td>Allowed Characters: A-Z a-z 0-9 @ * _ - . !</td>
+				</tr>
+			</table>
+		</div>
 
 	</div>
 	<footer class="sticky-footer" style="width: 100%; background: #343a40;">
@@ -115,6 +131,46 @@
 	<%-- 	<script src="${js}/sb-admin-charts.min.js"></script> --%>
 
 	<script src="${js}/myapp.js"></script>
+
+	<script>
+		var $userForm = $("#userForm");
+		if ($userForm.length) {
+			$userForm.validate({
+				rules : {
+					password : {
+						required : true,
+						pwcheck : true,
+						minlength : 8
+					},
+					cpassword : {
+						equalTo : "#password"
+					}
+				},
+				messages : {
+					password : {
+						required : "Password is required",
+						pwcheck : "Please Enter a valid Password",
+						minlength : "Password "
+					},
+					cpassword : {
+						equalTo : "Password does not match",
+					}
+				},
+				errorElement : 'em',
+				errorPlacement : function(error, element) {
+					error.addClass("help-block");
+					error.insertAfter(element);
+				}
+			});
+		}
+
+		$.validator.addMethod("pwcheck", function(value) {
+			return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+					&& /[a-z]/.test(value) // has a lowercase letter
+					&& /\d/.test(value) && /[A-Z]/.test(value)
+					&& /[=!\-@._*]/.test(value)// has a digit
+		});
+	</script>
 </body>
 
 </html>
