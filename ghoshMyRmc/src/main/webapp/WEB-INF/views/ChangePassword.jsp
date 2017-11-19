@@ -62,7 +62,24 @@
 			style="box-shadow: 5px 5px 5px #343a40; margin-top: 22px !important;">
 			<div class="card-header">Change Password</div>
 			<div class="card-body" style="padding: 1rem 1.75rem;">
-
+				<div
+					style="padding: 13px; box-shadow: 5px 5px 5px #7d7e80; border: 1px solid #7d7e80; margin-bottom: 15px;">
+					<h4>Update your password?</h4>
+					<table style="margin: auto; font-size: 15px; color: #9a0303;">
+						<tr>
+							<td>minimum length: 8</td>
+						</tr>
+						<tr>
+							<td>at least one lower-case character</td>
+						</tr>
+						<tr>
+							<td>at least one digit</td>
+						</tr>
+						<tr>
+							<td>Allowed Characters: A-Z a-z 0-9 @ * _ - . !</td>
+						</tr>
+					</table>
+				</div>
 				<sf:form modelAttribute="user" id="userForm"
 					action="${contextRoot}/updatePassword" method="POST">
 					<div class="form-group">
@@ -81,22 +98,6 @@
 					</div>
 				</sf:form>
 			</div>
-		</div>
-		<div>
-			<table style="margin: 28px auto; font-size: 15px; color: #9a0303;">
-				<tr>
-					<td>minimum length: 8</td>
-				</tr>
-				<tr>
-					<td>at least one lower-case character</td>
-				</tr>
-				<tr>
-					<td>at least one digit</td>
-				</tr>
-				<tr>
-					<td>Allowed Characters: A-Z a-z 0-9 @ * _ - . !</td>
-				</tr>
-			</table>
 		</div>
 
 	</div>

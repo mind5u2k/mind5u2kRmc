@@ -7,7 +7,7 @@
 					<div class="card-body-icon">
 						<i class="fa fa-fw fa-database"></i>
 					</div>
-					<div class="mr-5">Total</div>
+					<div class="mr-5" style="padding-left: 7px;">All Accounts</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
 					class="float-left">No Of Accounts : ${total}</span>
@@ -20,7 +20,8 @@
 					<div class="card-body-icon">
 						<i class="fa fa-fw fa-exclamation-triangle"></i>
 					</div>
-					<div class="mr-5">Submission Pending</div>
+					<div class="mr-5" style="padding-left: 7px;">Submission
+						Pending</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
 					class="float-left">Submission Pending : ${completed}</span> <span
@@ -34,7 +35,7 @@
 					<div class="card-body-icon">
 						<i class="fa fa-fw fa-thumbs-o-up"></i>
 					</div>
-					<div class="mr-5">Submitted : ${submitted}</div>
+					<div class="mr-5" style="padding-left: 7px;">Submitted</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
 					class="float-left">Submitted : ${submitted}</span> <span
@@ -48,7 +49,7 @@
 					<div class="card-body-icon">
 						<i class="fa fa-fw fa-thumbs-o-down"></i>
 					</div>
-					<div class="mr-5">Incomplete : ${incomplete}</div>
+					<div class="mr-5" style="padding-left: 7px;">Incomplete</div>
 				</div>
 				<a class="card-footer text-white clearfix small z-1" href="#"> <span
 					class="float-left">Incomplete : ${incomplete}</span> <span

@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <c:set var="contextRoot" value="${pageContext.request.contextPath}"></c:set>
-<sf:form modelAttribute="ascCatSmeMapping" id="editApproverForm"
+<sf:form modelAttribute="ascCatSmeMapping" id="ascCatSmeForm"
 	action="${contextRoot}/admin/addAssCatSme" method="POST">
 	<div class="modal-body editApproverModelBody">
 		<div class="form-group row">
@@ -15,8 +15,11 @@
 	<div class="modal-footer">
 		<button class="btn btn-secondary" type="button" data-dismiss="modal"
 			style="margin-right: 12px;">Cancel</button>
-		<input class="btn btn-primary" type="submit"
-			style="margin-right: 12px;" value="Submit" />
+		<c:if test="${sme.size() != 0}">
+			<input class="btn btn-primary" type="submit"
+				style="margin-right: 12px;" value="Submit" />
+		</c:if>
+
 		<sf:hidden path="id" />
 		<sf:hidden path="assessmentCategories.id" />
 	</div>

@@ -44,9 +44,22 @@ public class Util {
 	public static final String SME = "SME";
 	public static final String REVIEWER = "Reviewer";
 
-	// ----------- return all states ----------
+	// ----------- return all states for Admin ----------
 	public static List<String> getAllRoles() {
 		List<String> roles = new ArrayList<String>();
+		roles.add(ADMIN);
+		roles.add(RADMIN);
+		roles.add(APPROVER);
+		roles.add(ASSESSOR);
+		roles.add(SME);
+		roles.add(REVIEWER);
+		return roles;
+	}
+
+	// ----------- return all states for Super Admin ----------
+	public static List<String> getAllRolesForSuperAdmin() {
+		List<String> roles = new ArrayList<String>();
+		roles.add(SUPERADMIN);
 		roles.add(ADMIN);
 		roles.add(RADMIN);
 		roles.add(APPROVER);

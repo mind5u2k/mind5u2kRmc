@@ -16,14 +16,14 @@
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/forgotPassword" access="permitAll" />
 		<intercept-url pattern="/sendPassword" access="permitAll" />
-		<intercept-url pattern="/admin/**" access="hasAuthority('Admin')" />
+		<intercept-url pattern="/admin/**" access="hasAnyAuthority('Admin','Super Admin')" />
 		<intercept-url pattern="/approver/**" access="hasAuthority('Approver')" />
 		<intercept-url pattern="/assessor/**" access="hasAuthority('Assessor')" />
 		<intercept-url pattern="/reviewer/**" access="hasAuthority('Reviewer')" />
 		<intercept-url pattern="/sme/**" access="hasAuthority('SME')" />
 
 		<intercept-url pattern="/**"
-			access="hasAnyAuthority('Admin','Approver','Assessor','Reviewer','SME')" />
+			access="hasAnyAuthority('Super Admin','Admin','Approver','Assessor','Reviewer','SME')" />
 
 		<access-denied-handler error-page="/access-denied" />
 		<form-login login-page="/login" default-target-url="/home"

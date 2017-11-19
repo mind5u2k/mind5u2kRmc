@@ -189,23 +189,29 @@ public class AdminController {
 
 		List<AssessmentCategories> assessmentCategories = assessmentDao
 				.assessmentCategoriesByAssessment(assessment);
+		System.out.println("assessment Categories are [" + assessmentCategories
+				+ "] and size is [" + assessmentCategories.size() + "]");
 		AssessmentCategories selectedAssessmentCategory = null;
 		if (catId != null) {
 			selectedAssessmentCategory = assessmentDao
 					.getAssessmentCategoryById(catId);
 		} else {
 			if (assessmentCategories != null) {
-				selectedAssessmentCategory = assessmentCategories.get(0);
+				if (assessmentCategories.size() > 0) {
+					selectedAssessmentCategory = assessmentCategories.get(0);
+				}
 			}
 		}
 
 		// ---------Preparing Answers for selected Assessment ---------
-
-		List<AccountSpecificControl> accountSpecificControls = controlDao
-				.accSpecControlByCategory(selectedAssessmentCategory);
-
-		List<Answer> answers = controlDao
-				.allAnswerbyAssessmentCategory(selectedAssessmentCategory);
+		List<AccountSpecificControl> accountSpecificControls = new ArrayList<AccountSpecificControl>();
+		List<Answer> answers = new ArrayList<Answer>();
+		if (selectedAssessmentCategory != null) {
+			accountSpecificControls = controlDao
+					.accSpecControlByCategory(selectedAssessmentCategory);
+			answers = controlDao
+					.allAnswerbyAssessmentCategory(selectedAssessmentCategory);
+		}
 		List<AnswerModel> answerModels = new ArrayList<AnswerModel>();
 		for (AccountSpecificControl acc : accountSpecificControls) {
 			boolean status = false;
@@ -655,7 +661,11 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView("page");
 		mv.addObject("title", "roles");
 		mv.addObject("userClickRoles", true);
-		mv.addObject("roles", Util.getAllRoles());
+		if (globalController.getUserModel().getRole().equals(Util.SUPERADMIN)) {
+			mv.addObject("roles", Util.getAllRolesForSuperAdmin());
+		} else if (globalController.getUserModel().getRole().equals(Util.ADMIN)) {
+			mv.addObject("roles", Util.getAllRoles());
+		}
 		return mv;
 	}
 
@@ -1125,6 +1135,8 @@ public class AdminController {
 			@Valid @ModelAttribute("assessmentCategory") AssessmentCategories assessmentCategory,
 			BindingResult results, Model model, HttpServletRequest request) {
 
+		Assessment assessment = assessmentDao
+				.getAssessmentById(assessmentCategory.getAssessment().getId());
 		AssessmentCategories existingAssessmentCategories = assessmentDao
 				.getExistingAssessmentCategory(assessmentDao
 						.getAssessmentById(assessmentCategory.getAssessment()
@@ -1136,7 +1148,8 @@ public class AdminController {
 
 		if (existingAssessmentCategories != null) {
 			return "redirect:/admin/editAssessments?operation=categoryAvailable&accId="
-					+ assessmentCategory.getAssessment().getId();
+					+ existingAssessmentCategories.getAssessment().getAccount()
+							.getId();
 		}
 
 		assessmentCategory.setStatus(Util.INCOMPLETE_CATEGORY);
@@ -1148,7 +1161,7 @@ public class AdminController {
 		}
 		assessmentDao.addAssessmentCategory(assessmentCategory);
 		return "redirect:/admin/editAssessments?operation=categoryAdded&accId="
-				+ assessmentCategory.getAssessment().getId();
+				+ assessment.getAccount().getId();
 	}
 
 	@RequestMapping(value = "/addNewSme")
@@ -1226,7 +1239,7 @@ public class AdminController {
 
 		assessmentDao.updateAssessmentCategory(assessmentCategory1);
 		return "redirect:/admin/editAssessments?operation=categoryUpdated&accId="
-				+ assessmentCategory1.getAssessment().getId();
+				+ assessmentCategory1.getAssessment().getAccount().getId();
 	}
 
 	@RequestMapping(value = "/editAssessment")
@@ -1524,7 +1537,7 @@ public class AdminController {
 	@RequestMapping(value = "/accountTransfer")
 	public ModelAndView accountTransfer(
 			@RequestParam(name = "operation", required = false) String operation,
-			@RequestParam(name = "assessmentFromId", required = false) Long assessmentFromId,
+			@RequestParam(name = "accountFromId", required = false) Long accountFromId,
 			@RequestParam(name = "accountToId", required = false) Long accountToId) {
 		ModelAndView mv = new ModelAndView("page");
 
@@ -1533,12 +1546,19 @@ public class AdminController {
 
 		mv.addObject("assessments", assessments);
 		mv.addObject("accounts", accounts);
+		if (operation != null) {
+			if (operation.equals("accountTransfer")) {
+				mv.addObject("msg", "Account has been successfully Transfered");
+			} else if (operation.equals("accountNotTransfer")) {
+				mv.addObject("erroMsg",
+						"Account has not been successfully transfered");
+			}
+		}
 
 		AccountTransferModel accountTransferModel = new AccountTransferModel();
-		if (assessmentFromId != null) {
-			Assessment assessment = assessmentDao
-					.getAssessmentById(assessmentFromId);
-			accountTransferModel.setAccountFrom(assessment.getAccount());
+		if (accountFromId != null) {
+			Account account = accountDao.getAccount(accountFromId);
+			accountTransferModel.setAccountFrom(account);
 		}
 		if (accountToId != null) {
 			Account account = accountDao.getAccount(accountToId);
@@ -1549,6 +1569,170 @@ public class AdminController {
 		mv.addObject("title", "Account Transfer");
 		mv.addObject("userClickAccountTransfer", true);
 		return mv;
+	}
+
+	@RequestMapping(value = "/transferAccount", method = RequestMethod.POST)
+	public String transferAccount(
+			@Valid @ModelAttribute("accountTransferModel") AccountTransferModel accountTransferModel) {
+		ModelAndView mv = new ModelAndView("page");
+
+		Account accountFrom = accountDao.getAccount(accountTransferModel
+				.getAccountFrom().getId());
+		Account accountTo = accountDao.getAccount(accountTransferModel
+				.getAccountTo().getId());
+
+		Assessment assessment = assessmentDao
+				.getAssessmentByAccount(accountFrom);
+		Assessment assessmentTo = assessmentDao
+				.getAssessmentByAccount(accountTo);
+
+		System.out.println("assessment from [" + assessment
+				+ "] and assessment to is [" + assessmentTo + "]");
+
+		if (assessment == null) {
+			return "redirect:/admin/accountTransfer?operation=accountNotTransfer";
+		} else {
+			if (assessmentTo == null) {
+
+				accountTo.setState(accountFrom.getState());
+				accountDao.updateAccount(accountTo);
+
+				Assessment asc = new Assessment();
+				asc.setAccount(accountTo);
+				asc.setApprover(assessment.getApprover());
+				asc.setAssessmentStatus(assessment.getAssessmentStatus());
+				asc.setAssessor(assessment.getAssessor());
+				asc.setRiskLevel(assessment.getRiskLevel());
+				asc.setRiskValue(assessment.getRiskValue());
+				assessmentDao.addAssessment(asc);
+
+				System.out.println(assessmentDao.getAssessmentByAccount(
+						accountTo).getId());
+				assessmentTo = assessmentDao.getAssessmentByAccount(accountTo);
+
+				List<AssessmentCategories> assessmentCategories = assessmentDao
+						.assessmentCategoriesByAssessment(assessment);
+				for (AssessmentCategories ascCat : assessmentCategories) {
+					AssessmentCategories ascCatTo = new AssessmentCategories();
+					ascCatTo.setAssessment(assessmentTo);
+					ascCatTo.setAssignedCategories(ascCat
+							.getAssignedCategories());
+					ascCatTo.setReviwer(ascCat.getReviwer());
+					ascCatTo.setStatus(ascCat.getStatus());
+					assessmentDao.addAssessmentCategory(ascCatTo);
+					AssessmentCategories assessmentCategoriesTo = assessmentDao
+							.getExistingAssessmentCategory(assessmentTo,
+									ascCat.getAssignedCategories());
+
+					// -------- Assessment Category sme mapping -------------
+					List<AssessmentCategorySMEMapping> smeMappings = assessmentDao
+							.getAssessmentCategorySmeMappingByAssCat(ascCat);
+					if (smeMappings != null) {
+						for (AssessmentCategorySMEMapping sm : smeMappings) {
+							AssessmentCategorySMEMapping mapping = new AssessmentCategorySMEMapping();
+							mapping.setAssessmentCategories(assessmentCategoriesTo);
+							mapping.setSME(sm.getSME());
+							assessmentDao.addAssessmentCatSmeMapping(sm);
+						}
+					}
+
+					// --------- Account Specific control ---------------
+					List<AccountSpecificControl> accountSpecificControls = controlDao
+							.accSpecControlByCategory(ascCat);
+					if (accountSpecificControls != null) {
+						for (AccountSpecificControl sm : accountSpecificControls) {
+							AccountSpecificControl c = new AccountSpecificControl();
+							c.setAssessmentCategories(assessmentCategoriesTo);
+							c.setControl(sm.getControl());
+							controlDao.addAccSpecControl(c);
+						}
+					}
+					// -------------Answers -------------------
+					List<AccountSpecificControl> specificControls = controlDao
+							.accSpecControlByCategory(ascCat);
+					List<AccountSpecificControl> specificControlsTo = controlDao
+							.accSpecControlByCategory(assessmentCategoriesTo);
+					if (specificControls != null) {
+						for (AccountSpecificControl sm : specificControls) {
+							AccountSpecificControl accountSpecificControlTo = controlDao
+									.accSpecificControlByCtrl(sm.getControl(),
+											assessmentCategoriesTo);
+							Answer answer = controlDao
+									.getAnswerByAccSpecControl(sm);
+							if (answer != null) {
+								Answer answerTo = new Answer();
+								answerTo.setControl(accountSpecificControlTo);
+								answerTo.setAnswer(answer.getAnswer());
+								answerTo.setArtifaceName(answer
+										.getArtifaceName());
+								answerTo.setArtifact(answer.getArtifact());
+								answerTo.setArtifactType(answer
+										.getArtifactType());
+								answerTo.setComment(answer.getComment());
+								answerTo.setConfirmationStatus(answer
+										.getConfirmationStatus());
+								answerTo.setDateAnswered(answer
+										.getDateAnswered());
+								answerTo.setLastRespondedUser(answer
+										.getLastRespondedUser());
+								answerTo.setMitigationDate(answer
+										.getMitigationDate());
+								answerTo.setNC(answer.isNC());
+								answerTo.setReviewerComment(answer
+										.getReviewerComment());
+								answerTo.setRiskAcceptance(answer
+										.isRiskAcceptance());
+								answerTo.setRiskAcceptenceby(answer
+										.getRiskAcceptenceby());
+								controlDao.addAnswer(answerTo);
+							}
+
+						}
+					}
+
+					List<AnswerCopy> answerCopies = controlDao
+							.allAnswerCopiesbyAssessmentCategory(ascCat);
+					if (answerCopies != null) {
+						for (AnswerCopy answer : answerCopies) {
+
+							AccountSpecificControl accountSpecificControlTo = controlDao
+									.accSpecificControlByCtrl(answer
+											.getControl().getControl(),
+											assessmentCategoriesTo);
+							Answer anTo = controlDao
+									.getAnswerByAccSpecControl(accountSpecificControlTo);
+
+							AnswerCopy answerTo = new AnswerCopy();
+							answerTo.setAnswerId(anTo.getId());
+							answerTo.setControl(accountSpecificControlTo);
+							answerTo.setAnswer(answer.getAnswer());
+							answerTo.setArtifaceName(answer.getArtifaceName());
+							answerTo.setArtifact(answer.getArtifact());
+							answerTo.setArtifactType(answer.getArtifactType());
+							answerTo.setComment(answer.getComment());
+							answerTo.setConfirmationStatus(answer
+									.getConfirmationStatus());
+							answerTo.setDateAnswered(answer.getDateAnswered());
+							answerTo.setLastRespondedUser(answer
+									.getLastRespondedUser());
+							answerTo.setMitigationDate(answer
+									.getMitigationDate());
+							answerTo.setNC(answer.isNC());
+							answerTo.setReviewerComment(answer
+									.getReviewerComment());
+							answerTo.setRiskAcceptance(answer
+									.isRiskAcceptance());
+							answerTo.setRiskAcceptenceby(answer
+									.getRiskAcceptenceby());
+							controlDao.saveAnswerCopy(answerTo);
+						}
+					}
+
+				}
+			}
+		}
+
+		return "redirect:/admin/accountTransfer?operation=accountTransfer";
 	}
 
 	// ------------------------ Model Attributes -----------------------------
@@ -1582,7 +1766,13 @@ public class AdminController {
 
 	@ModelAttribute("allRoles")
 	List<String> getAllRoles() {
-		return Util.getAllRoles();
+		if (globalController.getUserModel().getRole().equals(Util.SUPERADMIN)) {
+			return Util.getAllRolesForSuperAdmin();
+		} else if (globalController.getUserModel().getRole().equals(Util.ADMIN)) {
+			return Util.getAllRoles();
+		} else {
+			return null;
+		}
 	}
 
 	@ModelAttribute("categoryPhases")

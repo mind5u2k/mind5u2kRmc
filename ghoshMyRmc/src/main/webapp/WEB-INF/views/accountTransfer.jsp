@@ -1,12 +1,24 @@
 <%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <sf:form modelAttribute="accountTransferModel"
 	id="accountTransferModelForm"
-	action="${contextRoot}/admin/addNewCategory" method="POST">
+	action="${contextRoot}/admin/transferAccount" method="POST">
 	<div class="container-fluid">
+		<c:if test="${not empty msg}">
+			<div class="card card-login mx-auto mt-5"
+				style="margin: auto !important; border: 0;">
+				<div class="alert alert-success" style="margin: 0;">${msg}</div>
+			</div>
+		</c:if>
+		<c:if test="${not empty erroMsg}">
+			<div class="card card-login mx-auto mt-5"
+				style="margin: auto !important; border: 0;">
+				<div class="alert alert-danger" style="margin: 0;">${erroMsg}</div>
+			</div>
+		</c:if>
 		<div class="row">
-			<div class="col-6">
+			<div class="col-6 ">
 				<div class="modal-dialog" role="document">
-					<div class="modal-content">
+					<div class="modal-content accFrom">
 						<div class="modal-header"
 							style="background: #b1afaf; padding: 8px 15px;">
 							<h5 class="modal-title" id="exampleModalLabel">Account From</h5>
@@ -21,7 +33,7 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="Department Name" id="accountFrom"
-										path="accountFrom.department.name" />
+										path="accountFrom.department.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -29,7 +41,7 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="Location Name" id="accountFrom"
-										path="accountFrom.location.name" />
+										path="accountFrom.location.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -37,7 +49,7 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="LOB Name" id="accountFrom"
-										path="accountFrom.lob.name" />
+										path="accountFrom.lob.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -45,24 +57,23 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="Country Name" id="accountFrom"
-										path="accountFrom.department.name" />
+										path="accountFrom.department.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="example-text-input" class="col-4 col-form-label">Phase</label>
 								<div class="col-8">
 									<sf:input class="form-control" type="text" placeholder="Phase"
-										id="accountFrom" path="accountFrom.phase" />
+										id="accountFrom" path="accountFrom.phase" disabled="true" />
 								</div>
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="col-6">
 				<div class="modal-dialog" role="document">
-					<div class="modal-content">
+					<div class="modal-content accTo">
 						<div class="modal-header"
 							style="background: #b1afaf; padding: 8px 15px;">
 							<h5 class="modal-title" id="exampleModalLabel">Account To</h5>
@@ -77,7 +88,7 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="Department Name" id="accountFrom"
-										path="accountTo.department.name" />
+										path="accountTo.department.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -85,7 +96,7 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="Location Name" id="accountFrom"
-										path="accountTo.location.name" />
+										path="accountTo.location.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -93,7 +104,7 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="LOB Name" id="accountFrom"
-										path="accountTo.lob.name" />
+										path="accountTo.lob.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
@@ -101,14 +112,14 @@
 								<div class="col-8">
 									<sf:input class="form-control" type="text"
 										placeholder="Country Name" id="accountFrom"
-										path="accountTo.department.name" />
+										path="accountTo.department.name" disabled="true" />
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="example-text-input" class="col-4 col-form-label">Phase</label>
 								<div class="col-8">
 									<sf:input class="form-control" type="text" placeholder="Phase"
-										id="accountFrom" path="accountTo.phase" />
+										id="accountFrom" path="accountTo.phase" disabled="true" />
 								</div>
 							</div>
 						</div>
@@ -118,8 +129,10 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
+		<sf:hidden id="accountFromId" path="accountFrom.id" />
+		<sf:hidden id="accountToId" path="accountTo.id" />
 		<input class="btn btn-primary" type="submit" style="margin: auto;"
-			value="Transfer Account" />
+			onclick="return checkSelectedAccount();" value="Transfer Account" />
 	</div>
 
 
@@ -165,14 +178,14 @@
 									<td>${assessment.account.phase}</td>
 									<c:if test="${not empty accountTransferModel.accountTo}">
 										<td
-											onclick="window.location.href='${contextRoot}/admin/accountTransfer?assessmentFromId=${assessment.id}&accountToId=${accountTransferModel.accountTo.id}'"
+											onclick="window.location.href='${contextRoot}/admin/accountTransfer?accountFromId=${assessment.account.id}&accountToId=${accountTransferModel.accountTo.id}'"
 											class="btn-warning"
 											style="text-align: center; cursor: pointer;"><i
 											class="fa fa-plus" aria-hidden="true"></i></td>
 									</c:if>
 									<c:if test="${empty accountTransferModel.accountTo}">
 										<td
-											onclick="window.location.href='${contextRoot}/admin/accountTransfer?assessmentFromId=${assessment.id}'"
+											onclick="window.location.href='${contextRoot}/admin/accountTransfer?accountFromId=${assessment.account.id}'"
 											class="btn-warning"
 											style="text-align: center; cursor: pointer;"><i
 											class="fa fa-plus" aria-hidden="true"></i></td>
@@ -182,7 +195,6 @@
 						</tbody>
 					</table>
 				</div>
-
 			</div>
 		</div>
 	</div>
@@ -227,7 +239,7 @@
 									<td>${account.phase}</td>
 									<c:if test="${not empty accountTransferModel.accountFrom}">
 										<td
-											onclick="window.location.href='${contextRoot}/admin/accountTransfer?accountToId=${account.id}&assessmentFromId=${accountTransferModel.accountFrom.id}'"
+											onclick="window.location.href='${contextRoot}/admin/accountTransfer?accountToId=${account.id}&accountFromId=${accountTransferModel.accountFrom.id}'"
 											class="btn-warning"
 											style="text-align: center; cursor: pointer;"><i
 											class="fa fa-plus" aria-hidden="true"></i></td>
@@ -251,4 +263,27 @@
 </div>
 <script>
 	$("#dataTable1").datatable();
+
+	function checkSelectedAccount() {
+		if ($("#accountFromId").val() == 0) {
+			var $comEr = $("#comment-error");
+			if (!$comEr.length) {
+				$(".accFrom")
+						.after(
+								'<em id="comment-error" class="error help-block" style="text-align:center;">!! Please Select Account from !!</em>');
+			}
+			return false;
+
+		}
+
+		if ($("#accountToId").val() == 0) {
+			var $comEr1 = $("#comment-error1");
+			if (!$comEr1.length) {
+				$(".accTo")
+						.after(
+								'<em id="comment-error1" class="error help-block" style="text-align:center;">!! Please Select Account To !!</em>');
+			}
+			return false;
+		}
+	}
 </script>

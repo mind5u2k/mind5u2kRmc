@@ -62,21 +62,28 @@
 			style="box-shadow: 5px 5px 5px #343a40; margin-top: 22px !important;">
 			<div class="card-header">Forgot Password</div>
 			<div class="card-body" style="padding: 1rem 1.75rem;">
-
+				<div class="text-center mt-4 mb-5">
+					<h4>Forgot your password?</h4>
+					<p>Enter your email address and we will send you instructions
+						on how to reset your password.</p>
+				</div>
 				<sf:form modelAttribute="user" id="userForm"
 					action="${contextRoot}/sendPassword" method="GET">
 					<div class="form-group">
-						<label for="exampleInputPassword1">Enter Your Mail Id</label> <input
-							class="form-control" id="mailId" name="mailId" type="text"
-							placeholder="Mail Id" style="line-height: 1;" />
+						<input class="form-control" id="mailId" name="mailId" type="text"
+							placeholder="Enter Mail Address" style="line-height: 1;" />
 					</div>
-					<div style="display: inline-block; float: right;">
-						<a class="btn btn-secondary" href="${contextRoot}/perform-logout">Cancel</a>
-						<input type="submit" class="btn btn-primary  "
+					<div>
+						<input type="submit" class="btn btn-primary btn-block"
 							value="Send New Password" />
 					</div>
 				</sf:form>
+				<div class="text-center">
+					<a class="d-block small mt-3" href="${contextRoot}/perform-logout">Login
+						Page</a>
+				</div>
 			</div>
+
 		</div>
 
 	</div>

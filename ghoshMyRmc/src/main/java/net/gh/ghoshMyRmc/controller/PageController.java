@@ -190,7 +190,8 @@ public class PageController {
 		if (userModel == null) {
 			return "redirect:/login";
 		}
-		if (userModel.getRole().equals(Util.ADMIN)) {
+		if (userModel.getRole().equals(Util.ADMIN)
+				|| userModel.getRole().equals(Util.SUPERADMIN)) {
 			return "redirect:/admin/adminhome";
 		} else if (userModel.getRole().equals(Util.APPROVER)) {
 			return "redirect:/approver/approverHome";
