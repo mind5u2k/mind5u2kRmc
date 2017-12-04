@@ -99,6 +99,18 @@
 		<c:if test="${userClickAccountTransfer==true}">
 			<%@include file="./accountTransfer.jsp"%>
 		</c:if>
+		<c:if test="${userClickAccountDeletion==true}">
+			<%@include file="./accountDeleteion.jsp"%>
+		</c:if>
+		<c:if test="${userClickReporting==true}">
+			<%@include file="./reporting.jsp"%>
+		</c:if>
+		<c:if test="${userClickMitigationMail==true}">
+			<%@include file="./mitigationMail.jsp"%>
+		</c:if>
+		<c:if test="${userClickAssessmentMail==true}">
+			<%@include file="./assessmentMail.jsp"%>
+		</c:if>
 	</div>
 	<%@include file="./adminShared/footer.jsp"%>
 

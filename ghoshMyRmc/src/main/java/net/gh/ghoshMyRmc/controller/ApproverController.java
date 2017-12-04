@@ -591,7 +591,7 @@ public class ApproverController {
 		try {
 			System.out.println("assessment id is  [" + assessmentId + "]");
 			pdfSections.generatePdf(request, response, assessmentId);
-			downloadExcel.getAssessmentExcel(request, response, assessment);
+			// downloadExcel.getAssessmentExcel(request, response, assessment);
 
 		} catch (Exception e) {
 			e.printStackTrace();

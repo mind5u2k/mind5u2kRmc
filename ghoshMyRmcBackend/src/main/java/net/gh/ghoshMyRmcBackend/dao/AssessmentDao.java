@@ -60,4 +60,11 @@ public interface AssessmentDao {
 	AssessmentCategories getAssessmentCategoryById(long id);
 
 	boolean addAssessmentTrail(AssessmentTrail assessmentTrail);
+
+	boolean deleteAssessment(Assessment assessment);
+
+	boolean deleteAssessmentCategory(AssessmentCategories assessmentCategories);
+
+	boolean deleteAssessmentCategorySmeMappings(
+			AssessmentCategorySMEMapping smeMapping);
 }

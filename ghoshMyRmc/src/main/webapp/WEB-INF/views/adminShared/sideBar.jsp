@@ -68,22 +68,27 @@
 							Specific Controls</a></li>
 					<li id="accountTransfer"><a
 						href="${contextRoot}/admin/accountTransfer">Account Transfer</a></li>
-					<li id="accountDeletion"><a href="cards.html">Account
-							Deletion</a></li>
+					<li id="accountDeletion"><a
+						href="${contextRoot}/admin/accountDeleteion">Account Deletion</a></li>
 				</ul></li>
-			<li class="nav-item" data-toggle="tooltip" data-placement="right"
-				title="Dashboard"><a class="nav-link" href="index.html"> <i
+			<li id="reporting" class="nav-item" data-toggle="tooltip"
+				data-placement="right" title="Dashboard"><a class="nav-link"
+				href="${contextRoot}/admin/reporting"> <i
 					class="fa fa-fw fa-external-link"></i> <span class="nav-link-text">Reporting</span>
 			</a></li>
 			<li class="nav-item" data-toggle="tooltip" data-placement="right"
-				title="Components"><a
+				title="Components"><a id="mailing"
 				class="nav-link nav-link-collapse collapsed" data-toggle="collapse"
-				href="#mailing" data-parent="#exampleAccordion"> <i
+				href="#mailings" data-parent="#exampleAccordion"> <i
 					class="fa fa-fw fa-envelope"></i> <span class="nav-link-text">Mailing</span>
 			</a>
-				<ul class="sidenav-second-level collapse" id="mailing">
-					<li><a href="navbar.html">Mitigation Mail</a></li>
-					<li><a href="cards.html">Assessment Mail</a></li>
+				<ul class="sidenav-second-level collapse" id="mailings">
+					<li id="mitigationMailLink"><a
+						href="${contextRoot}/admin/mitigationMail">Mitigation
+							Mail</a></li>
+					<li id="assessmentMailLink"><a
+						href="${contextRoot}/admin/assessmentMail">Assessment
+							Mail</a></li>
 				</ul></li>
 		</ul>
 		<ul class="navbar-nav sidenav-toggler">

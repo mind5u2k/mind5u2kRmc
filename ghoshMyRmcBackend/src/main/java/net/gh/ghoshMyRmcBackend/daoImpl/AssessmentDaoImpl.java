@@ -69,6 +69,41 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	}
 
 	@Override
+	public boolean deleteAssessment(Assessment assessment) {
+		try {
+			sessionFactory.getCurrentSession().delete(assessment);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteAssessmentCategory(
+			AssessmentCategories assessmentCategories) {
+		try {
+			sessionFactory.getCurrentSession().delete(assessmentCategories);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteAssessmentCategorySmeMappings(
+			AssessmentCategorySMEMapping smeMapping) {
+		try {
+			sessionFactory.getCurrentSession().delete(smeMapping);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
 	public List<Assessment> assessmentListByApprover(User user) {
 		String assessmentQuery = "FROM Assessment WHERE approver.id = :approverId";
 

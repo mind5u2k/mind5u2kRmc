@@ -14,6 +14,7 @@ import net.gh.ghoshMyRmc.mailService.MailService;
 import net.gh.ghoshMyRmc.model.AccSpecControlModel;
 import net.gh.ghoshMyRmc.model.AccountTransferModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
+import net.gh.ghoshMyRmc.pdfGeneration.PdfSections;
 import net.gh.ghoshMyRmc.riskAnalysis.DownloadExcel;
 import net.gh.ghoshMyRmc.riskAnalysis.RiskCalculation;
 import net.gh.ghoshMyRmc.validator.UserValidator;
@@ -90,6 +91,9 @@ public class AdminController {
 
 	@Autowired
 	private MailService mailService;
+
+	@Autowired
+	private PdfSections pdfSections;
 
 	// ------------------Admin home ----------------------
 
@@ -1733,6 +1737,159 @@ public class AdminController {
 		}
 
 		return "redirect:/admin/accountTransfer?operation=accountTransfer";
+	}
+
+	// ----------- Account Deletetion ------------------------
+
+	@RequestMapping(value = "/accountDeleteion")
+	public ModelAndView accountDeleteion(
+			@RequestParam(name = "operation", required = false) String operation,
+			@RequestParam(name = "accountId", required = false) Long accountId) {
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("accounts", accountDao.accountList());
+		if (operation != null) {
+			if (operation.equals("accountDeleted")) {
+				mv.addObject("msg", "Account has been deleted Successfully");
+			} else if (operation.equals("accountNotDeleted")) {
+				mv.addObject(
+						"errorMsg",
+						"Account can not be deleted as Responses have already been provided for this Account");
+			}
+		}
+		mv.addObject("title", "Account Deletion");
+		mv.addObject("userClickAccountDeletion", true);
+		return mv;
+	}
+
+	@RequestMapping(value = "/deleteAccount")
+	public String deleteAccount(@ModelAttribute("accountId") long accountId) {
+
+		Account account = accountDao.getAccount(accountId);
+		System.out.println("account id is [" + account.getId() + "]");
+		Assessment assessment = assessmentDao.getAssessmentByAccount(account);
+		System.out.println("assessment id is [" + assessment + "]");
+		if (assessment == null) {
+			accountDao.deleteAccount(account);
+			return "redirect:/admin/accountDeleteion?operation=accountDeleted";
+		}
+
+		List<AssessmentCategories> assessmentCategories = assessmentDao
+				.assessmentCategoriesByAssessment(assessment);
+		if (assessmentCategories == null) {
+			assessmentDao.deleteAssessment(assessment);
+			accountDao.deleteAccount(account);
+			return "redirect:/admin/accountDeleteion?operation=accountDeleted";
+		} else {
+			if (assessmentCategories.size() == 0) {
+				assessmentDao.deleteAssessment(assessment);
+				accountDao.deleteAccount(account);
+				return "redirect:/admin/accountDeleteion?operation=accountDeleted";
+			} else {
+				boolean answerAvailability = false;
+				for (AssessmentCategories category : assessmentCategories) {
+					List<Answer> answers = controlDao
+							.allAnswerbyAssessmentCategory(category);
+					if (answers != null) {
+						if (answers.size() > 0) {
+							answerAvailability = true;
+							break;
+						}
+					}
+				}
+				if (answerAvailability) {
+					return "redirect:/admin/accountDeleteion?operation=accountNotDeleted";
+				} else {
+					for (AssessmentCategories category : assessmentCategories) {
+						List<AccountSpecificControl> accountSpecificControls = controlDao
+								.accSpecControlByCategory(category);
+						if (accountSpecificControls != null) {
+							for (AccountSpecificControl ac : accountSpecificControls) {
+								controlDao.deleteAccSpecControl(ac);
+							}
+						}
+						List<AssessmentCategorySMEMapping> mappings = assessmentDao
+								.getAssessmentCategorySmeMappingByAssCat(category);
+						if (mappings != null) {
+							for (AssessmentCategorySMEMapping ac : mappings) {
+								assessmentDao
+										.deleteAssessmentCategorySmeMappings(ac);
+							}
+						}
+					}
+					for (AssessmentCategories category : assessmentCategories) {
+						assessmentDao.deleteAssessmentCategory(category);
+					}
+					assessmentDao.deleteAssessment(assessment);
+					accountDao.deleteAccount(account);
+					return "redirect:/admin/accountDeleteion?operation=accountDeleted";
+				}
+			}
+		}
+	}
+
+	// ------------------- Reporting ---------------------------
+	@RequestMapping(value = "/reporting")
+	public ModelAndView reporting(
+			@RequestParam(name = "operation", required = false) String operation) {
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("title", "Reporting");
+		mv.addObject("userClickReporting", true);
+		mv.addObject("assessments",
+				getActivatedAccount(assessmentDao.assessmentList()));
+		return mv;
+	}
+
+	// ------------------- Mailing Part ---------------------------
+	@RequestMapping(value = "/mitigationMail")
+	public ModelAndView mitigationMail(
+			@RequestParam(name = "operation", required = false) String operation) {
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("title", "Mitigation Mail");
+		mv.addObject("userClickMitigationMail", true);
+		return mv;
+	}
+
+	@RequestMapping(value = "/assessmentMail")
+	public ModelAndView assessmentMail(
+			@RequestParam(name = "operation", required = false) String operation) {
+		ModelAndView mv = new ModelAndView("page");
+		mv.addObject("title", "Assessment Mail");
+		mv.addObject("userClickAssessmentMail", true);
+		return mv;
+	}
+
+	@RequestMapping("/downloadAllAssessmentDetails")
+	public String downloadAllAssessmentDetails(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		List<Assessment> assessments = assessmentDao.assessmentList();
+		try {
+			downloadExcel.getAllAssessmentExcel(request, response, assessments);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	// --------------------------------------------------------------------
+
+	@RequestMapping("/downloadPdf/{assessmentId}")
+	public String downloadPdf(@PathVariable("assessmentId") Long assessmentId,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
+		try {
+			System.out.println("assessment id is  [" + assessmentId + "]");
+			pdfSections.generatePdf(request, response, assessmentId);
+			downloadExcel.getAssessmentExcel(request, response, assessment);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	// ------------------------ Model Attributes -----------------------------

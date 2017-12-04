@@ -61,6 +61,24 @@ $(function() {
 		$("#processMgmt").addClass("show");
 		$("#accountTransfer").addClass("active");
 		break;
+	case 'Account Deletion':
+		$("#processManagementLink").removeClass("collapsed");
+		$("#processMgmt").addClass("show");
+		$("#accountDeletion").addClass("active");
+		break;
+	case 'Reporting':
+		$("#reporting").addClass("active");
+		break;
+	case 'Mitigation Mail':
+		$("#mailing").removeClass("collapsed");
+		$("#mailings").addClass("show");
+		$("#mitigationMailLink").addClass("active");
+		break;
+	case 'Assessment Mail':
+		$("#mailing").removeClass("collapsed");
+		$("#mailings").addClass("show");
+		$("#assessmentMailLink").addClass("active");
+		break;
 	default:
 		break;
 	}

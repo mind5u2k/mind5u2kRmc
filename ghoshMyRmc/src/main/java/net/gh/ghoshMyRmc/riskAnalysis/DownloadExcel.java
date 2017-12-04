@@ -19,6 +19,7 @@ import net.gh.ghoshMyRmcBackend.dto.AssessmentCategories;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -102,7 +103,20 @@ public class DownloadExcel {
 			HttpServletResponse response, Assessment assessment) {
 		try {
 
-			File folder = getFileFromURL(request);
+			REAL_PATH = request.getSession().getServletContext()
+					.getRealPath("/assets/excelTemplates/responses/");
+			if (!new File(REAL_PATH).exists()) {
+				new File(REAL_PATH).mkdirs();
+			}
+			File folder = null;
+			try {
+				folder = new File(REAL_PATH);
+			} catch (Exception e) {
+				folder = new File(REAL_PATH);
+			} finally {
+			}
+
+			// File folder = getFileFromURL(request);
 			File[] listOfFiles = folder.listFiles();
 
 			XSSFWorkbook workbook = new XSSFWorkbook(listOfFiles[0]);
@@ -186,6 +200,93 @@ public class DownloadExcel {
 
 			response.setHeader("Content-Disposition",
 					"attachment; filename=\"Response(s).xlsx");
+
+			workbook.write(response.getOutputStream());
+			workbook.close();
+
+		}
+
+		catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
+
+	public void getAllAssessmentExcel(HttpServletRequest request,
+			HttpServletResponse response, List<Assessment> assessments) {
+		try {
+
+			REAL_PATH = request.getSession().getServletContext()
+					.getRealPath("/assets/excelTemplates/assessmentTemplate/");
+			if (!new File(REAL_PATH).exists()) {
+				new File(REAL_PATH).mkdirs();
+			}
+			File folder = null;
+			try {
+				folder = new File(REAL_PATH);
+			} catch (Exception e) {
+				folder = new File(REAL_PATH);
+			} finally {
+			}
+
+			// File folder = getFileFromURL(request);
+			File[] listOfFiles = folder.listFiles();
+
+			XSSFWorkbook workbook = new XSSFWorkbook(listOfFiles[0]);
+
+			XSSFSheet sheet = workbook.getSheetAt(0);
+			int rowCount = 1;
+
+			for (Assessment assessment : assessments) {
+
+				Row row = sheet.createRow(++rowCount);
+				int columnCount = 0;
+
+				Cell cell = row.createCell(columnCount);
+				System.out.println("cell is [" + cell + "]");
+				cell.setCellValue(assessment.getAccount().getCountry()
+						.getName());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getDepartment()
+						.getName());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getLob().getName());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getLocation()
+						.getName());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getSector());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getPhase());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getInitialRating());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAccount().getState());
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getApprover().getName() + " ["
+						+ assessment.getApprover().getEmail() + "]");
+
+				cell = row.createCell(++columnCount);
+				cell.setCellValue(assessment.getAssessor().getName() + " ["
+						+ assessment.getAssessor().getEmail() + "]");
+			}
+
+			response.reset();
+
+			response.setContentType("application/vnd.ms-excel");
+
+			response.setHeader("Content-Disposition",
+					"attachment; filename=\"Assessment(s).xlsx");
 
 			workbook.write(response.getOutputStream());
 			workbook.close();
