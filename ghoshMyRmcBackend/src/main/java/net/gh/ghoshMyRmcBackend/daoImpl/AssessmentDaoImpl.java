@@ -47,6 +47,74 @@ public class AssessmentDaoImpl implements AssessmentDao {
 	}
 
 	@Override
+	public List<Assessment> assessmentListByCountry(long id) {
+		String assessmentQuery = "FROM Assessment WHERE account.country.id = :countryId";
+
+		try {
+			return sessionFactory.getCurrentSession()
+					.createQuery(assessmentQuery, Assessment.class)
+					.setParameter("countryId", id).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Assessment> assessmentListByCountryAndLob(long countryId,
+			long lobId) {
+		String assessmentQuery = "FROM Assessment WHERE account.country.id = :countryId and account.lob.id = :lobId";
+
+		try {
+			Query query = sessionFactory.getCurrentSession().createQuery(
+					assessmentQuery, Assessment.class);
+			query.setParameter("countryId", countryId);
+			query.setParameter("lobId", lobId);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Assessment> assessmentListByCountryLobAndLocation(
+			long countryId, long lobId, long locationId) {
+		String assessmentQuery = "FROM Assessment WHERE account.country.id = :countryId and account.lob.id = :lobId and account.location.id = :locationId";
+
+		try {
+			Query query = sessionFactory.getCurrentSession().createQuery(
+					assessmentQuery, Assessment.class);
+			query.setParameter("countryId", countryId);
+			query.setParameter("lobId", lobId);
+			query.setParameter("locationId", locationId);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Assessment> assessmentListByCountryLobLocationAndDepartment(
+			long countryId, long lobId, long locationId, long departmentId) {
+		String assessmentQuery = "FROM Assessment WHERE account.country.id = :countryId and account.lob.id = :lobId and account.location.id = :locationId and account.department.id = :departmentId";
+
+		try {
+			Query query = sessionFactory.getCurrentSession().createQuery(
+					assessmentQuery, Assessment.class);
+			query.setParameter("countryId", countryId);
+			query.setParameter("lobId", lobId);
+			query.setParameter("locationId", locationId);
+			query.setParameter("departmentId", departmentId);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
 	public boolean addAssessment(Assessment assessment) {
 		try {
 			sessionFactory.getCurrentSession().persist(assessment);

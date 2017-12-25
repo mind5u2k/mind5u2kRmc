@@ -8,11 +8,22 @@ import net.gh.ghoshMyRmcBackend.dto.AssessmentCategories;
 import net.gh.ghoshMyRmcBackend.dto.AssessmentCategorySMEMapping;
 import net.gh.ghoshMyRmcBackend.dto.AssessmentTrail;
 import net.gh.ghoshMyRmcBackend.dto.Category;
+import net.gh.ghoshMyRmcBackend.dto.Country;
 import net.gh.ghoshMyRmcBackend.dto.User;
 
 public interface AssessmentDao {
 
 	List<Assessment> assessmentList();
+
+	List<Assessment> assessmentListByCountry(long id);
+
+	List<Assessment> assessmentListByCountryAndLob(long countryId, long lobId);
+
+	List<Assessment> assessmentListByCountryLobAndLocation(long countryId,
+			long lobId, long locationId);
+
+	List<Assessment> assessmentListByCountryLobLocationAndDepartment(
+			long countryId, long lobId, long locationId, long departmentId);
 
 	List<Assessment> assessmentListByStatus(String status);
 

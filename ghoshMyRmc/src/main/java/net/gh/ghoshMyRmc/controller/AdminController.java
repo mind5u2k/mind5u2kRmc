@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import net.gh.ghoshMyRmc.mailService.MailService;
+import net.gh.ghoshMyRmc.mailService.SendMail;
 import net.gh.ghoshMyRmc.model.AccSpecControlModel;
 import net.gh.ghoshMyRmc.model.AccountTransferModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
@@ -1846,6 +1847,120 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView("page");
 		mv.addObject("title", "Mitigation Mail");
 		mv.addObject("userClickMitigationMail", true);
+		List<Country> countries = accountDao.countryLists();
+		if (countries != null) {
+		} else {
+			countries = new ArrayList<Country>();
+		}
+		mv.addObject("countries", countries);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updatedLob")
+	public ModelAndView updatedLob(
+			@RequestParam(name = "approvercountryId", required = false) long approvercountryId) {
+		ModelAndView mv = new ModelAndView("updatedLob");
+		List<Assessment> assessments = assessmentDao
+				.assessmentListByCountry(approvercountryId);
+		List<LOB> lobs = new ArrayList<LOB>();
+		if (assessments != null) {
+			for (Assessment assessment : assessments) {
+				System.out.println("lob id is ["
+						+ assessment.getAccount().getLob().getId()
+						+ "] and name is ["
+						+ assessment.getAccount().getLob().getName() + "]");
+				LOB lob = accountDao.getLOB(assessment.getAccount().getLob()
+						.getId());
+				lobs.add(lob);
+			}
+		}
+		mv.addObject("lobs", lobs);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updatedLocation")
+	public ModelAndView updatedLocation(
+			@RequestParam(name = "approvercountryId", required = false) long approvercountryId,
+			@RequestParam(name = "approverLOBId", required = false) long approverLOBId) {
+		ModelAndView mv = new ModelAndView("updatedLocation");
+		List<Assessment> assessments = assessmentDao
+				.assessmentListByCountryAndLob(approvercountryId, approverLOBId);
+		List<Location> locations = new ArrayList<Location>();
+		if (assessments != null) {
+			for (Assessment assessment : assessments) {
+				System.out
+						.println("Location id is ["
+								+ assessment.getAccount().getLocation().getId()
+								+ "] and name is ["
+								+ assessment.getAccount().getLocation()
+										.getName() + "]");
+				locations.add(assessment.getAccount().getLocation());
+			}
+		}
+		mv.addObject("locations", locations);
+		return mv;
+	}
+
+	@RequestMapping(value = "/updatedDepartment")
+	public ModelAndView updatedDepartment(
+			@RequestParam(name = "approvercountryId", required = false) long approvercountryId,
+			@RequestParam(name = "approverLOBId", required = false) long approverLOBId,
+			@RequestParam(name = "approverLocationId", required = false) long approverLocationId) {
+		ModelAndView mv = new ModelAndView("updatedDepartment");
+		List<Assessment> assessments = assessmentDao
+				.assessmentListByCountryLobAndLocation(approvercountryId,
+						approverLOBId, approverLocationId);
+		List<Department> departments = new ArrayList<Department>();
+		if (assessments != null) {
+			for (Assessment assessment : assessments) {
+				System.out.println("Department id is ["
+						+ assessment.getAccount().getDepartment().getId()
+						+ "] and name is ["
+						+ assessment.getAccount().getDepartment().getName()
+						+ "]");
+				departments.add(assessment.getAccount().getDepartment());
+			}
+		}
+		mv.addObject("departments", departments);
+		return mv;
+	}
+
+	@RequestMapping(value = "/sendApproverMail")
+	public ModelAndView sendApproverMail(
+			@RequestParam(name = "approvercountryId", required = false) long approvercountryId,
+			@RequestParam(name = "approverLOBId", required = false) long approverLOBId,
+			@RequestParam(name = "approverLocationId", required = false) long approverLocationId,
+			@RequestParam(name = "approverDepartmentId", required = false) long approverDepartmentId) {
+
+		System.out.println("hello there ! i am here");
+		ModelAndView mv = new ModelAndView("sendApproverMailMsg");
+		List<Assessment> assessments = new ArrayList<Assessment>();
+		if (approvercountryId == 0) {
+			List<Assessment> allAssessments = assessmentDao.assessmentList();
+			assessments = getActivatedAccount(allAssessments);
+		} else if (approverLOBId == 0) {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountry(approvercountryId);
+			assessments = getActivatedAccount(allAssessments);
+		} else if (approverLocationId == 0) {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountryAndLob(approvercountryId,
+							approverLOBId);
+			assessments = getActivatedAccount(allAssessments);
+		} else if (approverDepartmentId == 0) {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountryLobAndLocation(approvercountryId,
+							approverLOBId, approverLocationId);
+			assessments = getActivatedAccount(allAssessments);
+		} else {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountryLobLocationAndDepartment(
+							approvercountryId, approverLOBId,
+							approverLocationId, approverDepartmentId);
+			assessments = getActivatedAccount(allAssessments);
+		}
+		mailService.sendMitigationMailToApprover(assessments);
+		mv.addObject("msg", "Sent Successfully");
 		return mv;
 	}
 
