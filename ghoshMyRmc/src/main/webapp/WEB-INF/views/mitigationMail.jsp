@@ -211,10 +211,12 @@
 	function app() {
 		$("#approverBtn").css("display", "");
 		$("#assessorBtn").css("display", "none");
+		$("#sendMsg").css("display", "none");
 	}
 	function ass() {
 		$("#approverBtn").css("display", "none");
 		$("#assessorBtn").css("display", "");
+		$("#sendMsg").css("display", "none");
 	}
 
 	function sendApproverMail() {
@@ -238,6 +240,8 @@
 				console.log('Error: ' + e);
 			}
 		});
+		$("#approverBtn").css("display", "");
+		$("#assessorBtn").css("display", "none");
 	}
 	function sendAssessorMail() {
 		var approvercountryId = $("#approverCountryVal").val();
@@ -246,7 +250,7 @@
 		var approverDepartmentId = $("#approverDepartmentVal").val();
 		$.ajax({
 			type : "GET",
-			url : "sendAssessorMail?approvercountryId=" + approvercountryId
+			url : "${contextRoot}/admin/sendAssessorMail?approvercountryId=" + approvercountryId
 					+ "&approverLOBId=" + approverLOBId
 					+ "&approverLocationId=" + approverLocationId
 					+ "&approverDepartmentId=" + approverDepartmentId,
@@ -257,6 +261,8 @@
 				console.log('Error: ' + e);
 			}
 		});
+		$("#approverBtn").css("display", "none");
+		$("#assessorBtn").css("display", "");
 	}
 
 	function updateapproverLob() {

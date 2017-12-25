@@ -86,9 +86,9 @@
 					<li id="mitigationMailLink"><a
 						href="${contextRoot}/admin/mitigationMail">Mitigation
 							Mail</a></li>
-					<li id="assessmentMailLink"><a
+					<%-- <li id="assessmentMailLink"><a
 						href="${contextRoot}/admin/assessmentMail">Assessment
-							Mail</a></li>
+							Mail</a></li> --%>
 				</ul></li>
 		</ul>
 		<ul class="navbar-nav sidenav-toggler">

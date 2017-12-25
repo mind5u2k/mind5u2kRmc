@@ -1964,6 +1964,45 @@ public class AdminController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/sendAssessorMail")
+	public ModelAndView sendAssessorMail(
+			@RequestParam(name = "approvercountryId", required = false) long approvercountryId,
+			@RequestParam(name = "approverLOBId", required = false) long approverLOBId,
+			@RequestParam(name = "approverLocationId", required = false) long approverLocationId,
+			@RequestParam(name = "approverDepartmentId", required = false) long approverDepartmentId) {
+
+		System.out.println("hello there ! i am here");
+		ModelAndView mv = new ModelAndView("sendApproverMailMsg");
+		List<Assessment> assessments = new ArrayList<Assessment>();
+		if (approvercountryId == 0) {
+			List<Assessment> allAssessments = assessmentDao.assessmentList();
+			assessments = getActivatedAccount(allAssessments);
+		} else if (approverLOBId == 0) {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountry(approvercountryId);
+			assessments = getActivatedAccount(allAssessments);
+		} else if (approverLocationId == 0) {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountryAndLob(approvercountryId,
+							approverLOBId);
+			assessments = getActivatedAccount(allAssessments);
+		} else if (approverDepartmentId == 0) {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountryLobAndLocation(approvercountryId,
+							approverLOBId, approverLocationId);
+			assessments = getActivatedAccount(allAssessments);
+		} else {
+			List<Assessment> allAssessments = assessmentDao
+					.assessmentListByCountryLobLocationAndDepartment(
+							approvercountryId, approverLOBId,
+							approverLocationId, approverDepartmentId);
+			assessments = getActivatedAccount(allAssessments);
+		}
+		mailService.sendMitigationMailToAssessor(assessments);
+		mv.addObject("msg", "Sent Successfully");
+		return mv;
+	}
+
 	@RequestMapping(value = "/assessmentMail")
 	public ModelAndView assessmentMail(
 			@RequestParam(name = "operation", required = false) String operation) {

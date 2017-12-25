@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div style="padding: 17px; color: #099409;">!! ${msg} !!</div>
+<div id="sendMsg" style="padding: 17px; color: #099409;">!! ${msg}
+	!!</div>
 <div>
-
 	<button id="approverBtn" style="margin: 22px 0;"
 		onclick="sendApproverMail();" class="btn btn-primary">Send
 		Mail To Approver</button>
