@@ -39,13 +39,43 @@
 											target="_blank">${answerTrail.artifaceName}</a></td>
 									</c:if>
 								</c:if>
-								<c:if test="${userModel.role != 'Admin'}">
+								<c:if test="${userModel.role == 'Assessor'}">
+									<c:if test="${empty answerTrail.artifact}">
+										<td>${answerTrail.artifaceName}</td>
+									</c:if>
+									<c:if test="${not empty answerTrail.artifact}">
+										<td><a
+											href="${contextRoot}/assessor/downloadAnswerTrail/${answerTrail.id}"
+											target="_blank">${answerTrail.artifaceName}</a></td>
+									</c:if>
+								</c:if>
+								<c:if test="${userModel.role == 'Approver'}">
 									<c:if test="${empty answerTrail.artifact}">
 										<td>${answerTrail.artifaceName}</td>
 									</c:if>
 									<c:if test="${not empty answerTrail.artifact}">
 										<td><a
 											href="${contextRoot}/approver/downloadAnswerTrail/${answerTrail.id}"
+											target="_blank">${answerTrail.artifaceName}</a></td>
+									</c:if>
+								</c:if>
+								<c:if test="${userModel.role == 'Reviewer'}">
+									<c:if test="${empty answerTrail.artifact}">
+										<td>${answerTrail.artifaceName}</td>
+									</c:if>
+									<c:if test="${not empty answerTrail.artifact}">
+										<td><a
+											href="${contextRoot}/reviewer/downloadAnswerTrail/${answerTrail.id}"
+											target="_blank">${answerTrail.artifaceName}</a></td>
+									</c:if>
+								</c:if>
+								<c:if test="${userModel.role == 'SME'}">
+									<c:if test="${empty answerTrail.artifact}">
+										<td>${answerTrail.artifaceName}</td>
+									</c:if>
+									<c:if test="${not empty answerTrail.artifact}">
+										<td><a
+											href="${contextRoot}/sme/downloadAnswerTrail/${answerTrail.id}"
 											target="_blank">${answerTrail.artifaceName}</a></td>
 									</c:if>
 								</c:if>
