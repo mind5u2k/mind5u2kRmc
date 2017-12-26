@@ -59,6 +59,9 @@
 	<c:if test="${userModel.role == 'Admin'}">
 		<%@include file="./adminShared/header.jsp"%>
 	</c:if>
+	<c:if test="${userModel.role == 'Super Admin'}">
+		<%@include file="./adminShared/header.jsp"%>
+	</c:if>
 	<div class="container-fluid" style="padding: 18px;">
 		<div class="row">
 			<div class="col-xl-8">
@@ -91,6 +94,11 @@
 									- [ ${assessmentCategory.status} ]</a>
 							</c:if>
 							<c:if test="${userModel.role == 'Admin'}">
+								<a class="dropdown-item"
+									href="${contextRoot}/admin/assessmentPage?assessmentId=${assessmentCategory.assessment.id}&catId=${assessmentCategory.id}">${assessmentCategory.assignedCategories.name}
+									- [ ${assessmentCategory.status} ]</a>
+							</c:if>
+							<c:if test="${userModel.role == 'Super Admin'}">
 								<a class="dropdown-item"
 									href="${contextRoot}/admin/assessmentPage?assessmentId=${assessmentCategory.assessment.id}&catId=${assessmentCategory.id}">${assessmentCategory.assignedCategories.name}
 									- [ ${assessmentCategory.status} ]</a>
@@ -176,6 +184,11 @@
 											href="${contextRoot}/admin/download/${answerModel.answerCopy.answerId}"
 											target="_blank">${answerModel.answerCopy.artifaceName}</a></td>
 									</c:if>
+									<c:if test="${userModel.role == 'Super Admin'}">
+										<td><a
+											href="${contextRoot}/admin/download/${answerModel.answerCopy.answerId}"
+											target="_blank">${answerModel.answerCopy.artifaceName}</a></td>
+									</c:if>
 
 									<td>${answerModel.answerCopy.lastRespondedUser.name}</td>
 
@@ -212,6 +225,14 @@
 												class="fa fa-history" aria-hidden="true"></i></a></td>
 									</c:if>
 									<c:if test="${userModel.role == 'Admin'}">
+										<td style="text-align: center;"><a
+											class="btn btn-dark historyBtn" data-toggle="modal"
+											data-target="#myModal"
+											onclick="return showHistoryAdmin(${answerModel.answerCopy.answerId});"
+											style="padding: 0px 6px; cursor: pointer;"><i
+												class="fa fa-history" aria-hidden="true"></i></a></td>
+									</c:if>
+									<c:if test="${userModel.role == 'Super Admin'}">
 										<td style="text-align: center;"><a
 											class="btn btn-dark historyBtn" data-toggle="modal"
 											data-target="#myModal"

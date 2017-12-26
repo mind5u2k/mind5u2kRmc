@@ -28,13 +28,26 @@
 								<td style="white-space: nowrap;">${i}</td>
 								<td>${answerTrail.answer}</td>
 								<td>${answerTrail.comment}</td>
-								<c:if test="${empty answerTrail.artifact}">
-									<td>${answerTrail.artifaceName}</td>
+								<c:if
+									test="${userModel.role == 'Admin' || userModel.role == 'Super Admin'}">
+									<c:if test="${empty answerTrail.artifact}">
+										<td>${answerTrail.artifaceName}</td>
+									</c:if>
+									<c:if test="${not empty answerTrail.artifact}">
+										<td><a
+											href="${contextRoot}/admin/downloadAnswerTrail/${answerTrail.id}"
+											target="_blank">${answerTrail.artifaceName}</a></td>
+									</c:if>
 								</c:if>
-								<c:if test="${not empty answerTrail.artifact}">
-									<td><a
-										href="${contextRoot}/approver/downloadAnswerTrail/${answerTrail.id}"
-										target="_blank">${answerTrail.artifaceName}</a></td>
+								<c:if test="${userModel.role != 'Admin'}">
+									<c:if test="${empty answerTrail.artifact}">
+										<td>${answerTrail.artifaceName}</td>
+									</c:if>
+									<c:if test="${not empty answerTrail.artifact}">
+										<td><a
+											href="${contextRoot}/approver/downloadAnswerTrail/${answerTrail.id}"
+											target="_blank">${answerTrail.artifaceName}</a></td>
+									</c:if>
 								</c:if>
 								<td>${answerTrail.lastRespondedUser.name}</td>
 								<td>${answerTrail.dateAnswered}</td>

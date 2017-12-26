@@ -99,6 +99,11 @@
 									href="${contextRoot}/admin/assessmentPage?assessmentId=${assessmentCategory.assessment.id}&catId=${assessmentCategory.id}">${assessmentCategory.assignedCategories.name}
 									- [ ${assessmentCategory.status} ]</a>
 							</c:if>
+							<c:if test="${userModel.role == 'Super Admin'}">
+								<a class="dropdown-item"
+									href="${contextRoot}/admin/assessmentPage?assessmentId=${assessmentCategory.assessment.id}&catId=${assessmentCategory.id}">${assessmentCategory.assignedCategories.name}
+									- [ ${assessmentCategory.status} ]</a>
+							</c:if>
 						</c:forEach>
 					</div>
 				</div>
@@ -142,7 +147,7 @@
 								<th>Artifact</th>
 								<th>Last Responded By</th>
 								<c:if
-									test="${userModel.role != 'Reviewer' && userModel.role != 'Admin'}">
+									test="${userModel.role != 'Reviewer' && userModel.role != 'Admin' && userModel.role != 'Super Admin'}">
 									<th>Edit</th>
 								</c:if>
 								<th>Trail</th>
@@ -193,7 +198,11 @@
 											href="${contextRoot}/admin/download/${answerModel.answer.id}"
 											target="_blank">${answerModel.answer.artifaceName}</a></td>
 									</c:if>
-
+									<c:if test="${userModel.role == 'Super Admin'}">
+										<td><a
+											href="${contextRoot}/admin/download/${answerModel.answer.id}"
+											target="_blank">${answerModel.answer.artifaceName}</a></td>
+									</c:if>
 
 									<td>${answerModel.answer.lastRespondedUser.name}</td>
 
@@ -304,6 +313,23 @@
 													class="fa fa-history" aria-hidden="true"></i></a></td>
 										</c:if>
 									</c:if>
+									<c:if test="${userModel.role == 'Super Admin'}">
+										<c:if test="${answerModel.status==false}">
+											<td style="text-align: center;"><a
+												class="btn btn-dark historyBtn" data-toggle="tooltip"
+												data-placement="left" title="Not Responded yet"
+												style="padding: 0px 6px; cursor: pointer;"><i
+													class="fa fa-history" aria-hidden="true"></i></a></td>
+										</c:if>
+										<c:if test="${answerModel.status==true}">
+											<td style="text-align: center;"><a
+												class="btn btn-dark historyBtn" data-toggle="modal"
+												data-target="#myModal"
+												onclick="return showHistoryAdmin(${answerModel.answer.id});"
+												style="padding: 0px 6px; cursor: pointer;"><i
+													class="fa fa-history" aria-hidden="true"></i></a></td>
+										</c:if>
+									</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -312,7 +338,7 @@
 			</div>
 		</div>
 		<c:if
-			test="${userModel.role != 'Reviewer'  &&  userModel.role != 'SME' &&  userModel.role != 'Admin'}">
+			test="${userModel.role != 'Reviewer'  &&  userModel.role != 'SME' &&  userModel.role != 'Admin' &&  userModel.role != 'Super Admin'}">
 			<div class="dropdown-divider"></div>
 			<div class="row">
 				<div class="col-xl-12" style="text-align: center;">

@@ -17,6 +17,7 @@ import net.gh.ghoshMyRmcBackend.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -55,6 +56,9 @@ public class PageController {
 			@RequestParam(name = "updatedPassword", required = false) String updatedPassword,
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("login");
+
+		System.out.println("%%%%%%%%%%%%5  ["
+				+ SpringSecurityMessageSource.getAccessor() + "]");
 		System.out.println("************ "
 				+ getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		if (error != null) {

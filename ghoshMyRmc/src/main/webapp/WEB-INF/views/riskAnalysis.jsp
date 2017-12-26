@@ -79,6 +79,9 @@
 	<c:if test="${userModel.role == 'Admin'}">
 		<%@include file="./adminShared/header.jsp"%>
 	</c:if>
+	<c:if test="${userModel.role == 'Super Admin'}">
+		<%@include file="./adminShared/header.jsp"%>
+	</c:if>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xl-7" style="padding: 2px;">

@@ -55,8 +55,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 				newUser.setEmail("admin@myrmc.com");
 				newUser.setName("Admin");
 				newUser.setEnabled(true);
-				newUser.setPassword(passwordEncoder.encode("admin@123"));
-				newUser.setRole(Util.ADMIN);
+				newUser.setPassword(passwordEncoder.encode("Admin@123"));
+				newUser.setRole(Util.SUPERADMIN);
 				newUser.setState(Util.ACTIVE_STATE);
 				userDao.addUser(newUser);
 				throw new UsernameNotFoundException("hahahahahahahahaha");

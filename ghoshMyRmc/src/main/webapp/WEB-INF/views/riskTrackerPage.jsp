@@ -209,7 +209,8 @@ table.cTable td {
 								<th>Mitigate/Accept Risk</th>
 								<th>Artifact</th>
 								<th>Last Responded By</th>
-								<c:if test="${userModel.role != 'Admin'}">
+								<c:if
+									test="${userModel.role != 'Admin' && userModel.role != 'Super Admin'}">
 									<th>Edit</th>
 								</c:if>
 								<th>Trail</th>
@@ -238,7 +239,8 @@ table.cTable td {
 										target="_blank">${answer.artifaceName}</a></td>
 									<td>${answer.lastRespondedUser.name}</td>
 
-									<c:if test="${userModel.role != 'Admin'}">
+									<c:if
+										test="${userModel.role != 'Admin' && userModel.role != 'Super Admin'}">
 										<td style="text-align: center;"><a
 											class="btn btn-warning"
 											href="${contextRoot}/${userRole}/riskTrackerResponsePage?answerId=${answer.id}"
@@ -278,6 +280,14 @@ table.cTable td {
 												class="fa fa-history" aria-hidden="true"></i></a></td>
 									</c:if>
 									<c:if test="${userModel.role == 'Admin'}">
+										<td style="text-align: center;"><a
+											class="btn btn-dark historyBtn" data-toggle="modal"
+											data-target="#myModal"
+											onclick="return showHistoryAdmin(${answer.id});"
+											style="padding: 0px 6px; cursor: pointer;"><i
+												class="fa fa-history" aria-hidden="true"></i></a></td>
+									</c:if>
+									<c:if test="${userModel.role == 'Super Admin'}">
 										<td style="text-align: center;"><a
 											class="btn btn-dark historyBtn" data-toggle="modal"
 											data-target="#myModal"

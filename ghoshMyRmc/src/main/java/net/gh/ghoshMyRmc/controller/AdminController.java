@@ -271,6 +271,30 @@ public class AdminController {
 		return null;
 	}
 
+	@RequestMapping("/downloadAnswerTrail/{answerTrailId}")
+	public String downloadAnswerTrail(
+			@PathVariable("answerTrailId") Long answerTrailId,
+			HttpServletResponse response) {
+
+		AnswerTrail answerTrail = controlDao.getAnswerTrail(answerTrailId);
+		try {
+			response.setHeader("Content-Disposition", "inline;filename=\""
+					+ answerTrail.getArtifaceName() + "\"");
+			OutputStream out = response.getOutputStream();
+			response.setContentType(answerTrail.getArtifactType());
+			IOUtils.copy(answerTrail.getArtifact().getBinaryStream(), out);
+			out.flush();
+			out.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	@RequestMapping(value = "/history")
 	public ModelAndView answerHistory(
 			@Valid @ModelAttribute("answerId") Long answerId,
