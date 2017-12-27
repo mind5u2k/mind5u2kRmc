@@ -14,8 +14,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -29,8 +28,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right">
 					</a>
 				</div>
 			</div>
@@ -44,8 +42,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -59,8 +56,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -85,9 +81,8 @@
 						<th rowspan="2">Assessor</th>
 						<th rowspan="2">Assessment</th>
 						<th colspan="4" style="text-align: center;">Risk</th>
-						<th rowspan="2" colspan="2">Status</th>
-						<!-- 						<th rowspan="2">Submit</th> -->
-						<th rowspan="2">Mail</th>
+						<th rowspan="2" style="text-align: center;">Status</th>
+						<th rowspan="2" style="text-align: center;">Trail</th>
 					</tr>
 					<tr>
 						<th>Department</th>
@@ -216,10 +211,7 @@
 										value="${assessment.assessmentStatus}" disabled="true" /></td>
 							</c:if> --%>
 
-
-							<td><a class="btn btn-warning"
-								style="padding: 0px 6px; cursor: pointer;"><i
-									class="fa fa-envelope-o" aria-hidden="true"></i></a></td>
+ 
 						</tr>
 					</c:forEach>
 				</tbody>

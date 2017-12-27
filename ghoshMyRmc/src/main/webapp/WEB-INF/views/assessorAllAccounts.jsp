@@ -14,8 +14,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -29,8 +28,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -44,8 +42,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -59,8 +56,7 @@
 					</div>
 					<a class="card-footer text-white clearfix small z-1" href="#">
 						<span class="float-left">View Details</span> <span
-						class="float-right"> <i class="fa fa-angle-right"></i>
-					</span>
+						class="float-right"> </span>
 					</a>
 				</div>
 			</div>
@@ -84,9 +80,10 @@
 						<th rowspan="2">Approver</th>
 						<th rowspan="2">Assessment</th>
 						<th colspan="4" style="text-align: center;">Risk</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Status</th>
+						<th rowspan="2" style="text-align: center;">Status</th>
+						<th rowspan="2" style="text-align: center;">Trail</th>
 						<!-- 						<th rowspan="2">Submit</th> -->
-						<th rowspan="2">Mail</th>
+						<!-- <th rowspan="2">Mail</th> -->
 					</tr>
 					<tr>
 						<th>Department</th>
@@ -180,17 +177,19 @@
 
 
 							<c:if test="${assessment.assessmentStatus=='Incomplete'}">
-								<td class="btn-danger">${assessment.assessmentStatus}</td>
-								<td></td>
+								<td class="btn-danger" style="text-align: center;">${assessment.assessmentStatus}</td>
+								<td>--</td>
 							</c:if>
 							<c:if test="${assessment.assessmentStatus=='Complete'}">
-								<td class="btn-warning">${assessment.assessmentStatus}</td>
-								<td></td>
+								<td class="btn-warning" style="text-align: center;">${assessment.assessmentStatus}</td>
+								<td>--</td>
 							</c:if>
 							<c:if test="${assessment.assessmentStatus=='Submitted'}">
-								<td class="btn-success" style="white-space: nowrap;">${assessment.assessmentStatus}
+								<td class="btn-success"
+									style="white-space: nowrap; text-align: center;">${assessment.assessmentStatus}
 								</td>
-								<td class="btn-success"><a class="btn btn-success"
+								<td class="btn-success" style="text-align: center;"><a
+									class="btn btn-success"
 									onclick="return showHistory(${assessment.id});"
 									style="padding: 0px 6px; cursor: pointer;"> <i
 										class="fa fa-history" aria-hidden="true"></i>
@@ -215,9 +214,9 @@
 							</c:if> --%>
 
 
-							<td><a class="btn btn-warning"
+							<!-- <td><a class="btn btn-warning"
 								style="padding: 0px 6px; cursor: pointer;"><i
-									class="fa fa-envelope-o" aria-hidden="true"></i></a></td>
+									class="fa fa-envelope-o" aria-hidden="true"></i></a></td> -->
 						</tr>
 					</c:forEach>
 				</tbody>
