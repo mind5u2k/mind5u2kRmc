@@ -64,7 +64,7 @@
 	</c:if>
 	<div class="container-fluid" style="padding: 18px;">
 		<div class="row">
-			<div class="col-xl-8">
+			<div class="col-xl-2">
 				<div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -106,6 +106,19 @@
 						</c:forEach>
 					</div>
 				</div>
+			</div>
+			<div class="col-xl-6">
+				<table>
+					<tr>
+						<td style="padding: 0px 16px;">Account Name :
+							${assessment.account.department.name}</td>
+						<td
+							style="padding: 0px 16px; border-left: 1px solid #797676; border-right: 1px solid #797676;">Location
+							: ${assessment.account.location.name}</td>
+						<td style="padding: 0px 16px;">LOB :
+							${assessment.account.lob.name}</td>
+					</tr>
+				</table>
 			</div>
 			<div class="col-xl-4" style="text-align: right;">Assessment
 				Status : ${assessment.assessmentStatus}</div>

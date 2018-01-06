@@ -91,8 +91,11 @@
 				</div>
 			</div>
 			<div class="col-xl-2" style="padding-bottom: 12px;">
-				<a class="btn btn-warning"
-					style="padding: 6px 10px; cursor: pointer; float: right; position: absolute; bottom: 13px;"
+				<a class="btn btn-primary"
+					style="padding: 6px 10px; cursor: pointer; float: right; position: absolute; bottom: 42px;"
+					onclick="window.location.href='addAllAssessmentCategory?assessmentId=${assessment.id}'">Assign
+					All Category</a><a class="btn btn-primary"
+					style="padding: 6px 10px; cursor: pointer; float: right; position: absolute; bottom: 2px;"
 					onclick="addNewCategory(${assessment.id});">Add New Category</a>
 			</div>
 		</div>

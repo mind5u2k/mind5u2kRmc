@@ -78,8 +78,6 @@ public class Util {
 	public static List<String> getAllPhases() {
 		List<String> phases = new ArrayList<String>();
 		phases.add(STEADY_STATE_PHASE);
-		phases.add(PRE_SIGNING_PHASE);
-		phases.add(SUNSET_PHASE);
 		return phases;
 	}
 

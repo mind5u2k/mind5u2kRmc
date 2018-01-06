@@ -23,11 +23,15 @@
 					</div>
 				</div>
 			</div>
-
+			<div class="col-xl-12" style="text-align: right;">
+				<a class="btn btn-primary"
+					onclick="window.location.href='addAllQuestion?assCatId=${assessmentCategory.id}'">Assign
+					All</a>
+			</div>
 			<c:if test="${not empty msg}">
-				<div class="card card-login mx-auto mt-5"
-					style="margin: 9px auto !important; border: 0;">
-					<div class="alert alert-success" style="margin: 0;">${msg}</div>
+				<div class="mx-auto" style="border: 0;">
+					<div class="alert alert-success"
+						style="margin: 0px; width: 464px; margin: auto;">${msg}</div>
 				</div>
 			</c:if>
 			<div class="table-responsive">
@@ -60,14 +64,12 @@
 									<td style="text-align: center; cursor: pointer;"
 										class="btn-success"
 										onclick="window.location.href='${contextRoot}/admin/removeControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
-										<i class="fa fa-times" aria-hidden="true"></i> Remove
-									</td>
+										Remove</td>
 								</c:if>
 								<c:if test="${controlModel.status==false}">
 									<td style="text-align: center; cursor: pointer;"
 										onclick="window.location.href='${contextRoot}/admin/addControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'"
-										class="btn-primary"><i class="fa fa-plus"
-										aria-hidden="true"></i> Add</td>
+										class="btn-primary">Add</td>
 								</c:if>
 							</tr>
 						</c:forEach>

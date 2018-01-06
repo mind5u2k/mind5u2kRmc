@@ -187,9 +187,7 @@ $(function() {
 					+ "</td></tr><tr><td style='width: 10%;width: 10%;background: #c8cbf1;'>Flag</td><td>"
 					+ rowData.flag
 					+ "</td></tr><tr><td style='width: 10%;width: 10%;background: #c8cbf1;'>Risk</td><td>"
-					+ rowData.risk
-					+ "</td></tr><tr><td style='width: 10%;width: 10%;background: #c8cbf1;'>Screen</td><td>"
-					+ rowData.screen + "</td></tr></table>";
+					+ rowData.risk + "</td></tr></table>";
 			var div = $('<div/>').addClass('loading').html(string);
 			return div;
 		}

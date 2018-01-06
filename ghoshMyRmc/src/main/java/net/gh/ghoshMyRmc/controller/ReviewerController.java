@@ -443,7 +443,8 @@ public class ReviewerController {
 	public ModelAndView riskTrackerPage(
 			@RequestParam(name = "assessmentId", required = false) Long assessmentId,
 			@RequestParam(name = "catId", required = false) Long catId,
-			@RequestParam(name = "operation", required = false) String operation) {
+			@RequestParam(name = "operation", required = false) String operation,
+			@RequestParam(name = "ctrlType", required = false) String ctrlType) {
 
 		ModelAndView mv = new ModelAndView("riskTrackerPage");
 		mv.addObject("title", "Risk Tracker Page");
@@ -485,37 +486,109 @@ public class ReviewerController {
 		int reviewCompleteforNonNC = 0;
 		int changeRequiredforNC = 0;
 		int changeRequiredforNonNC = 0;
-
+		List<Answer> answersByCtrlType = new ArrayList<Answer>();
 		for (Answer answer : answers) {
 			System.out.println("answer artifact is [" + answer.getArtifact()
 					+ "]");
+			if (ctrlType == null) {
+				answersByCtrlType.add(answer);
+			}
+			if (ctrlType != null) {
+				if (ctrlType.equals("all")) {
+					answersByCtrlType.add(answer);
+				}
+			}
 			if (answer.isNC()) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("totalRisk")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				totalRisks++;
 			}
 			if (answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_PENDING)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewPendingforNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewPendingforNC++;
 			} else if (answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_COMPLETE)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewCompleteforNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewCompleteforNC++;
 			} else if (!answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_PENDING)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewPendingforNonNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewPendingforNonNC++;
 			} else if (!answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_COMPLETE)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewCompleteforNonNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewCompleteforNonNC++;
 			} else if (answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.CHANGE_REQUIRED)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("changeRequiredforNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				changeRequiredforNC++;
 			} else if (!answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.CHANGE_REQUIRED)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("changeRequiredforNonNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				changeRequiredforNonNC++;
+			}
+		}
+		String ctrlTypeString = "";
+		if (ctrlType == null) {
+			ctrlTypeString = "All Controls [" + answers.size() + "]";
+		} else {
+			if (ctrlType.equals("all")) {
+				ctrlTypeString = "All Controls [" + answers.size() + "]";
+			} else if (ctrlType.equals("totalRisk")) {
+				ctrlTypeString = "Total Risks [" + answersByCtrlType.size()
+						+ "]";
+			} else if (ctrlType.equals("reviewPendingforNC")) {
+				ctrlTypeString = "Review Pending for NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("reviewCompleteforNC")) {
+				ctrlTypeString = "Review Complete for NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("reviewPendingforNonNC")) {
+				ctrlTypeString = "Review Pending for Non NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("reviewCompleteforNonNC")) {
+				ctrlTypeString = "Review Complete for Non NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("changeRequiredforNC")) {
+				ctrlTypeString = "More Info Requested for NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("changeRequiredforNonNC")) {
+				ctrlTypeString = "More Info Requested for Non NC ["
+						+ answersByCtrlType.size() + "]";
 			}
 		}
 
@@ -530,7 +603,8 @@ public class ReviewerController {
 
 		// --------------------------------------------------------------
 
-		mv.addObject("answers", answers);
+		mv.addObject("answers", answersByCtrlType);
+		mv.addObject("ctrlTypeString", ctrlTypeString);
 		mv.addObject("assessment", assessment);
 		mv.addObject("assessmentCategories", assessmentCategories);
 		mv.addObject("selectedAssessmentCategory", selectedAssessmentCategory);

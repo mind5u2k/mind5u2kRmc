@@ -65,7 +65,7 @@
 
 	<div class="container-fluid" style="padding: 18px;">
 		<div class="row">
-			<div class="col-xl-8">
+			<div class="col-xl-4">
 				<div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -115,9 +115,29 @@
 							${selectedAssessmentCategory.assignedCategories.name}</button>
 					</div>
 				</c:if>
-
+				<c:if test="${userModel.role == 'Assessor'}">
+					<div class="btn-group">
+						<button type="button" class="btn btn-warning"
+							onclick="window.location.href='${contextRoot}/assessor/addAccSpecControls?assCatId=${selectedAssessmentCategory.id}'"
+							style="cursor: pointer;">Add/Remove Controls for
+							${selectedAssessmentCategory.assignedCategories.name}</button>
+					</div>
+				</c:if>
 			</div>
-			<div class="col-xl-4" style="text-align: right;">Assessment
+			<div class="col-xl-5">
+				<table>
+					<tr>
+						<td style="padding: 0px 16px 0 0;">Account Name :
+							${assessment.account.department.name}</td>
+						<td
+							style="padding: 0px 16px; border-left: 1px solid #797676; border-right: 1px solid #797676;">Location
+							: ${assessment.account.location.name}</td>
+						<td style="padding: 0px 0 0 16px;">LOB :
+							${assessment.account.lob.name}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-xl-3" style="text-align: right;">Assessment
 				Status : ${assessment.assessmentStatus}</div>
 		</div>
 		<div class="dropdown-divider"></div>

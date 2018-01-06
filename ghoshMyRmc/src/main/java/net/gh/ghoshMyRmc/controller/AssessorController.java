@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.Valid;
 
+import net.gh.ghoshMyRmc.model.AccSpecControlModel;
 import net.gh.ghoshMyRmc.model.AnswerModel;
 import net.gh.ghoshMyRmc.model.AssessmentModel;
 import net.gh.ghoshMyRmc.riskAnalysis.DownloadExcel;
@@ -31,6 +32,7 @@ import net.gh.ghoshMyRmcBackend.dto.AnswerTrail;
 import net.gh.ghoshMyRmcBackend.dto.Assessment;
 import net.gh.ghoshMyRmcBackend.dto.AssessmentCategories;
 import net.gh.ghoshMyRmcBackend.dto.AssessmentTrail;
+import net.gh.ghoshMyRmcBackend.dto.Control;
 import net.gh.ghoshMyRmcBackend.dto.User;
 
 import org.apache.commons.io.IOUtils;
@@ -113,6 +115,169 @@ public class AssessorController {
 				assessments, Util.INCOMPLETE_ASSESSMENT);
 		mv.addObject("incomplete", incompleteAssessments.size());
 
+		return mv;
+	}
+
+	@RequestMapping(value = "/addControl")
+	public String handleAddAccSpecControlSubmission(
+			@ModelAttribute("id") long id,
+			@ModelAttribute("assCatId") long assCatId) {
+
+		Control control = controlDao.getControl(id);
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assCatId);
+
+		AccountSpecificControl accountSpecificControl = new AccountSpecificControl();
+		accountSpecificControl.setAssessmentCategories(assessmentCategory);
+		accountSpecificControl.setControl(control);
+
+		controlDao.addAccSpecControl(accountSpecificControl);
+
+		assessmentCategory.setStatus("I");
+		assessmentDao.updateAssessmentCategory(assessmentCategory);
+
+		Assessment assessment = assessmentCategory.getAssessment();
+		assessment.setAssessmentStatus(Util.INCOMPLETE_ASSESSMENT);
+		assessmentDao.updateAssessment(assessment);
+
+		return "redirect:/assessor/addAccSpecControls?operation=accSpecControlAdded&assCatId="
+				+ assessmentCategory.getId();
+	}
+
+	@RequestMapping(value = "/removeControl")
+	public String handleRemoveSpecControlubmission(
+			@ModelAttribute("id") long id,
+			@ModelAttribute("assCatId") long assCatId) {
+
+		Control control = controlDao.getControl(id);
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assCatId);
+		AccountSpecificControl accountSpecificControlforAssessmentCat = controlDao
+				.accSpecificControlByCtrl(control, assessmentCategory);
+		Answer answer = controlDao
+				.getAnswerByAccSpecControl(accountSpecificControlforAssessmentCat);
+
+		if (answer == null) {
+			controlDao
+					.deleteAccSpecControl(accountSpecificControlforAssessmentCat);
+			return "redirect:/assessor/addAccSpecControls?operation=accSpecControlremoved&assCatId="
+					+ assessmentCategory.getId();
+		} else {
+			return "redirect:/assessor/addAccSpecControls?operation=accSpecControlNotRemoved&assCatId="
+					+ assessmentCategory.getId();
+		}
+	}
+
+	@RequestMapping(value = "/addAllQuestion")
+	public String addAllQuestion(@ModelAttribute("assCatId") long assCatId) {
+
+		System.out.println("assessment category id is [" + assCatId + "]");
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assCatId);
+
+		System.out.println("assessment category is [" + assessmentCategory
+				+ "]");
+		List<Control> leftControls = new ArrayList<Control>();
+
+		List<Control> allControlsforSelectedCat = new ArrayList<Control>();
+		if (assessmentCategory.getAssignedCategories() != null) {
+			allControlsforSelectedCat = controlDao
+					.controlListsByCategory(assessmentCategory
+							.getAssignedCategories());
+		}
+
+		List<AccountSpecificControl> accountSpecificControls = controlDao
+				.accSpecControlByCategory(assessmentCategory);
+
+		for (Control control : allControlsforSelectedCat) {
+			boolean status = false;
+			for (AccountSpecificControl accControl : accountSpecificControls) {
+				if (control.getId() == accControl.getControl().getId()) {
+					status = true;
+					break;
+				}
+			}
+			if (!status) {
+				leftControls.add(control);
+			}
+		}
+
+		for (Control control : leftControls) {
+			AccountSpecificControl accountSpecificControl = new AccountSpecificControl();
+			accountSpecificControl.setAssessmentCategories(assessmentCategory);
+			accountSpecificControl.setControl(control);
+			controlDao.addAccSpecControl(accountSpecificControl);
+		}
+
+		assessmentCategory.setStatus("I");
+		assessmentDao.updateAssessmentCategory(assessmentCategory);
+
+		Assessment assessment = assessmentCategory.getAssessment();
+		assessment.setAssessmentStatus(Util.INCOMPLETE_ASSESSMENT);
+		assessmentDao.updateAssessment(assessment);
+
+		return "redirect:/assessor/addAccSpecControls?operation=accSpecControlAdded&assCatId="
+				+ assessmentCategory.getId();
+	}
+
+	@RequestMapping(value = "/addAccSpecControls")
+	public ModelAndView addAccSpecControls(
+			@RequestParam(name = "assCatId", required = false) long assCatId,
+			@RequestParam(name = "operation", required = false) String operation) {
+
+		ModelAndView mv = new ModelAndView("addAccSpecControls");
+		mv.addObject("title", "Add Account Specific Control Page");
+
+		AssessmentCategories assessmentCategory = assessmentDao
+				.getAssessmentCategoryById(assCatId);
+
+		if (operation != null) {
+			if (operation.equals("accSpecControlAdded")) {
+				mv.addObject("msg",
+						"Control has been Successfully Added to this Assessment");
+			} else if (operation.equals("accSpecControlremoved")) {
+				mv.addObject("msg",
+						"Account Specific control has been successfully Removed");
+			} else if (operation.equals("accSpecControlNotRemoved")) {
+				mv.addObject(
+						"erroMsg",
+						"Selected Control could not be removed as the Respnose has already been submitted for this Control");
+			}
+		}
+
+		List<Control> allControlsforSelectedCat = controlDao
+				.controlListsByCategory(assessmentCategory
+						.getAssignedCategories());
+
+		List<AccountSpecificControl> accountSpecificControls = controlDao
+				.accSpecControlByCategory(assessmentCategory);
+
+		List<AccSpecControlModel> controlModel = new ArrayList<AccSpecControlModel>();
+
+		for (Control control : allControlsforSelectedCat) {
+			boolean status = false;
+			for (AccountSpecificControl accControl : accountSpecificControls) {
+				if (control.getId() == accControl.getControl().getId()) {
+					AccSpecControlModel m = new AccSpecControlModel();
+					m.setControl(control);
+					m.setStatus(true);
+					status = true;
+					controlModel.add(m);
+					break;
+				}
+			}
+			if (!status) {
+				AccSpecControlModel m = new AccSpecControlModel();
+				m.setControl(control);
+				m.setStatus(false);
+				controlModel.add(m);
+			}
+		}
+
+		// ---------Preparing Answers for selected Assessment ---------
+
+		mv.addObject("assessmentCategory", assessmentCategory);
+		mv.addObject("allControlsforSelectedCat", controlModel);
 		return mv;
 	}
 
@@ -514,17 +679,14 @@ public class AssessorController {
 	public ModelAndView riskTrackerPage(
 			@RequestParam(name = "assessmentId", required = false) Long assessmentId,
 			@RequestParam(name = "catId", required = false) Long catId,
-			@RequestParam(name = "operation", required = false) String operation) {
+			@RequestParam(name = "operation", required = false) String operation,
+			@RequestParam(name = "ctrlType", required = false) String ctrlType) {
 
 		ModelAndView mv = new ModelAndView("riskTrackerPage");
 		mv.addObject("title", "Risk Tracker Page");
 
 		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
 
-		if (!assessment.getAssessor().getEmail()
-				.equals(globalController.getUserModel().getEmail())) {
-			mv = new ModelAndView("asdf");
-		}
 		if (operation != null) {
 			if (operation.equals("saveRiskTrackerResponse")) {
 				mv.addObject("msg",
@@ -550,6 +712,7 @@ public class AssessorController {
 
 		// ---------- countring according to confirmation status --------
 
+		String ctrlTypeString = "";
 		int totalAnswer = 0;
 		int totalRisks = 0;
 		int reviewPendingforNC = 0;
@@ -559,36 +722,109 @@ public class AssessorController {
 		int changeRequiredforNC = 0;
 		int changeRequiredforNonNC = 0;
 
+		List<Answer> answersByCtrlType = new ArrayList<Answer>();
 		for (Answer answer : answers) {
 			System.out.println("answer artifact is [" + answer.getArtifact()
 					+ "]");
+			if (ctrlType == null) {
+				answersByCtrlType.add(answer);
+			}
+			if (ctrlType != null) {
+				if (ctrlType.equals("all")) {
+					answersByCtrlType.add(answer);
+				}
+			}
 			if (answer.isNC()) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("totalRisk")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				totalRisks++;
 			}
 			if (answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_PENDING)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewPendingforNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewPendingforNC++;
 			} else if (answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_COMPLETE)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewCompleteforNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewCompleteforNC++;
 			} else if (!answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_PENDING)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewPendingforNonNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewPendingforNonNC++;
 			} else if (!answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.REVIEW_COMPLETE)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("reviewCompleteforNonNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				reviewCompleteforNonNC++;
 			} else if (answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.CHANGE_REQUIRED)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("changeRequiredforNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				changeRequiredforNC++;
 			} else if (!answer.isNC()
 					&& answer.getConfirmationStatus().equals(
 							Util.CHANGE_REQUIRED)) {
+				if (ctrlType != null) {
+					if (ctrlType.equals("changeRequiredforNonNC")) {
+						answersByCtrlType.add(answer);
+					}
+				}
 				changeRequiredforNonNC++;
+			}
+		}
+
+		if (ctrlType == null) {
+			ctrlTypeString = "All Controls [" + answers.size() + "]";
+		} else {
+			if (ctrlType.equals("all")) {
+				ctrlTypeString = "All Controls [" + answers.size() + "]";
+			} else if (ctrlType.equals("totalRisk")) {
+				ctrlTypeString = "Total Risks [" + answersByCtrlType.size()
+						+ "]";
+			} else if (ctrlType.equals("reviewPendingforNC")) {
+				ctrlTypeString = "Review Pending for NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("reviewCompleteforNC")) {
+				ctrlTypeString = "Review Complete for NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("reviewPendingforNonNC")) {
+				ctrlTypeString = "Review Pending for Non NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("reviewCompleteforNonNC")) {
+				ctrlTypeString = "Review Complete for Non NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("changeRequiredforNC")) {
+				ctrlTypeString = "More Info Requested for NC ["
+						+ answersByCtrlType.size() + "]";
+			} else if (ctrlType.equals("changeRequiredforNonNC")) {
+				ctrlTypeString = "More Info Requested for Non NC ["
+						+ answersByCtrlType.size() + "]";
 			}
 		}
 
@@ -603,11 +839,11 @@ public class AssessorController {
 
 		// --------------------------------------------------------------
 
-		mv.addObject("answers", answers);
+		mv.addObject("answers", answersByCtrlType);
+		mv.addObject("ctrlTypeString", ctrlTypeString);
 		mv.addObject("assessment", assessment);
 		mv.addObject("assessmentCategories", assessmentCategories);
 		mv.addObject("selectedAssessmentCategory", selectedAssessmentCategory);
-		mv.addObject("userRole", "assessor");
 		return mv;
 	}
 

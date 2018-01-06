@@ -142,11 +142,11 @@ tr.shown td.details-control {
 							<sf:select class="form-control" id="risk" path="risk"
 								items="${controlRisks}" />
 						</div>
-						<label for="example-text-input" class="col-2 col-form-label">Screen</label>
+						<%-- <label for="example-text-input" class="col-2 col-form-label">Screen</label>
 						<div class="col-4">
 							<sf:select class="form-control" id="screen" path="screen"
 								items="${controlScreens}" />
-						</div>
+						</div> --%>
 					</div>
 				</div>
 				<div class="modal-footer">

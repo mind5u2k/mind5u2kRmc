@@ -54,6 +54,12 @@
 		</div>
 		<div class="dropdown-divider"></div>
 		<div class="row">
+			<div class="col-xl-12"
+				style="text-align: right; padding-right: 37px;">
+				<a class="btn btn-primary"
+					onclick="window.location.href='addAllQuestion?assCatId=${assessmentCategory.id}'">Assign
+					All</a>
+			</div>
 			<div class="col-xl-12">
 				<c:if test="${not empty msg}">
 					<div class="card card-login mx-auto mt-5"
@@ -79,7 +85,7 @@
 								<th>Rating</th>
 								<th>Flag</th>
 								<th>Risk</th>
-								<th>Add/Remove</th>
+								<th style="width: 93px;">Add/Remove</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -97,16 +103,14 @@
 									<c:if test="${controlModel.status==true}">
 										<td style="text-align: center; cursor: pointer;"
 											class="btn-success"
-											onclick="window.location.href='${contextRoot}/approver/removeControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
-											<i class="fa fa-times" aria-hidden="true"></i> Remove
-										</td>
+											onclick="window.location.href='removeControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
+											Remove</td>
 									</c:if>
 									<c:if test="${controlModel.status==false}">
 										<td style="text-align: center; cursor: pointer;"
 											class="btn-primary"
-											onclick="window.location.href='${contextRoot}/approver/addControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
-											<i class="fa fa-plus" aria-hidden="true"></i> Add
-										</td>
+											onclick="window.location.href='addControl?id=${controlModel.control.id}&assCatId=${assessmentCategory.id}'">
+											Add</td>
 									</c:if>
 								</tr>
 							</c:forEach>
@@ -119,7 +123,7 @@
 		<div class="row" style="float: right;">
 			<div class="col-xl-12">
 				<button class="btn btn-primary" style="cursor: pointer;"
-					onclick="window.location.href='${contextRoot}/approver/assessmentPage?assessmentId=${assessmentCategory.assessment.id}'">Go
+					onclick="window.location.href='assessmentPage?assessmentId=${assessmentCategory.assessment.id}'">Go
 					to Assessment Page</button>
 			</div>
 		</div>

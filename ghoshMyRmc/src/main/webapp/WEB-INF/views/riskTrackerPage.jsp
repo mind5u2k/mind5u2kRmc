@@ -52,6 +52,11 @@ table.cTable td {
 	border: 1px solid #a79d9d;
 	padding: 2px 6px;
 }
+
+.dropdown-item:focus, .dropdown-item:hover {
+	background: #e6e4e4;
+	cursor: pointer;
+}
 </style>
 </head>
 
@@ -76,8 +81,8 @@ table.cTable td {
 		<%@include file="./adminShared/header.jsp"%>
 	</c:if>
 	<div class="container-fluid" style="padding: 18px;">
-		<div class="row" style="text-align: center;">
-			<div class="col-xl-2">
+		<div class="row" style="text-align: left;">
+			<div class="col-xl-4">
 				<div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle"
 						style="width: 135px;" data-toggle="dropdown" aria-haspopup="true"
@@ -87,32 +92,62 @@ table.cTable td {
 						<c:forEach items="${assessmentCategories}"
 							var="assessmentCategory">
 							<a class="dropdown-item s"
-								href="${contextRoot}/${userRole}/riskTracker?assessmentId=${assessmentCategory.assessment.id}&catId=${assessmentCategory.id}">${assessmentCategory.assignedCategories.name}
+								href="riskTracker?assessmentId=${assessmentCategory.assessment.id}&catId=${assessmentCategory.id}">${assessmentCategory.assignedCategories.name}
 							</a>
 						</c:forEach>
 					</div>
 				</div>
-				<%-- <div class="btn-group">
+				<div class="btn-group">
 					<button type="button" class="btn btn-primary dropdown-toggle"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-						style="width: 199px;">All Controls [${totalAnswer}]
-						&nbsp;&nbsp;</button>
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${ctrlTypeString}&nbsp;&nbsp;</button>
 					<div class="dropdown-menu">
-						<a class="dropdown-item s">All Controls [${totalAnswer}] </a><a
-							class="dropdown-item">Total Risks [${totalRisks}] </a><a
-							class="dropdown-item">Review Pending for NC
-							[${reviewPendingforNC}]</a><a class="dropdown-item">Review
+						<a class="dropdown-item s" style="color: #007bff;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=all"><i
+							class="fa fa-thumbs-o-up" aria-hidden="true"></i> All Controls
+							[${totalAnswer}] </a><a class="dropdown-item" style="color: #dc3545;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=totalRisk"><i
+							class="fa fa-thumbs-o-down" aria-hidden="true"></i> Total Risks
+							[${totalRisks}] </a><a class="dropdown-item" style="color: #dc3545;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=reviewPendingforNC"><i
+							class="fa fa-thumbs-down" aria-hidden="true"></i> Review Pending
+							for NC [${reviewPendingforNC}]</a><a class="dropdown-item"
+							style="color: #28a745;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=reviewPendingforNonNC"><i
+							class="fa fa-thumbs-o-down" aria-hidden="true"></i> Review
 							Pending for Non NC [${reviewPendingforNonNC}]</a><a
-							class="dropdown-item">Review Complete for NC
-							[${reviewCompleteforNC}]</a><a class="dropdown-item">Review
-							Complete for Non NC [${reviewCompleteforNonNC}]</a><a
-							class="dropdown-item">More info Requested for NC
-							[${changeRequiredforNC}]</a><a class="dropdown-item">More info
-							Requested for Non NC [${changeRequiredforNonNC}]</a>
+							class="dropdown-item" style="color: #dc3545;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=reviewCompleteforNC"><i
+							class="fa fa-thumbs-o-up" aria-hidden="true"></i> Review Complete
+							for NC [${reviewCompleteforNC}]</a><a class="dropdown-item"
+							style="color: #28a745;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=reviewCompleteforNonNC"><i
+							class="fa fa-thumbs-up" aria-hidden="true"></i> Review Complete
+							for Non NC [${reviewCompleteforNonNC}]</a><a class="dropdown-item"
+							style="color: #dc3545;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=changeRequiredforNC"><i
+							class="fa fa-exclamation-triangle" aria-hidden="true"></i> More
+							info Requested for NC [${changeRequiredforNC}]</a><a
+							class="dropdown-item" style="color: #28a745;"
+							href="riskTracker?assessmentId=${selectedAssessmentCategory.assessment.id}&catId=${selectedAssessmentCategory.id}&ctrlType=changeRequiredforNonNC"><i
+							class="fa fa-exclamation-triangle" aria-hidden="true"></i> More
+							info Requested for Non NC [${changeRequiredforNonNC}]</a>
 					</div>
-				</div> --%>
+				</div>
 			</div>
-			<div class="col-xl-10">
+			<div class="col-xl-8">
+				<table>
+					<tr>
+						<td style="padding: 0px 16px;">Account Name :
+							${assessment.account.department.name}</td>
+						<td
+							style="padding: 0px 16px; border-left: 1px solid #797676; border-right: 1px solid #797676;">Location
+							: ${assessment.account.location.name}</td>
+						<td style="padding: 0px 16px;">LOB :
+							${assessment.account.lob.name}</td>
+					</tr>
+				</table>
+			</div>
+			<%-- <div class="col-xl-10">
 				<table class="cTable"
 					style="font-size: 13px; background: #f1f0f0; border: 1px solid #343a40; box-shadow: 3px 3px 2px #898f96;">
 					<tr style="background: #d4d4d4;">
@@ -181,7 +216,7 @@ table.cTable td {
 							</div>${changeRequiredforNonNC}</td>
 					</tr>
 				</table>
-			</div>
+			</div> --%>
 		</div>
 		<div class="dropdown-divider"></div>
 		<div class="row">
@@ -227,23 +262,46 @@ table.cTable td {
 										style="padding: 0px 6px; cursor: pointer;"><i
 											class="fa fa-question" aria-hidden="true"></i></a></td>
 									<td>${answer.control.control.control}</td>
-									<td>${answer.answer}</td>
+									<td>${answer.answer}<c:if
+											test="${answer.NC == true && answer.confirmationStatus=='Review Pending'}">
+											<i class="fa fa-thumbs-down" aria-hidden="true"
+												style="color: #dc3545; float: right; font-size: 17px;"></i>
+										</c:if> <c:if
+											test="${answer.NC == true && answer.confirmationStatus=='Review Complete'}">
+											<i class="fa fa-thumbs-o-up" aria-hidden="true"
+												style="color: #dc3545; float: right; font-size: 17px;"></i>
+										</c:if> <c:if
+											test="${answer.NC == true && answer.confirmationStatus=='Change Required'}">
+											<i class="fa fa-exclamation-triangle" aria-hidden="true"
+												style="color: #dc3545; float: right; font-size: 17px;"></i>
+										</c:if> <c:if
+											test="${answer.NC == false && answer.confirmationStatus=='Review Pending'}">
+											<i class="fa fa-thumbs-o-down" aria-hidden="true"
+												style="color: #28a745; float: right; font-size: 17px;"></i>
+										</c:if> <c:if
+											test="${answer.NC == false && answer.confirmationStatus=='Review Complete'}">
+											<i class="fa fa-thumbs-up" aria-hidden="true"
+												style="color: #28a745; float: right; font-size: 17px;"></i>
+										</c:if> <c:if
+											test="${answer.NC == false && answer.confirmationStatus=='Change Required'}">
+											<i class="fa fa-exclamation-triangle" aria-hidden="true"
+												style="color: #28a745; float: right; font-size: 17px;"></i>
+										</c:if>
+									</td>
 									<c:if test="${answer.riskAcceptance == true}">
 										<td>${answer.riskAcceptenceby}</td>
 									</c:if>
 									<c:if test="${answer.riskAcceptance == false}">
 										<td>${answer.mitigationDate}</td>
 									</c:if>
-									<td><a
-										href="${contextRoot}/${userRole}/download/${answer.id}"
-										target="_blank">${answer.artifaceName}</a></td>
+									<td><a href="download/${answer.id}" target="_blank">${answer.artifaceName}</a></td>
 									<td>${answer.lastRespondedUser.name}</td>
 
 									<c:if
 										test="${userModel.role != 'Admin' && userModel.role != 'Super Admin'}">
 										<td style="text-align: center;"><a
 											class="btn btn-warning"
-											href="${contextRoot}/${userRole}/riskTrackerResponsePage?answerId=${answer.id}"
+											href="riskTrackerResponsePage?answerId=${answer.id}"
 											style="padding: 0px 6px; cursor: pointer;"><i
 												class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
 									</c:if>
