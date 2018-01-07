@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -691,220 +693,279 @@ public class PdfSections {
 			PropertyException {
 
 		Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
-
 		response.setContentType("application/pdf");
 
-		Document document = new Document(PageSize.A4, 0, 0, 40, 10);
+		Document document = new Document(PageSize.A4);
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		PdfWriter writer = PdfWriter.getInstance(document,
 				byteArrayOutputStream);
 		document.open();
-		Font font1 = new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.UNDERLINE,
-				BaseColor.BLACK);
-		Paragraph title = new Paragraph("ACCOUNT DETAILS\n\n", font1);
-		title.setAlignment(Element.ALIGN_CENTER);
+		Font font1 = new Font(Font.FontFamily.TIMES_ROMAN, 20);
+		Font font2 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+		Font font3 = new Font(Font.FontFamily.TIMES_ROMAN, 10);
 
 		PdfPTable table;
 		PdfPCell cell;
-		Font font = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL,
-				BaseColor.BLACK);
 
-		table = new PdfPTable(3);
-		float[] columnWidths = new float[] { 1f, 0.1f, 1f };
+		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
+		float[] columnWidths = new float[] { 1f };
 		table.setWidths(columnWidths);
-		cell = new PdfPCell(new Phrase(" ", font));
-		cell.setBorder(Rectangle.NO_BORDER);
-		cell.setPaddingTop(20);
-		cell.setColspan(3);
-		cell.setFixedHeight(25f);
+		cell = new PdfPCell(new Phrase(new Chunk("Account Details", new Font(
+				Font.FontFamily.TIMES_ROMAN, 20))));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setBorderWidth(0f);
+		cell.setBorderWidthBottom(.5f);
+		cell.setBorderColor(new BaseColor(146, 144, 144));
+		cell.setPadding(0);
+		cell.setPaddingBottom(8);
 		table.addCell(cell);
+		document.add(table);
+
+		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
+		columnWidths = new float[] { 1f };
+		table.setWidths(columnWidths);
+		cell = new PdfPCell(new Phrase(new Chunk(" ", new Font(
+				Font.FontFamily.TIMES_ROMAN, 8))));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setBorderWidth(0f);
+		cell.setFixedHeight(2f);
+		cell.setPadding(0);
+		table.addCell(cell);
+		document.add(table);
+
+		PdfPTable pdfPTable = new PdfPTable(2);
+		pdfPTable.setWidthPercentage(100);
+		columnWidths = new float[] { 1f, 1f };
+		pdfPTable.setWidths(columnWidths);
+
+		// --------------------
 
 		PdfPTable table1 = new PdfPTable(2);
+		table1.setWidthPercentage(100);
 		columnWidths = new float[] { 1f, 1f };
 
 		cell = new PdfPCell(new Phrase("Account Details", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.TIMES_ROMAN, 14, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setColspan(2);
-		cell.setFixedHeight(25f);
+		cell.setPaddingBottom(8f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("Client/Department", font));
+		cell = new PdfPCell(new Phrase("Client/Department", font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		cell.setPaddingTop(6f);
 		cell.setPaddingLeft(5f);
 		cell.setPaddingBottom(7f);
 		table1.addCell(cell);
 		cell = new PdfPCell(new Phrase(assessment.getAccount().getDepartment()
-				.getName(), font));
+				.getName(), font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("Location", font));
+		cell = new PdfPCell(new Phrase("Location", font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingBottom(7f);
 		cell.setPaddingLeft(5f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
 		cell = new PdfPCell(new Phrase(assessment.getAccount().getLocation()
-				.getName(), font));
+				.getName(), font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("LOB", font));
+		cell = new PdfPCell(new Phrase("LOB", font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingBottom(7f);
 		cell.setPaddingLeft(5f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
 		cell = new PdfPCell(new Phrase(assessment.getAccount().getLob()
-				.getName(), font));
+				.getName(), font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("Business Stage", font));
+		cell = new PdfPCell(new Phrase("Business Stage", font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingBottom(7f);
 		cell.setPaddingLeft(5f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
-		cell = new PdfPCell(
-				new Phrase(assessment.getAccount().getPhase(), font));
+		cell = new PdfPCell(new Phrase(assessment.getAccount().getPhase(),
+				font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setPaddingBottom(7f);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(table1);
-		cell.setPaddingBottom(7f);
-		table.addCell(cell);
+		cell.setBorderWidth(0f);
+		cell.setPadding(2f);
+		pdfPTable.addCell(cell);
 
-		cell = new PdfPCell(new Phrase(" ", font));
-		cell.setPaddingBottom(7f);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
-
+		// ----------------
 		table1 = new PdfPTable(2);
+		table1.setWidthPercentage(100);
 		columnWidths = new float[] { 0.8f, 0.2f };
 		table1.setWidths(columnWidths);
 
 		cell = new PdfPCell(new Phrase("Risk value and rating",
-				FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL,
-						BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.getFont(FontFactory.TIMES_ROMAN, 14, Font.NORMAL,
+						BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setColspan(2);
-		cell.setFixedHeight(25f);
+		cell.setPaddingBottom(8f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 		cell = new PdfPCell(new Phrase(
-				"Total - Risk Factor (Critical Controls)", font));
+				"Total - Risk Factor (Critical Controls)", font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		cell.setPaddingTop(6f);
 		cell.setPaddingLeft(5f);
 		cell.setPaddingBottom(7f);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("0", font));
+		cell = new PdfPCell(new Phrase(String.valueOf(riskCalculation
+				.getCriticalRiskvalueforAssessment(assessment)), font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingRight(5f);
+		cell.setPaddingBottom(7f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table1.addCell(cell);
 		cell = new PdfPCell(new Phrase("Total - Risk Factor (All Controls)",
-				font));
+				font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingBottom(7f);
 		cell.setPaddingLeft(5f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("24", font));
+		cell = new PdfPCell(new Phrase(
+				String.valueOf(assessment.getRiskValue()), font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingRight(5f);
+		cell.setPaddingBottom(7f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("Rating (Current)", font));
+		cell = new PdfPCell(new Phrase("Rating (Current)", font2));
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingBottom(7f);
 		cell.setPaddingLeft(5f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("B", font));
+		cell = new PdfPCell(new Phrase(assessment.getRiskLevel(), font2));
 		cell.setPaddingRight(5f);
+		cell.setPaddingBottom(7f);
 		cell.setBackgroundColor(BaseColor.WHITE);
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("Rating (Initial)", font));
+		cell = new PdfPCell(new Phrase("Rating (Initial)", font2));
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setPaddingBottom(7f);
 		cell.setPaddingLeft(5f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		table1.addCell(cell);
-		cell = new PdfPCell(new Phrase("A", font));
+		cell = new PdfPCell(new Phrase(assessment.getAccount()
+				.getInitialRating(), font2));
 		cell.setPaddingRight(5f);
+		cell.setPaddingBottom(7f);
 		cell.setBackgroundColor(new BaseColor(245, 243, 243));
-		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setBorderWidth(0f);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(table1);
-		cell.setPaddingBottom(7f);
-		table.addCell(cell);
-		document.add(table);
+		cell.setBorderWidth(0f);
+		cell.setPadding(2f);
+		pdfPTable.addCell(cell);
+		document.add(pdfPTable);
+
+		// ------------------------
 
 		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
 		columnWidths = new float[] { 1f };
 		table.setWidths(columnWidths);
-		cell = new PdfPCell(new Phrase(" ", font));
-		cell.setPaddingTop(8);
-		cell.setBorder(Rectangle.BOTTOM);
+		cell = new PdfPCell(new Phrase(new Chunk(" ", new Font(
+				Font.FontFamily.TIMES_ROMAN, 8))));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setBorderWidth(0f);
+		cell.setBorderWidthBottom(.5f);
+		cell.setBorderColor(new BaseColor(146, 144, 144));
+		cell.setFixedHeight(4f);
+		cell.setPadding(0);
 		table.addCell(cell);
 		document.add(table);
 
 		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
+		columnWidths = new float[] { 1f };
+		table.setWidths(columnWidths);
+		cell = new PdfPCell(new Phrase(new Chunk(" ", new Font(
+				Font.FontFamily.TIMES_ROMAN, 8))));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setBorderWidth(0f);
+		cell.setFixedHeight(5f);
+		cell.setPadding(0);
+		table.addCell(cell);
+		document.add(table);
+
+		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
 		columnWidths = new float[] { 1f };
 		table.setWidths(columnWidths);
 		font1 = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL,
 				BaseColor.BLACK);
 		cell = new PdfPCell(new Phrase("Category wise risk",
-				FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL,
-						BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.getFont(FontFactory.TIMES_ROMAN, 14, Font.NORMAL,
+						BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setColspan(2);
-		cell.setFixedHeight(25f);
+		cell.setPaddingBottom(8f);
+		cell.setBorderWidth(0.5f);
+		cell.setBorderColor(new BaseColor(146, 144, 144));
 		table.addCell(cell);
 		System.out.println("assessment is [" + assessment + "]");
 		System.out.println("assessment id is [" + assessment.getId() + "]");
@@ -932,11 +993,12 @@ public class PdfSections {
 		axis.setLabelFont(new java.awt.Font(java.awt.Font.SANS_SERIF,
 				java.awt.Font.PLAIN, 20));
 
-		plot.setOutlineVisible(false);
-		plot.setBackgroundPaint(Color.white);
+		plot.setOutlineVisible(true);
+		plot.setBackgroundPaint(new Color(237, 247, 255));
 		BarRenderer barRenderer = (BarRenderer) plot.getRenderer();
-		Color color1 = new Color(181, 108, 108);
+		Color color1 = new Color(131, 188, 249);
 		barRenderer.setBaseItemLabelsVisible(true);
+		barRenderer.setShadowVisible(false);
 		DecimalFormat decimalformat1 = new DecimalFormat("0.0");
 		barRenderer
 				.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator(
@@ -948,58 +1010,70 @@ public class PdfSections {
 				java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 17));
 		barRenderer.setSeriesPaint(0, color1);
 		barRenderer.setBarPainter(new StandardBarPainter());
+		barRenderer.setDrawBarOutline(true);
+		barRenderer.setSeriesOutlinePaint(1, new Color(83, 138, 185));
 		barRenderer.setMaximumBarWidth(0.05);
 		barChart.setBackgroundPaint(Color.white);
-		BufferedImage outputImage = barChart.createBufferedImage(750, 400);
+		barChart.setBorderPaint(Color.DARK_GRAY);
+		BufferedImage outputImage = barChart.createBufferedImage(750, 350);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write((RenderedImage) outputImage, "png", baos);
 		byte[] imageInByte = baos.toByteArray();
 		Image image = Image.getInstance(imageInByte);
 
 		cell = new PdfPCell(image, true);
+		cell.setBorderColor(new BaseColor(125, 126, 128));
 		cell.setPadding(12);
-		// cell.setBorder(Rectangle.NO_BORDER);
 
 		table.addCell(cell);
 		document.add(table);
 
 		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
 		columnWidths = new float[] { 1f };
 		table.setWidths(columnWidths);
-		cell = new PdfPCell(new Phrase(" ", font));
-		cell.setPaddingTop(8);
-		cell.setBorder(Rectangle.BOTTOM);
+		cell = new PdfPCell(new Phrase(new Chunk(" ", new Font(
+				Font.FontFamily.TIMES_ROMAN, 8))));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setBorderWidth(0f);
+		cell.setFixedHeight(5f);
+		cell.setPadding(0);
 		table.addCell(cell);
 		document.add(table);
 
 		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
 		columnWidths = new float[] { 1f };
 		table.setWidths(columnWidths);
 		font1 = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL,
 				BaseColor.BLACK);
 		cell = new PdfPCell(new Phrase("Internal/External Risk",
-				FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL,
-						BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.getFont(FontFactory.TIMES_ROMAN, 14, Font.NORMAL,
+						BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setColspan(2);
-		cell.setFixedHeight(25f);
+		cell.setPaddingBottom(8f);
+		cell.setBorderWidth(0.5f);
+		cell.setBorderColor(new BaseColor(146, 144, 144));
 		table.addCell(cell);
 		document.add(table);
 
 		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
 		columnWidths = new float[] { 1f };
 		table.setWidths(columnWidths);
 
 		JFreeChart pieChart = ChartFactory.createPieChart("",
-				createPieDataset(assessment), false, false, true);
+				createPieDataset(assessment), true, false, true);
 		pieChart.setBackgroundPaint(Color.white);
 		PiePlot piePlot = (PiePlot) pieChart.getPlot();
 		piePlot.setLabelFont(new java.awt.Font(java.awt.Font.SANS_SERIF,
 				java.awt.Font.PLAIN, 17));
-		piePlot.setSectionPaint("Internal", new Color(119, 60, 60));
-		piePlot.setSectionPaint("External", new Color(181, 108, 108));
+		piePlot.setSectionPaint("Internal", new Color(213, 91, 103));
+		piePlot.setSectionPaint("External", new Color(242, 186, 20));
+		piePlot.setSectionPaint("Both", new Color(64, 132, 205));
 		piePlot.setBackgroundPaint(Color.white);
 		piePlot.setOutlineVisible(false);
 		piePlot.setShadowPaint(Color.black);
@@ -1012,10 +1086,11 @@ public class PdfSections {
 				"{0}: ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
 		piePlot.setLabelGenerator(gen);
 		piePlot.setLabelPaint(new Color(146, 15, 15));
-		/*-LegendTitle legendTitle = pieChart.getLegend();
+		LegendTitle legendTitle = pieChart.getLegend();
 		legendTitle.setPosition(RectangleEdge.RIGHT);
 		legendTitle.setItemFont(new java.awt.Font(java.awt.Font.SANS_SERIF,
-				java.awt.Font.PLAIN, 20));*/
+				java.awt.Font.PLAIN, 17));
+		legendTitle.setBorder(0, 0, 0, 0);
 		outputImage = pieChart.createBufferedImage(750, 350);
 		baos = new ByteArrayOutputStream();
 		ImageIO.write((RenderedImage) outputImage, "png", baos);
@@ -1024,19 +1099,10 @@ public class PdfSections {
 
 		cell = new PdfPCell(image, true);
 		cell.setPadding(12);
-		// cell.setBorder(Rectangle.NO_BORDER);
-
+		cell.setBorderColor(new BaseColor(125, 126, 128));
 		table.addCell(cell);
 		document.add(table);
-
-		table = new PdfPTable(1);
-		columnWidths = new float[] { 1f };
-		table.setWidths(columnWidths);
-		cell = new PdfPCell(new Phrase(" ", font));
-		cell.setPaddingTop(30);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
-		document.add(table);
+		document.newPage();
 
 		List<AssessmentCategories> assessmentCategories = new ArrayList<AssessmentCategories>();
 		assessmentCategories = assessmentDao
@@ -1045,6 +1111,7 @@ public class PdfSections {
 		if (assessmentCategories == null) {
 			assessmentCategories = new ArrayList<AssessmentCategories>();
 		}
+		int j = 1;
 		for (AssessmentCategories assessmentCategory : assessmentCategories) {
 			domainAnswer = controlDao
 					.allAnswerbyAssessmentCategory(assessmentCategory);
@@ -1061,17 +1128,21 @@ public class PdfSections {
 			}
 
 			table = new PdfPTable(1);
+			table.setWidthPercentage(100);
 			columnWidths = new float[] { 1f };
 			table.setWidths(columnWidths);
 			font1 = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL,
 					BaseColor.BLACK);
+
 			cell = new PdfPCell(new Phrase(assessmentCategory
-					.getAssignedCategories().getName(), font1));
-			cell.setBackgroundColor(new BaseColor(237, 225, 225));
+					.getAssignedCategories().getName(), FontFactory.getFont(
+					FontFactory.TIMES_ROMAN, 14, Font.NORMAL, BaseColor.WHITE)));
+			cell.setBackgroundColor(new BaseColor(125, 126, 128));
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			cell.setColspan(2);
-			cell.setFixedHeight(25f);
+			cell.setPaddingBottom(8f);
+			cell.setBorderWidth(0.5f);
+			cell.setBorderColor(new BaseColor(146, 144, 144));
 			table.addCell(cell);
 			barChart = ChartFactory.createBarChart("", "Short Text", "Risk",
 					createDataset4Domain(answer), PlotOrientation.VERTICAL,
@@ -1097,11 +1168,12 @@ public class PdfSections {
 			axis.setLabelFont(new java.awt.Font(java.awt.Font.SANS_SERIF,
 					java.awt.Font.PLAIN, 20));
 
-			plot.setOutlineVisible(false);
-			plot.setBackgroundPaint(Color.white);
+			plot.setOutlineVisible(true);
+			plot.setBackgroundPaint(new Color(237, 247, 255));
 			barRenderer = (BarRenderer) plot.getRenderer();
-			color1 = new Color(181, 108, 108);
+			color1 = new Color(131, 188, 249);
 			barRenderer.setBaseItemLabelsVisible(true);
+			barRenderer.setShadowVisible(false);
 			decimalformat1 = new DecimalFormat("0.0");
 			barRenderer
 					.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator(
@@ -1114,6 +1186,8 @@ public class PdfSections {
 					java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 17));
 			barRenderer.setSeriesPaint(0, color1);
 			barRenderer.setBarPainter(new StandardBarPainter());
+			barRenderer.setDrawBarOutline(true);
+			barRenderer.setSeriesOutlinePaint(1, new Color(83, 138, 185));
 			barRenderer.setMaximumBarWidth(0.05);
 			barChart.setBackgroundPaint(Color.white);
 			outputImage = barChart.createBufferedImage(750, 320);
@@ -1132,24 +1206,32 @@ public class PdfSections {
 						font1));
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				cell.setFixedHeight(215);
+				cell.setFixedHeight(200);
+				cell.setBorderColor(new BaseColor(125, 126, 128));
 				table.addCell(cell);
 			} else {
 				cell = new PdfPCell(image, true);
+				cell.setBorderColor(new BaseColor(125, 126, 128));
 				cell.setPadding(12);
 				table.addCell(cell);
 			}
-
-			document.add(table);
-
-			table = new PdfPTable(1);
-			columnWidths = new float[] { 1f };
-			table.setWidths(columnWidths);
-			cell = new PdfPCell(new Phrase(" ", font));
-			cell.setPaddingTop(8);
-			cell.setBorder(Rectangle.NO_BORDER);
+			cell = new PdfPCell(new Phrase(new Chunk(" ", new Font(
+					Font.FontFamily.TIMES_ROMAN, 8))));
+			cell.setBorderWidth(0f);
+			cell.setFixedHeight(5f);
+			cell.setPadding(0);
 			table.addCell(cell);
 			document.add(table);
+
+			if (j % 3 == 0) {
+				document.newPage();
+			}
+			j++;
+
+		}
+
+		if (j % 3 == 1 || j % 3 == 2) {
+			document.newPage();
 		}
 
 		/*-table = new PdfPTable(1);
@@ -1161,192 +1243,249 @@ public class PdfSections {
 		table.addCell(cell);
 		document.add(table);*/
 
-		table1 = new PdfPTable(7);
-		columnWidths = new float[] { 0.5f, 3f, 1.7f, 0.8f, 1f, 2f, 1f };
-		table1.setWidths(columnWidths);
-		cell = new PdfPCell(new Phrase("No", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
+		columnWidths = new float[] { 1f };
+		table.setWidths(columnWidths);
+		cell = new PdfPCell(new Phrase(new Chunk(
+				"Controls and Their Responses", new Font(
+						Font.FontFamily.TIMES_ROMAN, 17))));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setFixedHeight(25f);
+		cell.setBorderWidth(0f);
+		cell.setBorderWidthBottom(.5f);
+		cell.setBorderColor(new BaseColor(146, 144, 144));
+		cell.setPadding(0);
+		cell.setPaddingBottom(8);
+		table.addCell(cell);
+		document.add(table);
+
+		table = new PdfPTable(1);
+		table.setWidthPercentage(100);
+		columnWidths = new float[] { 1f };
+		table.setWidths(columnWidths);
+		cell = new PdfPCell(new Phrase(new Chunk(" ", new Font(
+				Font.FontFamily.TIMES_ROMAN, 8))));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setBorderWidth(0f);
+		cell.setFixedHeight(2f);
+		cell.setPadding(0);
+		table.addCell(cell);
+		document.add(table);
+
+		table1 = new PdfPTable(6);
+		table1.setWidthPercentage(100);
+		columnWidths = new float[] { 0.5f, 3f, 0.8f, 1f, 2f, 1f };
+		table1.setWidths(columnWidths);
+		cell = new PdfPCell(new Phrase("#", FontFactory.getFont(
+				FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setPaddingBottom(7f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(new Phrase("Control", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setFixedHeight(25f);
-		table1.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("Opt", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setFixedHeight(25f);
+		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(new Phrase("Ans", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setFixedHeight(25f);
+		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(new Phrase("Risk", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setFixedHeight(25f);
+		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(new Phrase("Comment", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setFixedHeight(25f);
+		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 
 		cell = new PdfPCell(new Phrase("Mitigation", FontFactory.getFont(
-				FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
-		cell.setBackgroundColor(new BaseColor(237, 225, 225));
+				FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.WHITE)));
+		cell.setBackgroundColor(new BaseColor(125, 126, 128));
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setBorder(Rectangle.BOTTOM);
-		cell.setFixedHeight(25f);
+		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		cell.setPaddingBottom(7f);
+		cell.setBorderWidth(0f);
 		table1.addCell(cell);
 
 		int i = 1;
 		for (AssessmentCategories assessmentCategory : assessmentCategories) {
-
-			cell = new PdfPCell(new Phrase(" ", font));
-			cell.setPaddingTop(8);
+			cell = new PdfPCell(new Phrase("", FontFactory.getFont(
+					FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.BLACK)));
+			cell.setBackgroundColor(BaseColor.WHITE);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setColspan(6);
-			cell.setBorder(Rectangle.NO_BORDER);
+			cell.setFixedHeight(4f);
+			cell.setBorderWidth(0f);
 			table1.addCell(cell);
 
 			cell = new PdfPCell(new Phrase(assessmentCategory
 					.getAssignedCategories().getName(), FontFactory.getFont(
-					FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)));
+					FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.BLACK)));
 			cell.setBackgroundColor(new BaseColor(235, 241, 243));
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setPaddingLeft(12f);
+			cell.setPaddingBottom(7f);
 			cell.setColspan(6);
-			cell.setBorder(Rectangle.BOTTOM);
-			cell.setFixedHeight(20f);
+			cell.setBorderWidth(0f);
+			cell.setBorderColor(new BaseColor(125, 126, 128));
+			cell.setBorderWidthBottom(.5f);
+			cell.setBorderWidthTop(0.5f);
 			table1.addCell(cell);
+
 			domainAnswer = controlDao
 					.allAnswerbyAssessmentCategory(assessmentCategory);
 			if (domainAnswer == null) {
 				domainAnswer = new ArrayList<Answer>();
 			}
 			for (Answer ans : domainAnswer) {
-				cell = new PdfPCell(new Phrase(String.valueOf(i), font));
 
-				cell.setBorder(Rectangle.BOTTOM);
+				// ------------------------index ----------------
+				cell = new PdfPCell(new Phrase(String.valueOf(i),
+						FontFactory.getFont(FontFactory.TIMES_ROMAN, 10,
+								Font.NORMAL, BaseColor.BLACK)));
+				cell.setBorderWidth(0f);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				if (i % 2 == 0) {
+					cell.setBackgroundColor(new BaseColor(228, 228, 228));
+				} else {
+					cell.setBackgroundColor(BaseColor.WHITE);
+				}
+				cell.setPaddingBottom(7f);
+				table1.addCell(cell);
+				// --------- index finished -----------------------
+
+				// ---------------------Control--------------------------
+				cell = new PdfPCell(new Phrase(ans.getControl().getControl()
+						.getControl(), FontFactory.getFont(
+						FontFactory.TIMES_ROMAN, 10, Font.NORMAL,
+						BaseColor.BLACK)));
+				if (i % 2 == 0) {
+					cell.setBackgroundColor(new BaseColor(228, 228, 228));
+				} else {
+					cell.setBackgroundColor(BaseColor.WHITE);
+				}
+				cell.setPaddingBottom(7f);
+				cell.setBorderWidth(0f);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
-				} else {
-					cell.setBackgroundColor(BaseColor.WHITE);
-				}
-				cell.setPaddingBottom(7f);
-				/*-cell.setPaddingTop(6f);
-				cell.setPaddingLeft(5f);
-				 */
 				table1.addCell(cell);
-				cell = new PdfPCell(new Phrase(ans.getControl().getControl()
-						.getControl(), font));
+				// ---------------------Control finished --------------------
+
+				// --------------------- Answer ------------------------------
+				cell = new PdfPCell(new Phrase(ans.getAnswer(),
+						FontFactory.getFont(FontFactory.TIMES_ROMAN, 10,
+								Font.NORMAL, BaseColor.BLACK)));
 				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
+					cell.setBackgroundColor(new BaseColor(228, 228, 228));
 				} else {
 					cell.setBackgroundColor(BaseColor.WHITE);
 				}
-				cell.setPaddingBottom(7f);
-				cell.setBorder(Rectangle.BOTTOM);
+				cell.setBorderWidth(0f);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setPaddingBottom(7f);
 				table1.addCell(cell);
-				cell = new PdfPCell(new Phrase(ans.getControl().getControl()
-						.getAnswers(), font));
+				// ----------------------answer finished -------------------
+
+				// ------------------------Risk ----------------------
+				cell = new PdfPCell(new Phrase(String.valueOf(riskCalculation
+						.getRiskForAnswer(ans)), FontFactory.getFont(
+						FontFactory.TIMES_ROMAN, 10, Font.NORMAL,
+						BaseColor.BLACK)));
 				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
+					cell.setBackgroundColor(new BaseColor(228, 228, 228));
 				} else {
 					cell.setBackgroundColor(BaseColor.WHITE);
 				}
-				cell.setBorder(Rectangle.BOTTOM);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-				/*-cell.setPaddingTop(6f);
-				cell.setPaddingLeft(5f);
-				cell.setPaddingBottom(7f);*/cell.setPaddingBottom(7f);
-				table1.addCell(cell);
-				cell = new PdfPCell(new Phrase(ans.getAnswer(), font));
-				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
-				} else {
-					cell.setBackgroundColor(BaseColor.WHITE);
-				}
-				cell.setBorder(Rectangle.BOTTOM);
+				cell.setBorderWidth(0f);
 				cell.setPaddingBottom(7f);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				table1.addCell(cell);
-				cell = new PdfPCell(new Phrase(String.valueOf(ans.getControl()
-						.getControl().getRating()), font));
+				// ----------------------Risk finished ---------------------
+
+				// -----------------------Comment -----------------------------
+				cell = new PdfPCell(new Phrase(ans.getComment(),
+						FontFactory.getFont(FontFactory.TIMES_ROMAN, 10,
+								Font.NORMAL, BaseColor.BLACK)));
 				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
+					cell.setBackgroundColor(new BaseColor(228, 228, 228));
 				} else {
 					cell.setBackgroundColor(BaseColor.WHITE);
 				}
-				cell.setBorder(Rectangle.BOTTOM);
+				cell.setBorderWidth(0f);
 				cell.setPaddingBottom(7f);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				table1.addCell(cell);
-				cell = new PdfPCell(new Phrase(ans.getComment(), font));
-				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
-				} else {
-					cell.setBackgroundColor(BaseColor.WHITE);
-				}
-				cell.setBorder(Rectangle.BOTTOM);
-				cell.setPaddingBottom(7f);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-				table1.addCell(cell);
+				// -----------------------Comment finished ---------------------
+
+				// ------------------mitigationDate --------------------
 				if (ans.getMitigationDate() != null) {
-					cell = new PdfPCell(new Phrase(ans.getMitigationDate()
-							.toString(), font));
+					SimpleDateFormat dt1 = new SimpleDateFormat("dd-MMM-yyyy");
+					cell = new PdfPCell(new Phrase(dt1.format(ans
+							.getMitigationDate()), FontFactory.getFont(
+							FontFactory.TIMES_ROMAN, 10, Font.NORMAL,
+							BaseColor.BLACK)));
 				} else {
-					cell = new PdfPCell(new Phrase("", font));
+					cell = new PdfPCell(new Phrase("", FontFactory.getFont(
+							FontFactory.TIMES_ROMAN, 10, Font.NORMAL,
+							BaseColor.BLACK)));
 				}
 
 				if (i % 2 == 0) {
-					cell.setBackgroundColor(new BaseColor(245, 243, 243));
+					cell.setBackgroundColor(new BaseColor(228, 228, 228));
 				} else {
 					cell.setBackgroundColor(BaseColor.WHITE);
 				}
-				cell.setBorder(Rectangle.BOTTOM);
+				cell.setBorderWidth(0f);
 				cell.setPaddingBottom(7f);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				table1.addCell(cell);
 				i++;
 			}
+
+			cell = new PdfPCell(new Phrase("", FontFactory.getFont(
+					FontFactory.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.BLACK)));
+			cell.setBackgroundColor(new BaseColor(235, 241, 243));
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setPadding(0f);
+			cell.setFixedHeight(0f);
+			cell.setColspan(6);
+			cell.setBorderWidth(0f);
+			cell.setBorderWidthBottom(1f);
+			cell.setBorderColor(new BaseColor(125, 126, 128));
+			table1.addCell(cell);
 		}
 
 		document.add(table1);

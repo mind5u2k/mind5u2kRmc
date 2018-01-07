@@ -28,6 +28,7 @@ import net.gh.ghoshMyRmcBackend.dao.AssessmentDao;
 import net.gh.ghoshMyRmcBackend.dao.CategoryDao;
 import net.gh.ghoshMyRmcBackend.dao.ControlDao;
 import net.gh.ghoshMyRmcBackend.dao.UserDao;
+import net.gh.ghoshMyRmcBackend.dto.Account;
 import net.gh.ghoshMyRmcBackend.dto.AccountSpecificControl;
 import net.gh.ghoshMyRmcBackend.dto.Answer;
 import net.gh.ghoshMyRmcBackend.dto.AnswerCopy;
@@ -858,6 +859,11 @@ public class ApproverController {
 					assessment.setRiskLevel(riskCalculation
 							.getRiskLevelforAssessment(assessment));
 					assessmentDao.updateAssessment(assessment);
+
+					Account account = assessment.getAccount();
+					account.setInitialRating(riskCalculation
+							.getRiskLevelforAssessment(assessment));
+					accountDao.updateAccount(account);
 
 					AssessmentTrail assessmentTrail = new AssessmentTrail();
 					assessmentTrail.setAssessmentId(assessmentId);

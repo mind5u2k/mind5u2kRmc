@@ -147,6 +147,8 @@
 							onclick="return checkAnswer();" style="margin-right: 12px;"
 							value="Save Response" />
 						<sf:hidden path="id" />
+						<input type="hidden" id="flagOption"
+							value="${answer.control.control.flag}" />
 					</div>
 				</div>
 			</div>
@@ -187,14 +189,29 @@
 		});
 		function checkAnswer() {
 			if ($("#answer").val() == "No" || $("#answer").val() == "NA") {
-				if ($("#comment").val() == "") {
-					var $comEr = $("#comment-error");
-					if (!$comEr.length) {
-						$("#comment")
-								.after(
-										'<em id="comment-error" class="error help-block">!! Please add Comment !!</em>');
+				if ($("#flagOption").val() == "1") {
+					if ($("#comment").val() == "") {
+						var $comEr = $("#comment-error");
+						if (!$comEr.length) {
+							$("#comment")
+									.after(
+											'<em id="comment-error" class="error help-block">!! Please add Comment !!</em>');
+						}
+						return false;
 					}
-					return false;
+				}
+			}
+			if ($("#answer").val() == "Yes") {
+				if ($("#flagOption").val() == "2") {
+					if ($("#comment").val() == "") {
+						var $comEr = $("#comment-error");
+						if (!$comEr.length) {
+							$("#comment")
+									.after(
+											'<em id="comment-error" class="error help-block">!! Please add Comment !!</em>');
+						}
+						return false;
+					}
 				}
 			}
 		}
